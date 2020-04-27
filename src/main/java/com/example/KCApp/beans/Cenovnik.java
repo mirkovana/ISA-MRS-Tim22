@@ -5,6 +5,8 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,7 +24,8 @@ public class Cenovnik {
 	@Column(name = "idCenovnika", unique = true, nullable = false)
 	private Integer idCenovnika;
 	
-	//fali @Column(name="tipPregledaCenovnik", unique=true, nullable=false)
+	@Column(name="TipPregleda") 
+	@Enumerated(EnumType.STRING)
 	private TipPregleda tipPregledaCenovnik;
 	
 	@Column(name="cena", unique=false, nullable=false)
@@ -56,7 +59,6 @@ public class Cenovnik {
 	}
 
 	public Cenovnik(Integer idCenovnika, TipPregleda tipPregledaCenovnik, double cena, Klinika klinika) {
-		super();
 		this.idCenovnika = idCenovnika;
 		this.tipPregledaCenovnik = tipPregledaCenovnik;
 		this.cena = cena;

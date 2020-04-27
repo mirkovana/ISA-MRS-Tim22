@@ -2,7 +2,10 @@ package com.example.KCApp.beans;
 
 import static javax.persistence.FetchType.LAZY;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -18,7 +21,8 @@ public class Lekar extends Korisnik {
 	@JoinColumn(name = "idRadnogKalendara")	
 	private RadniKalendar radniKalendar;
 	
-	//fali
+	@Column(name="Ocena") 
+	@Enumerated(EnumType.STRING)
 	private Ocena ocena;
 	
 	@ManyToOne
@@ -54,5 +58,15 @@ public class Lekar extends Korisnik {
 	public void setRadniKalendar(RadniKalendar radniKalendar) {
 		this.radniKalendar = radniKalendar;
 	}
+
+	public Klinika getKlinika() {
+		return klinika;
+	}
+
+	public void setKlinika(Klinika klinika) {
+		this.klinika = klinika;
+	}
+	
+	
 	
 }

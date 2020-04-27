@@ -5,27 +5,32 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.SequenceGenerator;
+
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
-@Entity
-@Inheritance(strategy = TABLE_PER_CLASS)
+//@Entity
+//@Inheritance(strategy = TABLE_PER_CLASS)
+//@SequenceGenerator(name = "korisnikIdSeq", sequenceName = "korisnikIdGen", initialValue = 1, allocationSize = 1)
+@MappedSuperclass
 public abstract class Korisnik {
 	
-	@Column(name="imeKorisnika", unique=false, nullable=false)
+	@Column(name="ime", unique=false, nullable=false)
 	private String ime;
-	@Column(name="prezimeKorisnika", unique=false, nullable=false)
+	@Column(name="prezime", unique=false, nullable=false)
 	private String prezime;
-	@Column(name="emailKorisnika", unique=true, nullable=false)
+	@Column(name="email", unique=true, nullable=false)
 	private String email;
-	@Column(name="lozinkaKorisnika", unique=false, nullable=false)
+	@Column(name="lozinka", unique=false, nullable=false)
 	private String lozinka;
-	@Column(name="adresaKorisnika", unique=true, nullable=false)
+	@Column(name="adresa", unique=true, nullable=false)
 	private String adresa;
-	@Column(name="gradKorisnika", unique=false, nullable=false)
+	@Column(name="grad", unique=false, nullable=false)
 	private String grad;
-	@Column(name="drzavaKorisnika", unique=false, nullable=false)
+	@Column(name="drzava", unique=false, nullable=false)
 	private String drzava;
-	@Column(name="brojTelefonaKorisnika", unique=true, nullable=false)
+	@Column(name="brojTelefona", unique=true, nullable=false)
 	private String brojTelefona;
 	@Id
 	@GeneratedValue
@@ -33,6 +38,19 @@ public abstract class Korisnik {
 	private Integer idKorisnika;
 	
 	public Korisnik() {}
+	
+	public Korisnik(Integer idKorisnika, String ime, String prezime, String email, String lozinka, String adresa, String grad, String drzava,
+			String brojTelefona) {
+		this.idKorisnika = idKorisnika;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.email = email;
+		this.lozinka = lozinka;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.brojTelefona = brojTelefona;
+	}
 	
 	public Korisnik(String ime, String prezime, String email, String lozinka, String adresa, String grad, String drzava,
 			String brojTelefona) {

@@ -10,9 +10,12 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -43,25 +46,100 @@ public class Klinika {
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
 	private Set<MedicinskaSestra> medicinskeSestre = new HashSet<MedicinskaSestra>();
 	
+	public void add(MedicinskaSestra item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getMedicinskeSestre().remove(item);
+	    item.setKlinika(this);
+	    getMedicinskeSestre().add(item);
+	  }
+	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
 	private Set<Lekar> lekari = new HashSet<Lekar>(); 
 	
+	public void add(Lekar item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getLekari().remove(item);
+	    item.setKlinika(this);
+	    getLekari().add(item);
+	  }
+	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
 	private Set<Sala> sale = new HashSet<Sala>();
+	
+	public void add(Sala item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getSale().remove(item);
+	    item.setKlinika(this);
+	    getSale().add(item);
+	  }
 	
 	@OneToOne(fetch = LAZY)
 	@JoinColumn(name = "idCenovnika")
 	private Cenovnik cenovnik;
 	
+	@Column(name="Ocena") 
+	@Enumerated(EnumType.STRING)
 	private Ocena ocena;
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<ZahtevOdsustva> zahteviOdsustva = new HashSet<ZahtevOdsustva>();
+	
+	public void add(ZahtevOdsustva item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getZahteviOdsustva().remove(item);
+	    item.setKlinika(this);
+	    getZahteviOdsustva().add(item);
+	  }
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
 	private Set<AdministratorKlinike> administratoriKlinike = new HashSet<AdministratorKlinike>();
 	
+	public void add(AdministratorKlinike item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getAdministratoriKlinike().remove(item);
+	    item.setKlinika(this);
+	    getAdministratoriKlinike().add(item);
+	  }
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<Operacija> operacije = new HashSet<Operacija>();
+	
+	public void add(Operacija item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getOperacije().remove(item);
+	    item.setKlinika(this);
+	    getOperacije().add(item);
+	  }
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<Pregled> pregledi = new HashSet<Pregled>();
+	
+	public void add(Pregled item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getPregledi().remove(item);
+	    item.setKlinika(this);
+	    getPregledi().add(item);
+	  }
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<ZahtevZaPregled> zahteviZaPregled = new HashSet<ZahtevZaPregled>();
+	
+	public void add(ZahtevZaPregled item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getZahteviZaPregled().remove(item);
+	    item.setKlinika(this);
+	    getZahteviZaPregled().add(item);
+	  }
+	
+	@ManyToOne
+	@JoinColumn(name = "idKlinickogCentra", referencedColumnName = "idKlinickogCentra", nullable = false)
+	private KlinickiCentar klinickiCentar;
+	
 	public Klinika() {}
 	
 	public Klinika(String naziv, String adresa, String grad, String opis, Set<MedicinskaSestra> medicinskeSestre, Set<Lekar> lekari, Set<Sala> sale,
-			Ocena ocena) {
+			Ocena ocena, Set<ZahtevOdsustva> zahteviOdsustva, Set<Operacija> operacije, Set<Pregled> pregledi, 
+			Set<ZahtevZaPregled> zahteviZaPregled, KlinickiCentar klinickiCentar) {
 		this.naziv = naziv;
 		this.adresa = adresa;
 		this.grad = grad;
@@ -70,6 +148,11 @@ public class Klinika {
 		this.lekari = lekari;
 		this.sale = sale;
 		this.ocena = ocena;
+		this.zahteviOdsustva = zahteviOdsustva;
+		this.operacije = operacije;
+		this.pregledi = pregledi;
+		this.zahteviZaPregled = zahteviZaPregled;
+		this.klinickiCentar = klinickiCentar;
 	}
 
 	public int getIdKlinike() {
@@ -143,4 +226,67 @@ public class Klinika {
 	public void setOcena(Ocena ocena) {
 		this.ocena = ocena;
 	}
+
+	public Set<ZahtevOdsustva> getZahteviOdsustva() {
+		return zahteviOdsustva;
+	}
+
+	public void setZahteviOdsustva(Set<ZahtevOdsustva> zahteviOdsustva) {
+		this.zahteviOdsustva = zahteviOdsustva;
+	}
+
+	public Cenovnik getCenovnik() {
+		return cenovnik;
+	}
+
+	public void setCenovnik(Cenovnik cenovnik) {
+		this.cenovnik = cenovnik;
+	}
+
+	public Set<AdministratorKlinike> getAdministratoriKlinike() {
+		return administratoriKlinike;
+	}
+
+	public void setAdministratoriKlinike(Set<AdministratorKlinike> administratoriKlinike) {
+		this.administratoriKlinike = administratoriKlinike;
+	}
+
+	public void setIdKlinike(Integer idKlinike) {
+		this.idKlinike = idKlinike;
+	}
+
+	public Set<Operacija> getOperacije() {
+		return operacije;
+	}
+
+	public void setOperacije(Set<Operacija> operacije) {
+		this.operacije = operacije;
+	}
+
+	public Set<Pregled> getPregledi() {
+		return pregledi;
+	}
+
+	public void setPregledi(Set<Pregled> pregledi) {
+		this.pregledi = pregledi;
+	}
+
+	public Set<ZahtevZaPregled> getZahteviZaPregled() {
+		return zahteviZaPregled;
+	}
+
+	public void setZahteviZaPregled(Set<ZahtevZaPregled> zahteviZaPregled) {
+		this.zahteviZaPregled = zahteviZaPregled;
+	}
+
+	public KlinickiCentar getKlinickiCentar() {
+		return klinickiCentar;
+	}
+
+	public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
+		this.klinickiCentar = klinickiCentar;
+	}
+	
+	
+	
 }

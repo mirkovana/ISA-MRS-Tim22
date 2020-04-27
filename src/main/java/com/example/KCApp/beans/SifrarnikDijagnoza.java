@@ -33,6 +33,13 @@ public class SifrarnikDijagnoza {
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "sifrarnikDijagnoza")
 	private Set<KlinickiCentar> klinickiCentri = new HashSet<KlinickiCentar>();
 	
+	public void add(KlinickiCentar item) {
+	    if (item.getSifrarnikDijagnoza() != null)
+	      item.getSifrarnikDijagnoza().getKlinickiCentri().remove(item);
+	    item.setSifrarnikDijagnoza(this);
+	    getKlinickiCentri().add(item);
+	  }
+	
 	public SifrarnikDijagnoza() {}
 	
 	public SifrarnikDijagnoza(String nazivDijagnoze, String sifraDijagnoze) {
@@ -64,5 +71,23 @@ public class SifrarnikDijagnoza {
 	public void setSifraDijagnoze(String sifraDijagnoze) {
 		this.sifraDijagnoze = sifraDijagnoze;
 	}
+
+	public Integer getIdSD() {
+		return idSD;
+	}
+
+	public void setIdSD(Integer idSD) {
+		this.idSD = idSD;
+	}
+
+	public Set<KlinickiCentar> getKlinickiCentri() {
+		return klinickiCentri;
+	}
+
+	public void setKlinickiCentri(Set<KlinickiCentar> klinickiCentri) {
+		this.klinickiCentri = klinickiCentri;
+	}
+	
+	
 
 }
