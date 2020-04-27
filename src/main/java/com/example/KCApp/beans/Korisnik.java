@@ -1,18 +1,31 @@
 package com.example.KCApp.beans;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
-public class Korisnik {
+@Entity
+@Inheritance(strategy = TABLE_PER_CLASS)
+public abstract class Korisnik {
 	
+	@Column(name="imeKorisnika", unique=false, nullable=false)
 	private String ime;
+	@Column(name="prezimeKorisnika", unique=false, nullable=false)
 	private String prezime;
+	@Column(name="emailKorisnika", unique=true, nullable=false)
 	private String email;
+	@Column(name="lozinkaKorisnika", unique=false, nullable=false)
 	private String lozinka;
+	@Column(name="adresaKorisnika", unique=true, nullable=false)
 	private String adresa;
+	@Column(name="gradKorisnika", unique=false, nullable=false)
 	private String grad;
+	@Column(name="drzavaKorisnika", unique=false, nullable=false)
 	private String drzava;
+	@Column(name="brojTelefonaKorisnika", unique=true, nullable=false)
 	private String brojTelefona;
 	@Id
 	@GeneratedValue

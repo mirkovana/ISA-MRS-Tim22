@@ -1,27 +1,72 @@
 package com.example.KCApp.beans;
 
-import java.util.List;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.SEQUENCE;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "klinika")
+@SequenceGenerator(name = "klinikaIdSeq", sequenceName = "klinikaIdGen", initialValue = 1, allocationSize = 1)
 public class Klinika {
 
-	private int idKlinike;
+	@Id
+	@GeneratedValue(strategy = SEQUENCE, generator = "klinikaIdSeq")
+	@Column(name = "idKlinike", unique = true, nullable = false)
+	private Integer idKlinike;
+	
+	@Column(name = "nazivKlinike", unique = true, nullable = false)
 	private String naziv;
+	
+	@Column(name = "adresaKlinike", unique = true, nullable = false)
 	private String adresa;
+	
+	@Column(name = "gradKlinike", unique = true, nullable = false)
 	private String grad;
+	
+	@Column(name = "opisKlinike", unique = true, nullable = false)
 	private String opis;
-	private List<Lekar> lekari; 
-	private List<Sala> sale;
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<MedicinskaSestra> medicinskeSestre = new HashSet<MedicinskaSestra>();
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<Lekar> lekari = new HashSet<Lekar>(); 
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<Sala> sale = new HashSet<Sala>();
+	
+	@OneToOne(fetch = LAZY)
+	@JoinColumn(name = "idCenovnika")
 	private Cenovnik cenovnik;
+	
 	private Ocena ocena;
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<AdministratorKlinike> administratoriKlinike = new HashSet<AdministratorKlinike>();
 	
 	public Klinika() {}
 	
-	public Klinika(String naziv, String adresa, String grad, String opis, List<Lekar> lekari, List<Sala> sale,
+	public Klinika(String naziv, String adresa, String grad, String opis, Set<MedicinskaSestra> medicinskeSestre, Set<Lekar> lekari, Set<Sala> sale,
 			Ocena ocena) {
 		this.naziv = naziv;
 		this.adresa = adresa;
 		this.grad = grad;
 		this.opis = opis;
+		this.medicinskeSestre = medicinskeSestre;
 		this.lekari = lekari;
 		this.sale = sale;
 		this.ocena = ocena;
@@ -66,20 +111,28 @@ public class Klinika {
 	public void setOpis(String opis) {
 		this.opis = opis;
 	}
+	
+	public Set<MedicinskaSestra> getMedicinskeSestre() {
+		return medicinskeSestre;
+	}
 
-	public List<Lekar> getLekari() {
+	public void setMedicinskeSestre(Set<MedicinskaSestra> medicinskeSestre) {
+		this.medicinskeSestre = medicinskeSestre;
+	}
+
+	public Set<Lekar> getLekari() {
 		return lekari;
 	}
 
-	public void setLekari(List<Lekar> lekari) {
+	public void setLekari(Set<Lekar> lekari) {
 		this.lekari = lekari;
 	}
 
-	public List<Sala> getSale() {
+	public Set<Sala> getSale() {
 		return sale;
 	}
 
-	public void setSale(List<Sala> sale) {
+	public void setSale(Set<Sala> sale) {
 		this.sale = sale;
 	}
 
