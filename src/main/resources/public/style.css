@@ -1,0 +1,46 @@
+#login_war {
+	border-width: 0px;
+	background-color: #fa8a7f;
+	color: red;
+	display: none;
+	width: 30%;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#homepage {
+	display: none;
+}
+
+.table_cell_space {
+	border-spacing: 8px;
+}
+
+html,body {
+  height:100%;
+  width:100%;
+  margin:0;
+}
+body {
+  display:flex;
+  background-repeat: no-repeat;
+ 
+  background-size: 50% 100%;
+  background-position: right top;
+}
+#login {
+  margin:auto;/* nice thing of auto margin if display:flex; it center both horizontal and vertical :) */
+  width:700px;
+}
+
+
+
+.message {
+	display: none;
+}
+
+.link {
+	text-decoration: underline;
+	color: blue;
+	cursor: pointer;
+}
