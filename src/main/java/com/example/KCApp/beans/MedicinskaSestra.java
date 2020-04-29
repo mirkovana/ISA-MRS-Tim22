@@ -19,9 +19,9 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "medicinskaSestraIdSeq", sequenceName = "medicinskaSestraIdGen", initialValue = 1, allocationSize = 1)
 public class MedicinskaSestra extends Korisnik {
 	
-	//@OneToOne(fetch = LAZY)
-	//@JoinColumn(name = "idRadnogKalendara")	
-	//private RadniKalendar radniKalendar;
+	@OneToOne(fetch = LAZY, mappedBy="medicinskaSestra")
+    @JoinColumn(name = "idRadnogKalendara")	
+	private RadniKalendarMS radniKalendarMS;
 	
 	@ManyToOne
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
@@ -46,9 +46,9 @@ public class MedicinskaSestra extends Korisnik {
 	}
 
 	public MedicinskaSestra(String ime, String prezime, String email, String lozinka, String adresa, String grad,
-			String drzava, String brojTelefona, Set<Recept> recepti) {
+			String drzava, String brojTelefona, Set<Recept> recepti, RadniKalendarMS radniKalendar) {
 		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
-		//this.radniKalendar = radniKalendar;
+		this.radniKalendarMS = radniKalendar;
 		this.recepti = recepti;
 	}
 

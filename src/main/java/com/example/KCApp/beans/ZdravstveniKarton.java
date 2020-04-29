@@ -38,7 +38,7 @@ public class ZdravstveniKarton {
     //private String alergija; //da li ostaviti da je tipa String ili List?
     //private Map<TipPregleda, String> infoPregled; //da li ostaviti ovako ili nekako drugacije?
 	
-	@OneToOne(fetch = LAZY)
+	@OneToOne(fetch = LAZY)//na drugu stranu
 	@JoinColumn(name = "idKorisnika")	
 	private Pacijent pacijent;
     
