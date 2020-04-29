@@ -13,9 +13,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "radniKalendar")
+@Table(name = "radniKalendarL")
 @SequenceGenerator(name = "radniKalendarIdSeq", sequenceName = "radniKalendarIdGen", initialValue = 1, allocationSize = 1)
-public class RadniKalendar {
+public class RadniKalendarL {
 //dopuni atribute na osnovu modela koji nudi biblioteka
 	
 	@Id
@@ -24,10 +24,28 @@ public class RadniKalendar {
 	private Integer idRadnogKalendara;
 	
 	@OneToOne(fetch = LAZY)
-	@JoinColumn(name = "idKorisnika")	
+	@JoinColumn(name = "idKorisnika", referencedColumnName="idKorisnika")	
 	private Lekar lekar;
 	
-	//@OneToOne(fetch = LAZY)
-	//@JoinColumn(name = "idKorisnika")	
-	//private MedicinskaSestra medicinskaSestra;
+	
+
+	public Integer getIdRadnogKalendara() {
+		return idRadnogKalendara;
+	}
+
+	public void setIdRadnogKalendara(Integer idRadnogKalendara) {
+		this.idRadnogKalendara = idRadnogKalendara;
+	}
+
+	public Lekar getLekar() {
+		return lekar;
+	}
+
+	public void setLekar(Lekar lekar) {
+		this.lekar = lekar;
+	}
+
+	
+	
+	
 }

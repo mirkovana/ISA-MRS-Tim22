@@ -31,7 +31,7 @@ public class Cenovnik {
 	@Column(name="cena", unique=false, nullable=false)
     private double cena;
 	
-	@OneToOne(fetch = LAZY)
+	@OneToOne(fetch = LAZY, mappedBy="cenovnik")
 	@JoinColumn(name = "idKlinike")
 	private Klinika klinika;
     

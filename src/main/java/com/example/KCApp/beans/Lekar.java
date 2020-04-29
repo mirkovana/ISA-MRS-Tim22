@@ -17,9 +17,9 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "lekarIdSeq", sequenceName = "lekarIdGen", initialValue = 1, allocationSize = 1)
 public class Lekar extends Korisnik {
 
-	@OneToOne(fetch = LAZY)
+	@OneToOne(fetch = LAZY, mappedBy="lekar")
 	@JoinColumn(name = "idRadnogKalendara")	
-	private RadniKalendar radniKalendar;
+	private RadniKalendarL radniKalendarL;
 	
 	@Column(name="Ocena") 
 	@Enumerated(EnumType.STRING)
@@ -37,9 +37,9 @@ public class Lekar extends Korisnik {
 	}
 
 	public Lekar(String ime, String prezime, String email, String lozinka, String adresa, String grad, String drzava,
-			String brojTelefona, RadniKalendar radniKalendar, Ocena ocena) {
+			String brojTelefona, RadniKalendarL radniKalendarL, Ocena ocena) {
 		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
-		this.radniKalendar = radniKalendar;
+		this.radniKalendarL = radniKalendarL;
 		this.ocena = ocena;
 	}
 
@@ -51,12 +51,12 @@ public class Lekar extends Korisnik {
 		this.ocena = ocena;
 	}
 
-	public RadniKalendar getRadniKalendar() {
-		return radniKalendar;
+	public RadniKalendarL getRadniKalendar() {
+		return radniKalendarL;
 	}
 
-	public void setRadniKalendar(RadniKalendar radniKalendar) {
-		this.radniKalendar = radniKalendar;
+	public void setRadniKalendar(RadniKalendarL radniKalendarL) {
+		this.radniKalendarL = radniKalendarL;
 	}
 
 	public Klinika getKlinika() {

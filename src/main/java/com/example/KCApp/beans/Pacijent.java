@@ -26,7 +26,7 @@ public class Pacijent extends Korisnik{
 	public static final String TABLE_NAME= "PACIJENTI";
 	
 
-	@OneToOne(fetch = LAZY)
+	@OneToOne(fetch = LAZY, mappedBy="pacijent")
 	@JoinColumn(name = "idZdravstvenogKartona")	
 	private ZdravstveniKarton zdravstveniKarton;
 	

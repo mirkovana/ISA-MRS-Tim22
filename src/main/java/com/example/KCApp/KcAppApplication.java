@@ -2,7 +2,7 @@ package com.example.KCApp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
@@ -13,7 +13,7 @@ public class KcAppApplication {
 		SpringApplication.run(KcAppApplication.class, args);
 	}
     
-	@GetMapping("/test")
+	@RequestMapping("/test")
 	public String test(){
 		return "Hello world!";
 	}
