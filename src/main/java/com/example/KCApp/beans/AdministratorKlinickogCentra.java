@@ -18,6 +18,10 @@ public class AdministratorKlinickogCentra extends Korisnik{
 		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
 	}
 
+	public AdministratorKlinickogCentra() {
+		super();
+	}
+
 	public AdministratorKlinickogCentra(String ime, String prezime, String email, String lozinka, String adresa,
 			String grad, String drzava, String brojTelefona, KlinickiCentar klinickiCentar) {
 		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);

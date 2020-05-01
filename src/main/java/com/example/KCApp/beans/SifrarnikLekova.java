@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
@@ -40,6 +43,7 @@ public class SifrarnikLekova {
 	private Integer idSL;
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "sifrarnikLekova")
+	@JsonBackReference
 	private Set<KlinickiCentar> klinickiCentri = new HashSet<KlinickiCentar>();
 	
 	public void add(KlinickiCentar item) {

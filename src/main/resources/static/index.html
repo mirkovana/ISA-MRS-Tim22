@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+        <meta charset="UTF-8">
+		<title>Lekar</title>
+		<link rel="stylesheet" type="text/css" href="./stiladmin.css">
+		
+	</head>
+	<body>
+		<div align="center">	
+			<h1> <img src="./images/who.png" width="450" height="100"></h1>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Klinika id</th>
+                        <th>Adresa</th>
+                        <th>Grad</th>
+                        <th>Naziv</th>
+                        <th>Ocena</th>
+                        <th>Opis</th> 
+                        <th>Ocena</th> 
+                        <th>Id klinickog centra</th>
+                       
+                        
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="klinika : ${listaKlinika}">
+                        <td th:text="${klinika.idKlinike}">Klinika id</td>
+                        <td th:text="${klinika.adresa}">Adresa</td>
+                        <td th:text="${klinika.grad}">Grad</td>
+                        <td th:text="${klinika.naziv}">Naziv</td>
+                        <td th:text="${klinika.ocena}">Ocena</td>
+                        <td th:text="${klinika.opis}">Opis</td>
+                        <td th:text="${klinika.ocena}">Ocena</td>
+                        <td th:text="${klinika.klinickiCentar}">Id Klinickog centra</td>
+                     
+
+                    </tr>
+                </tbody>
+
+            </table>
+        
+        
+        
+        </div>
+
+		
+		
+			
+			
+
+	</body>
+</html>
