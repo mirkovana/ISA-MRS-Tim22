@@ -45,6 +45,10 @@ public class MedicinskaSestra extends Korisnik {
 
 	}
 
+	public MedicinskaSestra() {
+		super();
+	}
+
 	public MedicinskaSestra(String ime, String prezime, String email, String lozinka, String adresa, String grad,
 			String drzava, String brojTelefona, Set<Recept> recepti, RadniKalendarMS radniKalendar) {
 		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);

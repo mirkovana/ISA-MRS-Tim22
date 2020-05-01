@@ -58,12 +58,24 @@ public class Cenovnik {
 		this.cena = cena;
 	}
 
-	public Cenovnik(Integer idCenovnika, TipPregleda tipPregledaCenovnik, double cena, Klinika klinika) {
+
+	public Cenovnik(Integer idCenovnika, TipPregleda tipPregledaCenovnik, double cena) {
 		this.idCenovnika = idCenovnika;
 		this.tipPregledaCenovnik = tipPregledaCenovnik;
 		this.cena = cena;
-		this.klinika = klinika;
-	} 
+		
+	}
+
+
+	public Integer getIdCenovnika() {
+		return idCenovnika;
+	}
+
+	public void setIdCenovnika(Integer idCenovnika) {
+		this.idCenovnika = idCenovnika;
+	}
+
+
 	
 	
 }

@@ -1,5 +1,6 @@
 package com.example.KCApp.beans;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "lekar")
@@ -25,7 +28,7 @@ public class Lekar extends Korisnik {
 	@Enumerated(EnumType.STRING)
 	private Ocena ocena;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {ALL}, fetch = LAZY)
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 	private Klinika klinika;
 	
@@ -41,6 +44,10 @@ public class Lekar extends Korisnik {
 		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
 		this.radniKalendarL = radniKalendarL;
 		this.ocena = ocena;
+	}
+
+	public Lekar() {
+		super();
 	}
 
 	public Ocena getOcena() {

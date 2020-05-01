@@ -2,6 +2,7 @@ package com.example.KCApp.beans;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.util.HashSet;
@@ -21,6 +22,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "klinika")
 @SequenceGenerator(name = "klinikaIdSeq", sequenceName = "klinikaIdGen", initialValue = 1, allocationSize = 1)
@@ -31,19 +34,32 @@ public class Klinika {
 	@Column(name = "idKlinike", unique = true, nullable = false)
 	private Integer idKlinike;
 	
-	@Column(name = "nazivKlinike", unique = true, nullable = false)
+	@Column(name = "nazivKlinike", unique = false, nullable = false)
 	private String naziv;
 	
-	@Column(name = "adresaKlinike", unique = true, nullable = false)
+	@Column(name = "adresaKlinike", unique = false, nullable = false)
 	private String adresa;
 	
-	@Column(name = "gradKlinike", unique = true, nullable = false)
+	@Column(name = "gradKlinike", unique = false, nullable = false)
 	private String grad;
 	
-	@Column(name = "opisKlinike", unique = true, nullable = false)
+	@Column(name = "opisKlinike", unique = false, nullable = false)
 	private String opis;
 	
+	
+	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	@JsonBackReference
+	private Set<Lekar> lekari = new HashSet<Lekar>(); 
+	
+	/*public void add(Lekar item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getLekari().remove(item);
+	    item.setKlinika(this);
+	    getLekari().add(item);
+	  }*/
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	@JsonBackReference
 	private Set<MedicinskaSestra> medicinskeSestre = new HashSet<MedicinskaSestra>();
 	
 	public void add(MedicinskaSestra item) {
@@ -52,17 +68,6 @@ public class Klinika {
 	    item.setKlinika(this);
 	    getMedicinskeSestre().add(item);
 	  }
-	
-	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
-	private Set<Lekar> lekari = new HashSet<Lekar>(); 
-	
-	public void add(Lekar item) {
-	    if (item.getKlinika() != null)
-	      item.getKlinika().getLekari().remove(item);
-	    item.setKlinika(this);
-	    getLekari().add(item);
-	  }
-	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
 	private Set<Sala> sale = new HashSet<Sala>();
 	
@@ -73,15 +78,18 @@ public class Klinika {
 	    getSale().add(item);
 	  }
 	
-	@OneToOne(fetch = LAZY)
-	@JoinColumn(name = "idCenovnika")
-	private Cenovnik cenovnik;
-	
 	@Column(name="Ocena") 
 	@Enumerated(EnumType.STRING)
 	private Ocena ocena;
 	
+	@OneToOne(fetch = EAGER)
+	@JoinColumn(name = "idCenovnika")
+	private Cenovnik cenovnik;
+	
+
+	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	@JsonBackReference
 	private Set<ZahtevOdsustva> zahteviOdsustva = new HashSet<ZahtevOdsustva>();
 	
 	public void add(ZahtevOdsustva item) {
@@ -91,7 +99,8 @@ public class Klinika {
 	    getZahteviOdsustva().add(item);
 	  }
 	
-	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	@OneToMany(cascade = {ALL}, fetch = EAGER, mappedBy = "klinika")
+	@JsonBackReference
 	private Set<AdministratorKlinike> administratoriKlinike = new HashSet<AdministratorKlinike>();
 	
 	public void add(AdministratorKlinike item) {
@@ -102,6 +111,7 @@ public class Klinika {
 	  }
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	@JsonBackReference
 	private Set<Operacija> operacije = new HashSet<Operacija>();
 	
 	public void add(Operacija item) {
@@ -112,6 +122,7 @@ public class Klinika {
 	  }
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	@JsonBackReference
 	private Set<Pregled> pregledi = new HashSet<Pregled>();
 	
 	public void add(Pregled item) {
@@ -122,6 +133,7 @@ public class Klinika {
 	  }
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	@JsonBackReference
 	private Set<ZahtevZaPregled> zahteviZaPregled = new HashSet<ZahtevZaPregled>();
 	
 	public void add(ZahtevZaPregled item) {

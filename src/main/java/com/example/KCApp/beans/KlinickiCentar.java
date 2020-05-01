@@ -9,6 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
@@ -26,7 +29,9 @@ public class KlinickiCentar {
 	@Column(name = "idKlinickogCentra", unique = true, nullable = false)
 	private Integer idKlinickogCentra;
 	
+
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
+	@JsonBackReference
 	private Set<AdministratorKlinickogCentra> administratoriKC = new HashSet<AdministratorKlinickogCentra>();
 	
 	public void add(AdministratorKlinickogCentra item) {
@@ -45,6 +50,7 @@ public class KlinickiCentar {
 	private SifrarnikDijagnoza sifrarnikDijagnoza;
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
+	@JsonBackReference
 	private Set<ZahtevZaRegistraciju> zahteviZaRegistraciju = new HashSet<ZahtevZaRegistraciju>();
 	
 	public void add(ZahtevZaRegistraciju item) {
@@ -55,6 +61,7 @@ public class KlinickiCentar {
 	  }
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
+	@JsonBackReference
 	private Set<Klinika> klinike = new HashSet<Klinika>();
 	
 	public void add(Klinika item) {
@@ -63,6 +70,10 @@ public class KlinickiCentar {
 	    item.setKlinickiCentar(this);
 	    getKlinike().add(item);
 	  }
+
+	public KlinickiCentar() {
+		
+	}
 	
 	public KlinickiCentar(Integer idKlinickogCentra, Set<AdministratorKlinickogCentra> administratoriKC,
 			SifrarnikLekova sifrarnikLekova, SifrarnikDijagnoza sifrarnikDijagnoza, 
