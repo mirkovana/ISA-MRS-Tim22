@@ -30,9 +30,6 @@ public class Pregled {
 	@Column(name = "idPregleda", unique = true, nullable = false)
 	private Integer idPregleda;
 	
-	@Column(name="datum", unique=false, nullable=false)
-	private Date datum;
-	
 	@Column(name="vreme", unique=false, nullable=false)
 	private Date vreme;
 	
@@ -68,8 +65,7 @@ public class Pregled {
 	
 	public Pregled() {}
 	
-	public Pregled(Date datum, Date vreme, int trajanje, TipPregleda tipPregleda, Sala sala, Klinika klinika, Set<Recept> recepti, Pacijent pacijent) {
-		this.datum = datum;
+	public Pregled(Date vreme, int trajanje, TipPregleda tipPregleda, Sala sala, Klinika klinika, Set<Recept> recepti, Pacijent pacijent) {
 		this.vreme = vreme;
 		this.trajanje = trajanje;
 		this.tipPregleda = tipPregleda;
@@ -77,14 +73,6 @@ public class Pregled {
 		this.klinika = klinika;
 		this.recepti = recepti;
 		this.pacijent = pacijent;
-	}
-
-	public Date getDatum() {
-		return datum;
-	}
-
-	public void setDatum(Date datum) {
-		this.datum = datum;
 	}
 
 	public Date getVreme() {

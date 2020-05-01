@@ -26,9 +26,6 @@ public class Operacija {
 	@Column(name = "idOperacije", unique = true, nullable = false)
 	private Integer idOperacije;
 	
-	@Column(name="datumOperacije", unique=false, nullable=false)
-	private Date datumOperacije;
-	
 	@Column(name="vremeOperacije", unique=false, nullable=false)
 	private Date vremeOperacije;
 	
@@ -46,25 +43,20 @@ public class Operacija {
 	@JoinColumn(name = "idSale", referencedColumnName = "idSale", nullable = false)
 	private Sala sala;
 	
+	@ManyToOne
+	@JoinColumn(name = "idKorisnika", referencedColumnName = "idKorisnika", nullable = false)
+	private Pacijent pacijent;
+	
 	public Operacija() {}
 	
-	public Operacija(Integer idOperacije, Date datumOperacije, Date vremeOperacije, int trajanje, 
+	public Operacija(Integer idOperacije, Date vremeOperacije, int trajanje, 
 			String dodatneInfoOOperaciji, Klinika klinika, Sala sala) {
 		this.idOperacije = idOperacije;
-		this.datumOperacije = datumOperacije;
 		this.vremeOperacije = vremeOperacije;
 		this.trajanje = trajanje;
 		this.dodatneInfoOOperaciji = dodatneInfoOOperaciji;
 		this.klinika = klinika;
 		this.sala = sala;
-	}
-
-	public Date getDatumOperacije() {
-		return datumOperacije;
-	}
-
-	public void setDatumOperacije(Date datumOperacije) {
-		this.datumOperacije = datumOperacije;
 	}
 
 	public Date getVremeOperacije() {
