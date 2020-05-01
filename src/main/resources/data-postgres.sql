@@ -33,7 +33,13 @@ insert into administrator_klinickog_centra(id_korisnika, adresa, broj_telefona, 
 
 insert into administrator_klinike(id_korisnika, adresa, broj_telefona, drzava, email, grad, ime, lozinka,prezime,id_klinike)values(4,'Adminova 5', '0611111111','Srbija','admin15@gmail.com', 'Subotica','Jovica','12345','Markovic',1);
 
+insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (1, 10, 'Sala10', 1);
+insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (2, 11, 'Sala11', 1);
+insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (3, 12, 'Sala12', 2);
+insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (4, 13, 'Sala13', 2);
 
+insert into pregled(id_pregleda, tip_pregleda, trajanje, vreme, id_klinike, id_korisnika, id_sale)values(1, 'PEDIJATRIJA', 1, '2020-5-1 12:00:00', 1, 1, 1);
+insert into operacija(id_operacije, dodatne_infoooperaciji, trajanje, vreme_operacije, id_klinike, id_sale, id_korisnika)values(1, 'operacija tetive', 2, '2020-6-1 12:00:00', 2, 3, 1);
 
 
 

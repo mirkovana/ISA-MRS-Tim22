@@ -18,6 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name=Pacijent.TABLE_NAME)
@@ -27,7 +29,7 @@ public class Pacijent extends Korisnik{
 	
 
 	@OneToOne(fetch = LAZY, mappedBy="pacijent")
-	@JoinColumn(name = "idZdravstvenogKartona")	
+	@JoinColumn(name = "idZdravstvenogKartona")
 	private ZdravstveniKarton zdravstveniKarton;
 	
 	@Column(name="brojOsiguranika", unique=true, nullable=false)
@@ -35,6 +37,9 @@ public class Pacijent extends Korisnik{
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "pacijent")
 	private Set<Pregled> pregledi = new HashSet<Pregled>();
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "pacijent")
+	private Set<Operacija> operacije = new HashSet<Operacija>();
 	
 	public void add(Pregled item) {
 	    if (item.getPacijent() != null)

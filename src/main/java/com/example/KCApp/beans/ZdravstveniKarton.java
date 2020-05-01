@@ -14,6 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "zdravstveniKarton")
 @SequenceGenerator(name = "zdravstveniKartonSDSeq", sequenceName = "zdravstveniKartonSDGen", initialValue = 1, allocationSize = 1)
@@ -40,6 +42,7 @@ public class ZdravstveniKarton {
 	
 	@OneToOne(fetch = LAZY)//na drugu stranu
 	@JoinColumn(name = "idKorisnika")	
+	@JsonBackReference
 	private Pacijent pacijent;
     
     public ZdravstveniKarton() {}
