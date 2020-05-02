@@ -3,6 +3,7 @@
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.util.HashSet;
@@ -28,7 +29,7 @@ public class Pacijent extends Korisnik{
 	public static final String TABLE_NAME= "PACIJENTI";
 	
 
-	@OneToOne(fetch = LAZY, mappedBy="pacijent")
+	@OneToOne(cascade = ALL, fetch = EAGER, mappedBy="pacijent")
 	@JoinColumn(name = "idZdravstvenogKartona")
 	private ZdravstveniKarton zdravstveniKarton;
 	

@@ -18,24 +18,24 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "zdravstveniKarton")
-@SequenceGenerator(name = "zdravstveniKartonSDSeq", sequenceName = "zdravstveniKartonSDGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "zdravstveniKartonSDSeq", sequenceName = "zdravstveniKartonSDGen", initialValue = 2, allocationSize = 1)
 public class ZdravstveniKarton {
 	
 	@Id
-	@GeneratedValue(strategy = SEQUENCE, generator = "zdravstveniKartonIdSeq")
+	@GeneratedValue(strategy = SEQUENCE, generator = "zdravstveniKartonSDSeq")
 	@Column(name = "idZdravstvenogKartona", unique = true, nullable = false)
 	private Integer idZdravstvenogKartona;
 	
-	@Column(name="tezina", unique=false, nullable=false)
+	@Column(name="tezina", unique=false, nullable=true)
     private double tezina;
 	
-	@Column(name="visina", unique=false, nullable=false)
+	@Column(name="visina", unique=false, nullable=true)
     private double visina;
 	
-	@Column(name="dioptrija", unique=false, nullable=false)
+	@Column(name="dioptrija", unique=false, nullable=true)
     private double dioptrija;
 	
-	@Column(name="krvnaGrupa", unique=false, nullable=false)
+	@Column(name="krvnaGrupa", unique=false, nullable=true)
     private String krvnaGrupa;
     //private String alergija; //da li ostaviti da je tipa String ili List?
     //private Map<TipPregleda, String> infoPregled; //da li ostaviti ovako ili nekako drugacije?
@@ -45,7 +45,12 @@ public class ZdravstveniKarton {
 	@JsonBackReference
 	private Pacijent pacijent;
     
-    public ZdravstveniKarton() {}
+    public ZdravstveniKarton() {
+    	/*this.tezina = 0;
+		this.visina = 0;
+		this.dioptrija = 0;
+		this.krvnaGrupa = null;*/
+    }
     
 	public ZdravstveniKarton(double tezina, double visina, double dioptrija, String krvnaGrupa, Pacijent pacijent) {
 		super();
