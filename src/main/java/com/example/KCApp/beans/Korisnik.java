@@ -3,6 +3,7 @@ package com.example.KCApp.beans;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
@@ -24,18 +25,20 @@ public abstract class Korisnik {
 	private String email;
 	@Column(name="lozinka", unique=false, nullable=false)
 	private String lozinka;
-	@Column(name="adresa", unique=true, nullable=false)
+	@Column(name="adresa", unique=false, nullable=false)
 	private String adresa;
 	@Column(name="grad", unique=false, nullable=false)
 	private String grad;
 	@Column(name="drzava", unique=false, nullable=false)
 	private String drzava;
-	@Column(name="brojTelefona", unique=true, nullable=false)
+	@Column(name="brojTelefona", unique=false, nullable=false)
 	private String brojTelefona;
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="korisnikIdGen")
+	@SequenceGenerator(name = "korisnikIdGen", sequenceName = "korisnik_id_seq", initialValue = 5, allocationSize=1)
 	@Column(name="idKorisnika", unique=true, nullable=false)
 	private Integer idKorisnika;
+
 	
 	public Korisnik() {}
 	
@@ -127,4 +130,14 @@ public abstract class Korisnik {
 	public void setBrojTelefona(String brojTelefona) {
 		this.brojTelefona = brojTelefona;
 	}
+
+	public Integer getIdKorisnika() {
+		return idKorisnika;
+	}
+
+	public void setIdKorisnika(Integer idKorisnika) {
+		this.idKorisnika = idKorisnika;
+	}
+	
+	
 }

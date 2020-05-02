@@ -68,30 +68,7 @@ public class KlinikaController {
 			return "Klinika sa id: " + idKlinike + " nije pronadjena"; //ne prikazuje poruku kad se stavi id koji ne postoji
 		}
 	}
-	
-	/*DODAVANJE KLINIKA PROBLEMATICNO VRLO*/
-	/*@PostMapping(consumes = "application/json", value="/klinike")
-	public Klinika addKlinika(@Valid @RequestBody Klinika klinika) {
-		return repository.save(klinika);		
-		
-	}*/
-	
-	/*@PostMapping(consumes = "application/json")
-	public ResponseEntity<KlinikaDTO> saveTeacher(@RequestBody KlinikaDTO klinikaDTO) {
 
-		Cenovnik cenovnik = serviceCenovnik.get(klinikaDTO.getCenovnik().getIdCenovnika());
-		Klinika klinika = new Klinika();
-		klinika.setIdKlinike(klinikaDTO.getIdKlinike());
-		klinika.setNaziv(klinikaDTO.getNaziv());
-		klinika.setAdresa(klinikaDTO.getAdresa());
-		klinika.setGrad(klinikaDTO.getGrad());
-		klinika.setOpis(klinikaDTO.getOpis());
-		klinika.setOcena(klinikaDTO.getOcena());
-		klinika.setCenovnik(cenovnik);
-
-		klinika = service.save(klinika);
-		}*/
-	
 	@PostMapping(value= "/klinike",consumes = "application/json")
 	public ResponseEntity<KlinikaDTO> saveKlinika(@RequestBody KlinikaDTO klinikaDTO) {
 
