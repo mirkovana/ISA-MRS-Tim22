@@ -18,6 +18,7 @@ public class AdministratorKlinickogCentra extends Korisnik{
 		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
 	}
 
+
 	public AdministratorKlinickogCentra() {
 		super();
 	}
