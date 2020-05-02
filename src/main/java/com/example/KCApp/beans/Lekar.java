@@ -28,7 +28,7 @@ public class Lekar extends Korisnik {
 	@Enumerated(EnumType.STRING)
 	private Ocena ocena;
 	
-	@ManyToOne(cascade = {ALL}, fetch = LAZY)
+	@ManyToOne
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 	private Klinika klinika;
 	

@@ -32,4 +32,8 @@ public class PacijentService {
 	public void delete(Integer id) {
 		repo.deleteById(id);
 	}
+	
+	public Pacijent findByBrojOsiguranika(int brojOsiguranika) {
+		return repo.findByBrojOsiguranika(brojOsiguranika);
+	}
 }

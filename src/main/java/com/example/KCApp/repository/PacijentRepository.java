@@ -6,4 +6,5 @@ import com.example.KCApp.beans.Pacijent;
 
 public interface PacijentRepository extends JpaRepository<Pacijent, Integer>{
 
+	Pacijent findByBrojOsiguranika(int brojOsiguranika);
 }

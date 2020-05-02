@@ -52,12 +52,12 @@ public class Klinika {
 	@JsonBackReference
 	private Set<Lekar> lekari = new HashSet<Lekar>(); 
 	
-	/*public void add(Lekar item) {
+	public void add(Lekar item) {
 	    if (item.getKlinika() != null)
 	      item.getKlinika().getLekari().remove(item);
 	    item.setKlinika(this);
 	    getLekari().add(item);
-	  }*/
+	  }
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
 	@JsonBackReference
 	private Set<MedicinskaSestra> medicinskeSestre = new HashSet<MedicinskaSestra>();

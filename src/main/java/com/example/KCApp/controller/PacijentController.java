@@ -27,6 +27,13 @@ public class PacijentController {
 		return pacijent;
 	}
 	
+	/*PRETRAGA PACIJENTA PO KRITERIJUMU - BROJ OSIGURANIKA*/
+	@GetMapping(value = "/pacijenti/brojOsiguranika/{brojOsiguranika}")
+	public Pacijent findPacijentByBrojOsiguranika(@PathVariable int brojOsiguranika) {
+		Pacijent pacijent = service.findByBrojOsiguranika(brojOsiguranika);
+		return pacijent;
+	}
+	
 	/*PRIKAZ SVIH PACIJENATA KLINIKE*/
 	@GetMapping(value="/pacijenti")
 	public List<Pacijent> getAllPacijenti(Model model) {

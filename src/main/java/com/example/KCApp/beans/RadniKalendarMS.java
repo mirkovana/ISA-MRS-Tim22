@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "radniKalendarMS")
 @SequenceGenerator(name = "radniKalendarMSIdSeq", sequenceName = "radniKalendarMSIdGen", initialValue = 1, allocationSize = 1)
