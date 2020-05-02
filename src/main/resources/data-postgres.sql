@@ -1,6 +1,6 @@
 
 insert into pacijenti(id_korisnika, ime, prezime, email, lozinka, adresa, grad, drzava, broj_telefona, broj_osiguranika) values 
- (1, 'Pera', 'Peric','pera@gmail.com','1234','Perina 10', 'Novi Sad', 'Srbija', '062555888', 1);
+ (1, 'Pera', 'Peric','pera@gmail.com','1234','Perina 10', 'Novi Sad', 'Srbija', '062555888', 123);
  
  
 insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id_korisnika) values 

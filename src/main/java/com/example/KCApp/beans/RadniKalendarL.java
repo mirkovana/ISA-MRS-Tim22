@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "radniKalendarL")
 @SequenceGenerator(name = "radniKalendarIdSeq", sequenceName = "radniKalendarIdGen", initialValue = 1, allocationSize = 1)
@@ -25,6 +27,7 @@ public class RadniKalendarL {
 	
 	@OneToOne(fetch = LAZY)
 	@JoinColumn(name = "idKorisnika", referencedColumnName="idKorisnika")	
+	@JsonBackReference
 	private Lekar lekar;
 	
 	
