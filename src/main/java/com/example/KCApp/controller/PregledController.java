@@ -8,22 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.KCApp.beans.Klinika;
-import com.example.KCApp.beans.Sala;
-import com.example.KCApp.service.SalaService;
+import com.example.KCApp.beans.Pregled;
+import com.example.KCApp.service.PregledService;
 
 @RestController
 @RequestMapping(value="/api")
-public class SalaController {
+public class PregledController {
 
 	@Autowired
-	private SalaService service;
+	private PregledService service;
 	
-	/*ISPISIVANJE SALA*/
-	@GetMapping(value="/sale")
-	public List<Sala> getAllSale(Model model) {
-		List<Sala> listaSala = service.listAll();
-		model.addAttribute("listaSala", listaSala);
-		return listaSala;
+	/*ISPISIVANJE PREGLEDA*/
+	@GetMapping(value="/pregledi")
+	public List<Pregled> getAllPregledi(Model model) {
+		List<Pregled> listaPregled = service.listAll();
+		model.addAttribute("listaPregled", listaPregled);
+		return listaPregled;
 	}
 }
