@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.KCApp.DTO.KlinikaDTO;
 import com.example.KCApp.beans.Cenovnik;
 import com.example.KCApp.beans.Klinika;
+import com.example.KCApp.beans.Lekar;
+import com.example.KCApp.beans.Ocena;
+import com.example.KCApp.beans.TipPregleda;
 import com.example.KCApp.repository.KlinikaRepository;
 import com.example.KCApp.service.CenovnikService;
 import com.example.KCApp.service.KlinikaService;
@@ -99,6 +102,20 @@ public class KlinikaController {
 					return repository.save(klinika);
 				}).orElseThrow(() -> new NotFoundException("Student not found with id " + idKlinike));
 		
+	}
+	
+	/*PRETRAGA KLINIKA PO KRITERIJUMU - OCENA*/
+	@GetMapping(value = "/klinike/ocena/{ocena}")
+	public List<Klinika> findAllKlinikaByOcena(@PathVariable Ocena ocena) {
+		List<Klinika> klinika = service.findAllByOcena(ocena);
+		return klinika;
+	}
+	
+	/*PRETRAGA KLINIKA PO KRITERIJUMU - GRAD*/
+	@GetMapping(value = "/klinike/grad/{grad}")
+	public List<Klinika> findAllKlinikaByGrad(@PathVariable String grad) {
+		List<Klinika> klinika = service.findAllByGrad(grad);
+		return klinika;
 	}
 	
 }
