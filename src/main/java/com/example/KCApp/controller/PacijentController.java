@@ -16,17 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.KCApp.DTO.KlinikaDTO;
 import com.example.KCApp.DTO.PacijentDTO;
-import com.example.KCApp.beans.Cenovnik;
-import com.example.KCApp.beans.KlinickiCentar;
-import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Pacijent;
-import com.example.KCApp.beans.Sala;
 import com.example.KCApp.beans.ZdravstveniKarton;
-import com.example.KCApp.repository.KlinikaRepository;
 import com.example.KCApp.repository.PacijentRepository;
 import com.example.KCApp.service.PacijentService;
+import com.example.KCApp.service.ZdravstveniKartonService;
 
 import javassist.NotFoundException;
 
@@ -36,6 +31,9 @@ public class PacijentController {
 
 	@Autowired
 	private PacijentService service;
+	@Autowired
+	private ZdravstveniKartonService serviceZK;
+	
 	
 	@Autowired
 	private PacijentRepository repository;
@@ -86,6 +84,7 @@ public class PacijentController {
 		pacijent.setZdravstveniKarton(zdravstveniKarton);
 
 		pacijent = service.save(pacijent);
+		zdravstveniKarton = serviceZK.save(zdravstveniKarton);
 		return new ResponseEntity<>(new PacijentDTO(pacijent), HttpStatus.CREATED);
 	}
 	
