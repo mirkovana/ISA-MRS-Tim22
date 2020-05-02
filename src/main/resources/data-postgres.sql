@@ -15,7 +15,7 @@ insert into sifrarnik_dijagnoza(idsd,naziv_dijagnoze, sifra_dijagnoze)values(1, 
 
 insert into klinicki_centar(id_klinickog_centra, idsd, idsl) values(1,1,1);
 
-insert into cenovnik(id_cenovnika, cena, tip_pregleda)values(1, 2500.00, 'DERMATOLOGIJA');
+insert into cenovnik(id_cenovnika, cena, tip_pregleda)values(nextval('cenovnik_id_seq'), 2500.00, 'DERMATOLOGIJA');
 
 insert into klinika(id_klinike, adresa_klinike, grad_klinike, naziv_klinike, ocena, opis_klinike, id_cenovnika, id_klinickog_centra)values(1,'Balzakova 1', 'Novi Sad', 'Klinika1', 'PET', 'odlicna', 1,1);
 insert into klinika(id_klinike, adresa_klinike, grad_klinike, naziv_klinike, ocena, opis_klinike, id_cenovnika, id_klinickog_centra)values(2,'Balzakova 1', 'Beograd', 'Klinika1', 'JEDAN', 'odlicna', 1,1);

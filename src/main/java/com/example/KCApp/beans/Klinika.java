@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "klinika")
-@SequenceGenerator(name = "klinikaIdSeq", sequenceName = "klinikaIdGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "klinikaIdSeq", sequenceName = "klinikaIdGen", initialValue = 3, allocationSize = 1)
 public class Klinika {
 
 	@Id
@@ -82,9 +82,10 @@ public class Klinika {
 	@Enumerated(EnumType.STRING)
 	private Ocena ocena;
 	
-	@OneToOne(fetch = EAGER)
+	@OneToOne(cascade = ALL, fetch = EAGER)
 	@JoinColumn(name = "idCenovnika")
 	private Cenovnik cenovnik;
+	
 	
 
 	
@@ -167,7 +168,7 @@ public class Klinika {
 		this.klinickiCentar = klinickiCentar;
 	}
 
-	public int getIdKlinike() {
+	public Integer getIdKlinike() {
 		return idKlinike;
 	}
 
