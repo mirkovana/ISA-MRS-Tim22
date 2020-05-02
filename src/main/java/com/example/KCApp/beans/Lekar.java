@@ -28,6 +28,10 @@ public class Lekar extends Korisnik {
 	@Enumerated(EnumType.STRING)
 	private Ocena ocena;
 	
+	@Column(name="TipPregleda") 
+	@Enumerated(EnumType.STRING)
+	private TipPregleda tipPregleda;
+	
 	@ManyToOne
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 	private Klinika klinika;
@@ -40,10 +44,11 @@ public class Lekar extends Korisnik {
 	}
 
 	public Lekar(String ime, String prezime, String email, String lozinka, String adresa, String grad, String drzava,
-			String brojTelefona, RadniKalendarL radniKalendarL, Ocena ocena) {
+			String brojTelefona, RadniKalendarL radniKalendarL, Ocena ocena, TipPregleda tipPregleda) {
 		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
 		this.radniKalendarL = radniKalendarL;
 		this.ocena = ocena;
+		this.tipPregleda = tipPregleda;
 	}
 
 	public Lekar() {
@@ -73,7 +78,13 @@ public class Lekar extends Korisnik {
 	public void setKlinika(Klinika klinika) {
 		this.klinika = klinika;
 	}
-	
-	
+
+	public TipPregleda getTipPregleda() {
+		return tipPregleda;
+	}
+
+	public void setTipPregleda(TipPregleda tipPregleda) {
+		this.tipPregleda = tipPregleda;
+	}
 	
 }

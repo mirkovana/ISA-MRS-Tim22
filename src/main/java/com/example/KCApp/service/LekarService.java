@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.MedicinskaSestra;
+import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.beans.TipPregleda;
 import com.example.KCApp.repository.LekarRepository;
 import com.example.KCApp.repository.MedicinskaSestraRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,5 +34,9 @@ public class LekarService {
 	
 	public void delete(Integer id) {
 		repo.deleteById(id);
+	}
+	
+	public List<Lekar> findAllByTipPregleda(TipPregleda tipPregleda) {
+		return repo.findAllByTipPregleda(tipPregleda);
 	}
 }
