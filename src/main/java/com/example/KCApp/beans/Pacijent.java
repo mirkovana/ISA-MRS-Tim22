@@ -36,9 +36,11 @@ public class Pacijent extends Korisnik{
 	private int brojOsiguranika;
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "pacijent")
+	@JsonBackReference
 	private Set<Pregled> pregledi = new HashSet<Pregled>();
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "pacijent")
+	@JsonBackReference
 	private Set<Operacija> operacije = new HashSet<Operacija>();
 	
 	public void add(Pregled item) {

@@ -5,27 +5,27 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.KCApp.beans.Sala;
-import com.example.KCApp.repository.SalaRepository;
+import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.repository.PacijentRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Service
-public class SalaService {
+public class PacijentService {
 
 	@Autowired
-	private SalaRepository repo;
+	private PacijentRepository repo;
 	
 	@JsonIgnore
-	public List<Sala> listAll(){
+	public List<Pacijent> listAll(){
 		return repo.findAll();
 	}
 	
-	public Sala save(Sala sala) {
-		return repo.save(sala);
+	public Pacijent save(Pacijent pacijent) {
+		return repo.save(pacijent);
 		
 	}
 	
-	public Sala get(Integer id) {
+	public Pacijent get(Integer id) {
 		return repo.findById(id).get();
 	}
 	
