@@ -1,9 +1,8 @@
 package com.example.KCApp.DTO;
 
-import com.example.KCApp.beans.AdministratorKlinickogCentra;
+import com.example.KCApp.beans.AdministratorKlinike;
 
-public class AdministratorKlinickogCentraDTO {
-
+public class AdministratorKlinikeDTO {
 	private String ime;
 	private String prezime;
 	private String email;
@@ -13,13 +12,11 @@ public class AdministratorKlinickogCentraDTO {
 	private String drzava;
 	private String brojTelefona;
 	private Integer idKorisnika;
-	
-	public AdministratorKlinickogCentraDTO() {
-		
-		
-	}
-	
-	public AdministratorKlinickogCentraDTO(AdministratorKlinickogCentra admin) {
+	private Integer klinika;
+
+
+
+	public AdministratorKlinikeDTO(AdministratorKlinike admin) {
 		ime = admin.getIme();
 		prezime = admin.getPrezime();
 		email = admin.getEmail();
@@ -29,7 +26,11 @@ public class AdministratorKlinickogCentraDTO {
 		drzava = admin.getDrzava();
 		brojTelefona = admin.getBrojTelefona();
 		idKorisnika = admin.getIdKorisnika();
-		
+		klinika =admin.getKlinika().getIdKlinike();
+	}
+
+	public AdministratorKlinikeDTO() {
+
 	}
 
 	public String getIme() {
@@ -42,6 +43,14 @@ public class AdministratorKlinickogCentraDTO {
 
 	public String getPrezime() {
 		return prezime;
+	}	
+
+	public Integer getKlinika() {
+		return klinika;
+	}
+
+	public void setKlinika(Integer klinika) {
+		this.klinika = klinika;
 	}
 
 	public void setPrezime(String prezime) {
@@ -103,5 +112,5 @@ public class AdministratorKlinickogCentraDTO {
 	public void setIdKorisnika(Integer idKorisnika) {
 		this.idKorisnika = idKorisnika;
 	}
-	
+
 }

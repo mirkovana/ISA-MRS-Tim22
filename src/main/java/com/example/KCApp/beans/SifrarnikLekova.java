@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -20,7 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "sifrarnikLekova")
-@SequenceGenerator(name = "idSLSeq", sequenceName = "idSLGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "idSLSeq", sequenceName = "idSLGen", initialValue = 2, allocationSize = 1)
 public class SifrarnikLekova {
 	
 	@Column(name="nazivLeka", unique=false, nullable=false)
@@ -29,12 +31,12 @@ public class SifrarnikLekova {
 	@Column(name="sifraLeka", unique=true, nullable=false)
 	private String sifraLeka;
 	
-	public SifrarnikLekova(String nazivLeka, String sifraLeka, Integer idSL, Set<KlinickiCentar> klinickiCentri) {
+	public SifrarnikLekova(String nazivLeka, String sifraLeka, Integer idSL, KlinickiCentar klinickiCentar) {
 		super();
 		this.nazivLeka = nazivLeka;
 		this.sifraLeka = sifraLeka;
 		this.idSL = idSL;
-		this.klinickiCentri = klinickiCentri;
+		this.klinickiCentar = klinickiCentar;
 	}
 
 	@Id
@@ -42,16 +44,12 @@ public class SifrarnikLekova {
 	@Column(name = "idSL", unique = true, nullable = false)
 	private Integer idSL;
 	
-	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "sifrarnikLekova")
-	@JsonBackReference
-	private Set<KlinickiCentar> klinickiCentri = new HashSet<KlinickiCentar>();
+
+
+	@ManyToOne
+	@JoinColumn(name = "klinickiCentar", referencedColumnName = "idKlinickogCentra", nullable = false)
+	private KlinickiCentar klinickiCentar;
 	
-	public void add(KlinickiCentar item) {
-	    if (item.getSifrarnikLekova() != null)
-	      item.getSifrarnikLekova().getKlinickiCentri().remove(item);
-	    item.setSifrarnikLekova(this);
-	    getKlinickiCentri().add(item);
-	  }
 	
 	public SifrarnikLekova() {}
 	
@@ -83,13 +81,12 @@ public class SifrarnikLekova {
 	public void setIdSL(Integer idSL) {
 		this.idSL = idSL;
 	}
-
-	public Set<KlinickiCentar> getKlinickiCentri() {
-		return klinickiCentri;
+	public KlinickiCentar getKlinickiCentar() {
+		return klinickiCentar;
 	}
 
-	public void setKlinickiCentri(Set<KlinickiCentar> klinickiCentri) {
-		this.klinickiCentri = klinickiCentri;
+	public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
+		this.klinickiCentar = klinickiCentar;
 	}
 	
 	

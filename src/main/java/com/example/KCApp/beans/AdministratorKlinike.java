@@ -1,5 +1,5 @@
 package com.example.KCApp.beans;
-
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Table(name = "administratorKlinike")
 public class AdministratorKlinike extends Korisnik{
 
-	@ManyToOne
+	@ManyToOne(cascade=ALL)
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 	private Klinika klinika;
 	

@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -19,7 +21,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "sifrarnikDijagnoza")
-@SequenceGenerator(name = "idSDSeq", sequenceName = "idSDGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "idSDSeq", sequenceName = "idSDGen", initialValue = 2, allocationSize = 1)
 public class SifrarnikDijagnoza {
 
 	@Column(name="nazivDijagnoze", unique=false, nullable=false)
@@ -32,16 +34,10 @@ public class SifrarnikDijagnoza {
 	@Column(name = "idSD", unique = true, nullable = false)
 	private Integer idSD;
 	
-	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "sifrarnikDijagnoza")
-	@JsonBackReference
-	private Set<KlinickiCentar> klinickiCentri = new HashSet<KlinickiCentar>();
 	
-	public void add(KlinickiCentar item) {
-	    if (item.getSifrarnikDijagnoza() != null)
-	      item.getSifrarnikDijagnoza().getKlinickiCentri().remove(item);
-	    item.setSifrarnikDijagnoza(this);
-	    getKlinickiCentri().add(item);
-	  }
+	@ManyToOne
+	@JoinColumn(name = "klinickiCentar", referencedColumnName = "idKlinickogCentra", nullable = false)
+	private KlinickiCentar klinickiCentar;
 	
 	public SifrarnikDijagnoza() {}
 	
@@ -51,12 +47,12 @@ public class SifrarnikDijagnoza {
 	}
 
 	public SifrarnikDijagnoza(String nazivDijagnoze, String sifraDijagnoze, Integer idSD,
-			Set<KlinickiCentar> klinickiCentri) {
+			KlinickiCentar klinickiCentar) {
 		super();
 		this.nazivDijagnoze = nazivDijagnoze;
 		this.sifraDijagnoze = sifraDijagnoze;
 		this.idSD = idSD;
-		this.klinickiCentri = klinickiCentri;
+		this.klinickiCentar = klinickiCentar;
 	}
 
 	public String getNazivDijagnoze() {
@@ -83,14 +79,15 @@ public class SifrarnikDijagnoza {
 		this.idSD = idSD;
 	}
 
-	public Set<KlinickiCentar> getKlinickiCentri() {
-		return klinickiCentri;
+	public KlinickiCentar getKlinickiCentar() {
+		return klinickiCentar;
 	}
 
-	public void setKlinickiCentri(Set<KlinickiCentar> klinickiCentri) {
-		this.klinickiCentri = klinickiCentri;
+	public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
+		this.klinickiCentar = klinickiCentar;
 	}
-	
+
+
 	
 
 }
