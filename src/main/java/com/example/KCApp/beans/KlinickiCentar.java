@@ -41,13 +41,13 @@ public class KlinickiCentar {
 	    getAdministratoriKC().add(item);
 	  }
 
-	@ManyToOne
-	@JoinColumn(name = "idSL", referencedColumnName = "idSL", nullable = false)
-	private SifrarnikLekova sifrarnikLekova;
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
+	@JsonBackReference
+	private Set<SifrarnikLekova> sifrarnikLekova=new HashSet<SifrarnikLekova>();
 	
-	@ManyToOne
-	@JoinColumn(name = "idSD", referencedColumnName = "idSD", nullable = false)
-	private SifrarnikDijagnoza sifrarnikDijagnoza;
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
+	@JsonBackReference
+	private Set<SifrarnikDijagnoza> sifrarnikDijagnoza=new HashSet<SifrarnikDijagnoza>();
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
 	@JsonBackReference
@@ -76,7 +76,7 @@ public class KlinickiCentar {
 	}
 	
 	public KlinickiCentar(Integer idKlinickogCentra, Set<AdministratorKlinickogCentra> administratoriKC,
-			SifrarnikLekova sifrarnikLekova, SifrarnikDijagnoza sifrarnikDijagnoza, 
+			Set<SifrarnikLekova> sifrarnikLekova, Set<SifrarnikDijagnoza> sifrarnikDijagnoza, 
 			Set<ZahtevZaRegistraciju> zahteviZaRegistraciju, Set<Klinika> klinike) {
 		super();
 		this.idKlinickogCentra = idKlinickogCentra;
@@ -103,19 +103,21 @@ public class KlinickiCentar {
 		this.administratoriKC = administratoriKC;
 	}
 
-	public SifrarnikLekova getSifrarnikLekova() {
+	
+
+	public Set<SifrarnikLekova> getSifrarnikLekova() {
 		return sifrarnikLekova;
 	}
 
-	public void setSifrarnikLekova(SifrarnikLekova sifrarnikLekova) {
+	public void setSifrarnikLekova(Set<SifrarnikLekova> sifrarnikLekova) {
 		this.sifrarnikLekova = sifrarnikLekova;
 	}
 
-	public SifrarnikDijagnoza getSifrarnikDijagnoza() {
+	public Set<SifrarnikDijagnoza> getSifrarnikDijagnoza() {
 		return sifrarnikDijagnoza;
 	}
 
-	public void setSifrarnikDijagnoza(SifrarnikDijagnoza sifrarnikDijagnoza) {
+	public void setSifrarnikDijagnoza(Set<SifrarnikDijagnoza> sifrarnikDijagnoza) {
 		this.sifrarnikDijagnoza = sifrarnikDijagnoza;
 	}
 

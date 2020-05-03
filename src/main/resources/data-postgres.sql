@@ -7,13 +7,14 @@ insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,t
  (1, 1.05, 'A+', 55.5, 170.00,1);
 
 
+
+
+insert into klinicki_centar(id_klinickog_centra) values(1);
+
  
-insert into sifrarnik_lekova(idsl,naziv_leka,sifra_leka)values(1,'Brufen', '1l');
+insert into sifrarnik_lekova(idsl,naziv_leka,sifra_leka,klinicki_centar)values(1,'Brufen', '1l',1);
 
-insert into sifrarnik_dijagnoza(idsd,naziv_dijagnoze, sifra_dijagnoze)values(1, 'Grip', '1g');
-
-
-insert into klinicki_centar(id_klinickog_centra, idsd, idsl) values(1,1,1);
+insert into sifrarnik_dijagnoza(idsd,naziv_dijagnoze, sifra_dijagnoze, klinicki_centar)values(1, 'Grip', '1g',1);
 
 insert into cenovnik(id_cenovnika, cena, tip_pregleda)values(nextval('cenovnik_id_seq'), 2500.00, 'DERMATOLOGIJA');
 
