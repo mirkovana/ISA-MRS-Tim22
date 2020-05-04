@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @SequenceGenerator(name = "lekarIdSeq", sequenceName = "lekarIdGen", initialValue = 1, allocationSize = 1)
 public class Lekar extends Korisnik {
 
-	@OneToOne(fetch = LAZY, mappedBy="lekar")
+	@OneToOne(fetch = LAZY, mappedBy="lekar", cascade = ALL)
 	@JoinColumn(name = "idRadnogKalendara")	
 	private RadniKalendarL radniKalendarL;
 	

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.DTO.PacijentDTO;
+import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.ZdravstveniKarton;
 import com.example.KCApp.repository.PacijentRepository;
@@ -43,6 +44,20 @@ public class PacijentController {
 	public Pacijent findPacijentById(@PathVariable Integer idKorisnika) {
 		Pacijent pacijent = service.get(idKorisnika);
 		return pacijent;
+	}
+	
+	/*PRIKAZ PACIJENTA PO IMENU*/
+	@GetMapping(value = "/pacijenti/ime/{ime}") //da li je ok i sta je ono model kod prikaza svih i da li treba i po prezimenu?
+	public List<Pacijent> findPacijentByIme(@PathVariable String ime) {
+		List<Pacijent> listaPacijenataPoImenu = service.findAllByIme(ime);
+		return listaPacijenataPoImenu;
+	}
+	
+	/*PRIKAZ PACIJENTA PO PREZIMENU*/
+	@GetMapping(value = "/pacijenti/prezime/{prezime}")
+	public List<Pacijent> findPacijentByPrezime(@PathVariable String prezime) {
+		List<Pacijent> listaPacijenataPoPrezimenu = service.findAllByPrezime(prezime);
+		return listaPacijenataPoPrezimenu;
 	}
 	
 	/*PRETRAGA PACIJENTA PO KRITERIJUMU - BROJ OSIGURANIKA*/
@@ -105,4 +120,6 @@ public class PacijentController {
 				}).orElseThrow(() -> new NotFoundException("Pacijent not found with id " + idKorisnika));
 		
 	}
+	
+	
 }

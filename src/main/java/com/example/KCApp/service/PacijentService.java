@@ -36,4 +36,12 @@ public class PacijentService {
 	public Pacijent findByBrojOsiguranika(int brojOsiguranika) {
 		return repo.findByBrojOsiguranika(brojOsiguranika);
 	}
+	
+	public List<Pacijent> findAllByIme(String ime){
+		return repo.findAllByIme(ime);
+	}
+	
+	public List<Pacijent> findAllByPrezime(String prezime){
+		return repo.findAllByPrezime(prezime);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.Sala;
 import com.example.KCApp.repository.SalaRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,5 +32,9 @@ public class SalaService {
 	
 	public void delete(Integer id) {
 		repo.deleteById(id);
+	}
+	
+	public Sala findByBrojSale(int brojSale) {
+		return repo.findByBrojSale(brojSale);
 	}
 }

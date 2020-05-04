@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "radniKalendarL")
-@SequenceGenerator(name = "radniKalendarIdSeq", sequenceName = "radniKalendarIdGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "radniKalendarIdSeq", sequenceName = "radniKalendarIdGen", initialValue = 2, allocationSize = 1)
 public class RadniKalendarL {
 //dopuni atribute na osnovu modela koji nudi biblioteka
 	

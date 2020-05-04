@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "sala")
-@SequenceGenerator(name = "salaIdSeq", sequenceName = "salaIdGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "salaIdSeq", sequenceName = "salaIdGen", initialValue = 5, allocationSize = 1)
 public class Sala {
 	
 	@Id
