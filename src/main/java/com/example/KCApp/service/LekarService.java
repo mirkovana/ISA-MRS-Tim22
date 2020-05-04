@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Service
 public class LekarService {
+	
 	@Autowired
 	private LekarRepository repo;
 	

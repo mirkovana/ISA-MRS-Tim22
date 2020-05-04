@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,13 @@ public class AdministratorKlinikeController {
 	@Autowired
 	private KlinikaService klinikaService;
 	
+	/*PRIKAZ ADMINISTRATORA KLINIKE PO ID-u*/
+	@GetMapping(value = "/adminiKlinike/{idKorisnika}")
+	public AdministratorKlinike findAdministratorKlinikeById(@PathVariable Integer idKorisnika) {
+		AdministratorKlinike administratorKlinike = service.get(idKorisnika);
+		return administratorKlinike;
+	}
+	
 	
 	/*PRIKAZ SVIH ADMINA KLINIKE*/
 	@GetMapping(value="/adminiKlinike")
@@ -38,7 +46,7 @@ public class AdministratorKlinikeController {
 		return administratorKlinike;
 	}
 	
-	/*DODAVANJE PACIJENTA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
+	/*DODAVANJE ADMINISTRATORA KLINIKE*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
 	@PostMapping(value= "/adminiKlinike",consumes = "application/json")
 	public ResponseEntity<AdministratorKlinikeDTO> saveAdminKlinike(@RequestBody AdministratorKlinikeDTO administratorKlinikeDTO) {
 
