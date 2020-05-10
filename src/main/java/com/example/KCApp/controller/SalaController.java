@@ -84,7 +84,6 @@ public class SalaController {
 
 		Sala sala = new Sala();
 		sala.setBrojSale(salaDTO.getBrojSale());
-		sala.setIdSale(salaDTO.getIdSale());
 		sala.setNazivSale(salaDTO.getNazivSale());
 		Integer idK = salaDTO.getKlinika();
 		

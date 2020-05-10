@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Registracija</title>
+        <link rel="stylesheet" type="text/css" href="./styleRegistracija.css">
+        <script src="js/jquery.min.js"></script>
+		<script src="js/script.js"></script>
+    </head>
+    <body>
+        <div>	
+            <h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
+        </div>
+        <form action="" id="formaFiltr">
+        <div>
+              <input type="text" name="nazivSale" placeholder="Naziv:" id="nazivSale" >
+              <input type="text" name="brojSale" placeholder="Broj sale:" id="brojSale" >
+              <input type="number" name="klinika" placeholder="Id klinike:" id="klinika" >
+                    
+               <button type="button" class="button" onclick="dodavanjeSala()">Dodaj</button>
+		</div>  
+		</form>      
+	<div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
+		<form class="modal-content animate" action="" id="modalnaF"
+			onsubmit="">
+			<div class="form-group" id="modalnaForma"></div>
+		</form>
+	</div>
+    </body>
+</html>
