@@ -5,19 +5,21 @@
         <meta charset="UTF-8">
 		<title>Medicinska sestra</title>
 		<link rel="stylesheet" type="text/css" href="./styles.css">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/script.js"></script>
 		
-	</head>
-	<body>
-		<div>	
-				<h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
-		</div>
+		</head>
+		<body>
+			<div>	
+					<h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
+			</div>
 
 		
 		
 			<div class="navbar">
 				<a href="#home" data-target="#myModal">Pocetna stranica</a>
 				<a href="#profil">Profil</a>
-				<a href="#lsitapacijenata">Lista pacijenata</a>
+				<a href="#listapacijenata" onClick="setUpUserPage()">Lista pacijenata</a>
 				<div class="dropdown">
 				  <button class="dropbtn">Informacije o radu 
 					<i class="fa fa-caret-down"></i>
@@ -31,7 +33,9 @@
 				<a href="#logout">Odjavite se</a>
 			  </div>
 
-		
+		<table class="table" id="tabela_pacijenti" border="1">
+				
+			</table>
 			
 			
 <!-- 	
