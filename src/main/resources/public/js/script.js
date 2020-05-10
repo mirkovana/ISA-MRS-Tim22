@@ -126,7 +126,61 @@ function dodavanjeAKC(){
 	
 }
 
+function dodavanjeSala(){
+	console.log("aaaaa")
+	var data = getFormData($("#formaFiltr"));
+	
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/sale",
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json"
+//		complete : function (data) {
+//			d = JSON.parse(data.responseText);
+//			if(d.added) {
+//				var table = $("#table_izbor tbody");
+//				table.append(makeTableRowIzbor("diskovi",JSON.parse(org)));
+//				$("#greskaUnos").hide();
+//				$("#greskaUnos1").hide();
+//				$("#modal-wrapper").hide();
+//			}else{
+//				$("#log_war").text("Postoji disk sa tim nazivom");
+//				$("#log_war").show();
+//			}
+//		} 
+	});
+	
+}
 
 
+function dodavanjeLekara(){
+	console.log("aaaaa")
+	var data = getFormData($("#formaFiltr"));
+	
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/lekari",
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json"
+//		complete : function (data) {
+//			d = JSON.parse(data.responseText);
+//			if(d.added) {
+//				var table = $("#table_izbor tbody");
+//				table.append(makeTableRowIzbor("diskovi",JSON.parse(org)));
+//				$("#greskaUnos").hide();
+//				$("#greskaUnos1").hide();
+//				$("#modal-wrapper").hide();
+//			}else{
+//				$("#log_war").text("Postoji disk sa tim nazivom");
+//				$("#log_war").show();
+//			}
+//		} 
+	});
+	
+}
 
 
