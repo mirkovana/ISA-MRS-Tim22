@@ -5,6 +5,8 @@
         <meta charset="UTF-8">
 		<title>Pacijent</title>
 		<link rel="stylesheet" type="text/css" href="./stylespacijent.css">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/script.js"></script>
 		
 	</head>
 	<body>
@@ -18,10 +20,15 @@
             <a href="#homepac" data-target="#myModalpac">Pocetna stranica</a>
             <a href="#profilpac">Profil</a>
             <a href="#listaklinika">Lista klinika</a>
-            <a href="#listaklinika">Istorija pregleda i operacija</a>
-            <a href="#listaklinika">Zdravstveni karton</a>
+            <a href="#istorijapregleda" onClick="setUpUserPagePP()">Istorija pregleda</a>
+            <a href="#istorijaoperacija" onClick="setUpUserPagePO()">Istorija operacija</a>
+            <a href="#zdravstvenikarton">Zdravstveni karton</a>
             <a href="#logoutpac">Odjavite se</a>
-          </div>
+        </div>
+        <table class="table" id="tabela_pregledi" border="1">
+		</table>
+		<table class="table" id="tabela_operacije" border="1">
+		</table>
 
 		
 			
