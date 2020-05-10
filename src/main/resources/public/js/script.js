@@ -51,12 +51,135 @@ function setUpUserPage() {
 	});
 }
 
+//pozivacemo sale
+function setUpUserPageAK() {
+	$.ajax({
+		url: "api/sale",
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		complete: function(data) {
+			sale = JSON.parse(data.responseText);
+			console.log(sale)
+			loadSale(sale);
+			
+		}
+	});
+}
+
+//pozivacemo preglede
+function setUpUserPagePP() {
+	$.ajax({
+		url: "api/pregledi",
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		complete: function(data) {
+			pregledi = JSON.parse(data.responseText);
+			console.log(pregledi)
+			loadPregledi(pregledi);
+			
+		}
+	});
+}
+
+//pozivacemo operacije
+function setUpUserPagePO() {
+	$.ajax({
+		url: "api/operacije",
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		complete: function(data) {
+			operacije = JSON.parse(data.responseText);
+			console.log(operacije)
+			loadOperacije(operacije);
+			
+		}
+	});
+}
+
+//popunjavanje tabele sala
+function loadSale(sale) {
+	var table = $("#tabela_sale");
+	table.append(makeTableHeaderSale());	
+	for(let s of sale) {
+		table.append(makeTableRowSale(s));
+	}
+}
+
 function loadPacijenti(pacijenti) {
 	var table = $("#tabela_pacijenti");
 	table.append(makeTableHeaderP());	
 	for(let p of pacijenti) {
 		table.append(makeTableRowP(p));
 	}
+}
+
+//popunjavanje tabele pregleda
+function loadPregledi(pregledi) {
+	var table = $("#tabela_pregledi");
+	table.append(makeTableHeaderPP());	
+	for(let p of pregledi) {
+		table.append(makeTableRowPregledi(p));
+	}
+}
+
+//popunjavanje tabele operacija
+function loadOperacije(operacije) {
+	var table = $("#tabela_operacije");
+	table.append(makeTableHeaderPO());	
+	for(let o of operacije) {
+		table.append(makeTableRowOperacije(o));
+	}
+}
+
+function makeTableHeaderSale(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light">
+					<tr>
+						<th>Naziv</th>
+						<th>Broj</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
+//zaglavlje tabele pregleda za pacijente
+function makeTableHeaderPP(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light">
+					<tr>
+						<th>Datum i vreme</th>
+						<th>Trajanje</th>
+						<th>Sala</th>
+						<th>Tip</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
+//zaglavlje tabele operacija za pacijente
+function makeTableHeaderPO(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light">
+					<tr>
+						<th>Datum i vreme</th>
+						<th>Trajanje</th>
+						<th>Dodatne info</th>
+						<th>Sala</th>
+					</tr>
+				</thead>`;
+		
+		return row;
 }
 
 function makeTableHeaderP(){
@@ -78,6 +201,47 @@ function makeTableHeaderP(){
 		
 		return row;
 }
+
+function makeTableRowSale(s) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="0" id='${s.nazivSale}'>${s.nazivSale}</td>
+			<td class="1" id='${s.brojSale}'>${s.brojSale}</td>
+		</tr>`;
+	
+	return row;
+}
+
+function makeTableRowPregledi(p) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="0" id='${p.vreme}'>${p.vreme}</td>
+			<td class="1" id='${p.trajanje}'>${p.trajanje}</td>
+			<td class="2" id='${p.sala}'>${p.sala.nazivSale}</td>
+			<td class="3" id='${p.tipPregleda}'>${p.tipPregleda}</td>
+		</tr>`;
+	
+	return row;
+}
+
+function makeTableRowOperacije(o) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="0" id='${o.vremeOperacije}'>${o.vremeOperacije}</td>
+			<td class="1" id='${o.trajanje}'>${o.trajanje}</td>
+			<td class="2" id='${o.dodatneInfoOOperaciji}'>${o.dodatneInfoOOperaciji}</td>
+			<td class="3" id='${o.sala}'>${o.sala.nazivSale}</td>
+		</tr>`;
+	
+	return row;
+}
+
 function makeTableRowP(p) {
 	//var aktivan = vm.radi ? "Radi" : "Ne radi";
 	var row = "";
