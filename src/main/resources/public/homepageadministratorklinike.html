@@ -15,10 +15,11 @@
 
 		
 		
-			<div class="navbar">
+			<div class="navbar" id="myForm">
 				<a href="#home" data-target="#myModal">Pocetna stranica</a>
 				<a href="#profil">Profil</a>
-				<a href="#lsitapacijenata">Lista pacijenata</a>
+				<a href="#listapacijenata">Lista pacijenata</a>
+				<a href="#listalekara" OnClick="setUpUserPageAKL()">Lista lekara</a>
 				<a href="#spisaksala" onClick="setUpUserPageAK()">Spisak sala</a>
 				<div class="dropdown">
 				  <button class="dropbtn">Informacije o radu 
@@ -33,6 +34,9 @@
 				<a href="#logout">Odjavite se</a>
 			  </div>
 			  <table class="table" id="tabela_sale" border="1">
+			  </table>
+			  
+			    <table class="table" id="tabela_lekari" border="1">
 			  </table>
 
 		

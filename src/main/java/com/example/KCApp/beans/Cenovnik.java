@@ -16,11 +16,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "cenovnik")
-@SequenceGenerator(name = "cenovnikIdGen", sequenceName = "cenovnik_id_seq", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "cenovnikIdGen", sequenceName = "cenovnik_id_seq", initialValue = 2, allocationSize = 1)
 public class Cenovnik {
 	
 	@Id
-	@GeneratedValue(strategy = SEQUENCE, generator = "cenovnikIdSeq")
+	@GeneratedValue(strategy = SEQUENCE, generator = "cenovnik_id_seq")
 	@Column(name = "idCenovnika", unique = true, nullable = false)
 	private Integer idCenovnika;
 	
