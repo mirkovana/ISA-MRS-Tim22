@@ -7,7 +7,22 @@ body
     background-repeat: no-repeat;
     background-size: cover;
 }
-
+#uspesno {
+	border-width: 0px;
+	color:green;
+	display: none;
+	width: 30%;
+	margin: 0 auto;
+	text-align: center;
+}
+#neuspesno {
+	border-width: 0px;
+	color: red;
+	display: none;
+	width: 30%;
+	margin: 0 auto;
+	text-align: center;
+}
 a.button 
 {
     background-color: white;

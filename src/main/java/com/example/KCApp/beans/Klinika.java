@@ -31,19 +31,19 @@ public class Klinika {
 
 	@Id
 	@GeneratedValue(strategy = SEQUENCE, generator = "klinikaIdSeq")
-	@Column(name = "idKlinike", unique = true, nullable = false)
+	@Column(name = "idKlinike", unique = true, nullable = true)
 	private Integer idKlinike;
 	
-	@Column(name = "nazivKlinike", unique = false, nullable = false)
+	@Column(name = "nazivKlinike", unique = false, nullable = true)
 	private String naziv;
 	
-	@Column(name = "adresaKlinike", unique = false, nullable = false)
+	@Column(name = "adresaKlinike", unique = false, nullable = true)
 	private String adresa;
 	
-	@Column(name = "gradKlinike", unique = false, nullable = false)
+	@Column(name = "gradKlinike", unique = false, nullable = true)
 	private String grad;
 	
-	@Column(name = "opisKlinike", unique = false, nullable = false)
+	@Column(name = "opisKlinike", unique = false, nullable = true)
 	private String opis;
 	
 	
