@@ -155,7 +155,8 @@ function makeTableHeaderPP(){
 	 row =
 			`<thead class="thead-light">
 					<tr>
-						<th>Datum i vreme</th>
+						<th>Datum</th>
+						<th>Vreme</th>
 						<th>Trajanje</th>
 						<th>Sala</th>
 						<th>Tip</th>
@@ -172,7 +173,8 @@ function makeTableHeaderPO(){
 	 row =
 			`<thead class="thead-light">
 					<tr>
-						<th>Datum i vreme</th>
+						<th>Datum</th>
+						<th>Vreme</th>
 						<th>Trajanje</th>
 						<th>Dodatne info</th>
 						<th>Sala</th>
@@ -216,13 +218,18 @@ function makeTableRowSale(s) {
 
 function makeTableRowPregledi(p) {
 	var row = "";
+	var deli = p.vreme.split("T");
+	var datum = deli[0];
+	var deli1 = deli[1].split(".");
+	var vreme = deli1[0];
 	
 	  row =
 		`<tr>
-			<td class="0" id='${p.vreme}'>${p.vreme}</td>
-			<td class="1" id='${p.trajanje}'>${p.trajanje}</td>
-			<td class="2" id='${p.sala}'>${p.sala.nazivSale}</td>
-			<td class="3" id='${p.tipPregleda}'>${p.tipPregleda}</td>
+			<td class="0" id='${p.vreme}'>${datum}</td>
+			<td class="1" id='${p.vreme}'>${vreme}</td>
+			<td class="2" id='${p.trajanje}'>${p.trajanje}</td>
+			<td class="3" id='${p.sala}'>${p.sala.nazivSale}</td>
+			<td class="4" id='${p.tipPregleda}'>${p.tipPregleda}</td>
 		</tr>`;
 	
 	return row;
@@ -230,13 +237,18 @@ function makeTableRowPregledi(p) {
 
 function makeTableRowOperacije(o) {
 	var row = "";
+	var deli = o.vremeOperacije.split("T");
+	var datum = deli[0];
+	var deli1 = deli[1].split(".");
+	var vreme = deli1[0];
 	
 	  row =
 		`<tr>
-			<td class="0" id='${o.vremeOperacije}'>${o.vremeOperacije}</td>
-			<td class="1" id='${o.trajanje}'>${o.trajanje}</td>
-			<td class="2" id='${o.dodatneInfoOOperaciji}'>${o.dodatneInfoOOperaciji}</td>
-			<td class="3" id='${o.sala}'>${o.sala.nazivSale}</td>
+			<td class="0" id='${o.vremeOperacije}'>${datum}</td>
+			<td class="1" id='${o.vremeOperacije}'>${vreme}</td>
+			<td class="2" id='${o.trajanje}'>${o.trajanje}</td>
+			<td class="3" id='${o.dodatneInfoOOperaciji}'>${o.dodatneInfoOOperaciji}</td>
+			<td class="4" id='${o.sala}'>${o.sala.nazivSale}</td>
 		</tr>`;
 	
 	return row;
