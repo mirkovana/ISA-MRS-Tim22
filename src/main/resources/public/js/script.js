@@ -69,7 +69,7 @@ function setUpUserPageAKCSL() {
 
 //pozivacemo sifrarnik dijagnoza
 function setUpUserPageAKCSD() {
-	document.getElementById("myForm").clear();
+	
 	
 	$.ajax({
 		url: "api/sifrarnikDijagnoza",
