@@ -3,6 +3,9 @@
         <meta charset="utf-8">
         <title>Registracija</title>
         <link rel="stylesheet" type="text/css" href="./styleRegistracija.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
     </head>
@@ -11,23 +14,51 @@
             <h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
         </div>
         <form action="" id="formaFiltr">
-        <div>
-              <input type="text" name="ime" placeholder="Ime:" id="ime" >
-              <input type="text" name="prezime" placeholder="Prezime:" id="prezime" >
-              <input type="text" name="grad" placeholder="Grad:" id="grad" >
-              <input type="text" name="lozinka" placeholder="Lozinka:" id="lozinka" >
-              <input type="text" name="drzava" placeholder="Drzava:" id="drzava" >
-              <input type="text" name="brojTelefona" placeholder="Broj telefona:" id="brojTelefona" >
-              <input type="text" name="adresa" placeholder="Adresa:" id="adresa" >
-              <input type="text" name="email" placeholder="Email:" id="email" >
-              <input type="text" name="tipPregleda" placeholder="Tip pregleda:" id="tipPregleda" >
-              <input type="number" name="klinika" placeholder="Id klinike:" id="klinika" >
-              
-                    
-               <button type="button" class="btn btn-secondary" onclick="dodavanjeLekara()">Dodaj</button>
-               
-               
-	</div>  
+	<table>
+            <tr>
+                <td align="right">Ime</td>
+                <td><input type="text" name="ime" id="ime" ></td>
+            </tr>
+            <tr>
+                <td align="right">Prezime</td>
+                <td><input type="text" name="prezime" id="prezime" ></td>
+            </tr>
+            <tr>
+                <td align="right">Grad</td>
+                <td><input type="text" name="grad" id="grad" ></td>
+            </tr>
+            <tr>
+                <td align="right">Lozinka</td>
+                <td><input type="password" name="lozinka" id="lozinka" required></td>
+            </tr>
+            <tr>
+                <td align="right">Drzava</td>
+                <td><input type="text" name="drzava" id="drzava" ></input></td>
+            </tr>
+            <tr>
+                <td align="right">Broj telefona</td>
+                <td><input type="text" name="brojTelefona" id="brojTelefona" ></input></td>
+            </tr>
+            <tr>
+                <td align="right">Adresa</td>
+                <td><input type="text" name="adresa" id="adresa" ></td>
+            </tr>
+            <tr>
+                <td align="right">Email</td>
+                <td><input type="text" name="email" id="email" ></td>
+            </tr>
+            <tr>
+                <td align="right">Tip pregleda</td>
+                <td><input type="text" name="tipPregleda" id="tipPregleda"></td>
+            </tr>
+            <tr>
+                <td align="right">Id klinike</td>
+                <td><input type="number" name="klinika" id="klinika" ></td>
+            </tr>
+            <tr>
+                <td colspan=2 align="center"><button type="button" class="btn btn-secondary" onclick="dodavanjeLekara()">Dodaj</button></td>
+            </tr>
+        </table> 
 	</form>      
 	<div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
 		<form class="modal-content animate" action="" id="modalnaF"

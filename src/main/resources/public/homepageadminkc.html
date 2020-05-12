@@ -4,6 +4,9 @@
         <meta charset="UTF-8">
 		<title>Administrator klinike</title>
 		<link rel="stylesheet" type="text/css" href="./styleadministratorklinike.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
 		
@@ -18,34 +21,18 @@
 			<div class="navbar"  id="myForm">
 				<a href="#home" data-target="#myModal">Pocetna stranica</a>
 				<a href="#profil">Profil</a>
-				
-				
-				<div class="dropdown">
-				  <button class="dropbtn">Sifrarnici
-					<i class="fa fa-caret-down"></i>
-				  </button>
-				  <div class="dropdown-content">
-					<a href="#sifrarnikLekova" onClick="setUpUserPageAKCSL()">Sifrarnik lekova</a>
-					<a href="#sifrarnikDijagnoza" onClick="setUpUserPageAKCSD()">Sifrarnik dijagnoza</a>
-				  </div>
-				</div>
-				<div class="dropdown">
-				  <button class="dropbtn">Klinike
-				  <i class="fa fa-caret-down"></i>
-				  </button>
-				  <div class="dropdown-content">
-				  <a href="#listaklinika" onClick="setUpUserPageAKC()">Lista svih klinika</a>
-				  <a href="./registracijaKlinike.html">Registracija klinike</a>
-				  <a href="./registracijaAK.html">Registracija administratora klinike</a>
-				 </div>
-				</div>
+				<a href="#sifrarnikLekova" onClick="setUpUserPageAKCSL()">Sifrarnik lekova</a>
+				<a href="#sifrarnikDijagnoza" onClick="setUpUserPageAKCSD()">Sifrarnik dijagnoza</a>
+				<a href="#listaklinika" onClick="setUpUserPageAKC()">Lista svih klinika</a>
+				<a href="./registracijaKlinike.html">Registracija klinike</a>
+				<a href="./registracijaAK.html">Registracija administratora klinike</a>
 				<a href="#logout">Odjavite se</a>
 			  </div>
-			  <table class="table" id="tabela_klinike" border="1">
+			  <table class="table" id="tabela_klinike">
 			  </table>
-			  <table class="table" id="tabela_sl" border="1">
+			  <table class="table" id="tabela_sl">
 			  </table>
-			  <table class="table" id="tabela_sd" border="1">
+			  <table class="table" id="tabela_sd">
 			  </table>
 
 	

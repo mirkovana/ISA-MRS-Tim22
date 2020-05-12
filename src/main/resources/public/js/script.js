@@ -69,7 +69,6 @@ function setUpUserPageAKCSL() {
 
 //pozivacemo sifrarnik dijagnoza
 function setUpUserPageAKCSD() {
-	document.getElementById("myForm").clear();
 	
 	$.ajax({
 		url: "api/sifrarnikDijagnoza",
@@ -164,6 +163,8 @@ function setUpUserPagePO() {
 
 //popunjavanje tabele sala
 function loadSale(sale) {
+	$("#tabela_sale tbody tr").remove(); 
+	$("#tabela_sale thead ").remove();
 	var table = $("#tabela_sale");
 	table.append(makeTableHeaderSale());	
 	for(let s of sale) {
@@ -173,6 +174,8 @@ function loadSale(sale) {
 
 //popunjavanje klinike
 function loadKlinike(klinike) {
+	$("#tabela_klinike tbody tr").remove(); 
+	$("#tabela_klinike thead ").remove();
 	var table = $("#tabela_klinike");
 	table.append(makeTableHeaderKlinike());	
 	for(let k of klinike) {
@@ -181,6 +184,8 @@ function loadKlinike(klinike) {
 }
 
 function loadPacijenti(pacijenti) {
+	$("#tabela_pacijenti tbody tr").remove(); 
+	$("#tabela_pacijenti thead ").remove();
 	var table = $("#tabela_pacijenti");
 	table.append(makeTableHeaderP());	
 	for(let p of pacijenti) {
@@ -189,6 +194,8 @@ function loadPacijenti(pacijenti) {
 }
 //sifrarnik lekova
 function loadSifrarnikLekova(sl) {
+	$("#tabela_sl tbody tr").remove(); 
+	$("#tabela_sl thead ").remove();
 	var table = $("#tabela_sl");
 	table.append(makeTableHeaderSL());	
 	for(let s of sl) {
@@ -198,6 +205,8 @@ function loadSifrarnikLekova(sl) {
 
 //sifrarbik dijagnoza
 function loadSifrarnikDijagnoza(sd) {
+	$("#tabela_sd tbody tr").remove(); 
+	$("#tabela_sd thead ").remove();
 	var table = $("#tabela_sd");
 	table.append(makeTableHeaderSD());	
 	for(let s of sd) {
@@ -206,6 +215,8 @@ function loadSifrarnikDijagnoza(sd) {
 }
 
 function loadLekari(lekari) {
+	$("#tabela_lekari tbody tr").remove(); 
+	$("#tabela_lekari thead ").remove();
 	var table = $("#tabela_lekari");
 	table.append(makeTableHeaderLekari());	
 	for(let l of lekari) {
@@ -213,10 +224,10 @@ function loadLekari(lekari) {
 	}
 }
 
-
-
 //popunjavanje tabele pregleda
 function loadPregledi(pregledi) {
+	$("#tabela_pregledi tbody tr").remove(); 
+	$("#tabela_pregledi thead ").remove();
 	var table = $("#tabela_pregledi");
 	table.append(makeTableHeaderPP());	
 	for(let p of pregledi) {
@@ -226,6 +237,8 @@ function loadPregledi(pregledi) {
 
 //popunjavanje tabele operacija
 function loadOperacije(operacije) {
+	$("#tabela_operacije tbody tr").remove(); 
+	$("#tabela_operacije thead ").remove();
 	var table = $("#tabela_operacije");
 	table.append(makeTableHeaderPO());	
 	for(let o of operacije) {
@@ -237,7 +250,7 @@ function makeTableHeaderSale(){
 	
 	var row="";
 	 row =
-			`<thead class="thead-light">
+			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Naziv</th>
 						<th>Broj</th>
@@ -250,7 +263,7 @@ function makeTableHeaderKlinike(){
 	
 	var row="";
 	 row =
-			`<thead class="thead-light">
+			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Naziv</th>
 						<th>Adresa</th>
@@ -268,7 +281,7 @@ function makeTableHeaderSL(){
 	
 	var row="";
 	 row =
-			`<thead class="thead-light">
+			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Naziv leka</th>
 						<th>Sifra leka</th>
@@ -284,7 +297,7 @@ function makeTableHeaderSD(){
 	
 	var row="";
 	 row =
-			`<thead class="thead-light">
+			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Naziv dijagnoze</th>
 						<th>Sifra dijagnoze</th>
@@ -299,7 +312,7 @@ function makeTableHeaderLekari(){
 	
 	var row="";
 	 row =
-			`<thead class="thead-light">
+			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Ime</th>
 						<th>Prezime</th>
@@ -321,7 +334,7 @@ function makeTableHeaderPP(){
 	
 	var row="";
 	 row =
-			`<thead class="thead-light">
+			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Datum</th>
 						<th>Vreme</th>
@@ -339,7 +352,7 @@ function makeTableHeaderPO(){
 	
 	var row="";
 	 row =
-			`<thead class="thead-light">
+			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Datum</th>
 						<th>Vreme</th>
@@ -356,7 +369,7 @@ function makeTableHeaderP(){
 	
 	var row="";
 	 row =
-			`<thead class="thead-light">
+			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Ime</th>
 						<th>Prezime</th>
@@ -377,8 +390,8 @@ function makeTableRowSale(s) {
 	
 	  row =
 		`<tr>
-			<td class="0" id='${s.nazivSale}'>${s.nazivSale}</td>
-			<td class="1" id='${s.brojSale}'>${s.brojSale}</td>
+			<td class="izgledTabele" id='${s.nazivSale}'>${s.nazivSale}</td>
+			<td class="izgledTabele" id='${s.brojSale}'>${s.brojSale}</td>
 		</tr>`;
 	
 	return row;
@@ -389,8 +402,8 @@ function makeTableRowSL(s) {
 	
 	  row =
 		`<tr>
-			<td class="0" >${s.nazivLeka}</td>
-			<td class="1" >${s.sifraLeka}</td>
+			<td class="izgledTabele" >${s.nazivLeka}</td>
+			<td class="izgledTabele" >${s.sifraLeka}</td>
 		</tr>`;
 	
 	return row;
@@ -401,8 +414,8 @@ function makeTableRowSD(s) {
 	
 	  row =
 		`<tr>
-			<td class="0">${s.nazivDijagnoze}</td>
-			<td class="1" >${s.sifraDijagnoze}</td>
+			<td class="izgledTabele">${s.nazivDijagnoze}</td>
+			<td class="izgledTabele" >${s.sifraDijagnoze}</td>
 		</tr>`;
 	
 	return row;
@@ -413,11 +426,11 @@ function makeTableRowKlinike(k) {
 	
 	  row =
 		`<tr>
-			<td class="0" >${k.naziv}</td>
-			<td class="1" >${k.adresa}</td>
-			<td class="2" >${k.grad}</td>
-			<td class="3" >${k.opis}</td>
-			<td class="4" >${k.ocena}</td>
+			<td class="izgledTabele" >${k.naziv}</td>
+			<td class="izgledTabele" >${k.adresa}</td>
+			<td class="izgledTabele" >${k.grad}</td>
+			<td class="izgledTabele" >${k.opis}</td>
+			<td class="izgledTabele" >${k.ocena}</td>
 		</tr>`;
 	
 	return row;
@@ -432,11 +445,11 @@ function makeTableRowPregledi(p) {
 	
 	  row =
 		`<tr>
-			<td class="0" id='${p.vreme}'>${datum}</td>
-			<td class="1" id='${p.vreme}'>${vreme}</td>
-			<td class="2" id='${p.trajanje}'>${p.trajanje}</td>
-			<td class="3" id='${p.sala}'>${p.sala.nazivSale}</td>
-			<td class="4" id='${p.tipPregleda}'>${p.tipPregleda}</td>
+			<td class="izgledTabele" id='${p.vreme}'>${datum}</td>
+			<td class="izgledTabele" id='${p.vreme}'>${vreme}</td>
+			<td class="izgledTabele" id='${p.trajanje}'>${p.trajanje}</td>
+			<td class="izgledTabele" id='${p.sala}'>${p.sala.nazivSale}</td>
+			<td class="izgledTabele" id='${p.tipPregleda}'>${p.tipPregleda}</td>
 		</tr>`;
 	
 	return row;
@@ -451,11 +464,11 @@ function makeTableRowOperacije(o) {
 	
 	  row =
 		`<tr>
-			<td class="0" id='${o.vremeOperacije}'>${datum}</td>
-			<td class="1" id='${o.vremeOperacije}'>${vreme}</td>
-			<td class="2" id='${o.trajanje}'>${o.trajanje}</td>
-			<td class="3" id='${o.dodatneInfoOOperaciji}'>${o.dodatneInfoOOperaciji}</td>
-			<td class="4" id='${o.sala}'>${o.sala.nazivSale}</td>
+			<td class="izgledTabele" id='${o.vremeOperacije}'>${datum}</td>
+			<td class="izgledTabele" id='${o.vremeOperacije}'>${vreme}</td>
+			<td class="izgledTabele" id='${o.trajanje}'>${o.trajanje}</td>
+			<td class="izgledTabele" id='${o.dodatneInfoOOperaciji}'>${o.dodatneInfoOOperaciji}</td>
+			<td class="izgledTabele" id='${o.sala}'>${o.sala.nazivSale}</td>
 		</tr>`;
 	
 	return row;
@@ -467,14 +480,14 @@ function makeTableRowP(p) {
 	
 	  row =
 		`<tr>
-			<td class="0" id='${p.ime}'>${p.ime}</td>
-			<td class="1" id='${p.prezime}'>${p.prezime}</td>
-			<td class="2">${p.email}</td>
-			<td class="3">${p.adresa}</td>
-			<td class="4">${p.grad}</td>
-			<td class="5">${p.drzava}</td>
-			<td class="6">${p.brojTelefona}</td>
-			<td class="7">${p.brojOsiguranika}</td>
+			<td class="izgledTabele" id='${p.ime}'>${p.ime}</td>
+			<td class="izgledTabele" id='${p.prezime}'>${p.prezime}</td>
+			<td class="izgledTabele">${p.email}</td>
+			<td class="izgledTabele">${p.adresa}</td>
+			<td class="izgledTabele">${p.grad}</td>
+			<td class="izgledTabele">${p.drzava}</td>
+			<td class="izgledTabele">${p.brojTelefona}</td>
+			<td class="izgledTabele">${p.brojOsiguranika}</td>
 		</tr>`;
 	
 	return row;
@@ -486,14 +499,14 @@ function makeTableRowLekari(l) {
 	
 	  row =
 		`<tr>
-			<td class="0">${l.ime}</td>
-			<td class="1">${l.prezime}</td>
-			<td class="2">${l.email}</td>
-			<td class="3">${l.adresa}</td>
-			<td class="4">${l.grad}</td>
-			<td class="5">${l.drzava}</td>
-			<td class="6">${l.brojTelefona}</td>
-			<td class="7">${l.ocena}</td>
+			<td class="izgledTabele">${l.ime}</td>
+			<td class="izgledTabele">${l.prezime}</td>
+			<td class="izgledTabele">${l.email}</td>
+			<td class="izgledTabele">${l.adresa}</td>
+			<td class="izgledTabele">${l.grad}</td>
+			<td class="izgledTabele">${l.drzava}</td>
+			<td class="izgledTabele">${l.brojTelefona}</td>
+			<td class="izgledTabele">${l.ocena}</td>
 		</tr>`;
 	
 	return row;
