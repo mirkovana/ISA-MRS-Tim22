@@ -3,6 +3,9 @@
         <meta charset="utf-8">
         <title>Registracija</title>
         <link rel="stylesheet" type="text/css" href="./styleRegistracija.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
     </head>
@@ -11,13 +14,23 @@
             <h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
         </div>
         <form action="" id="formaFiltr">
-        <div>
-              <input type="text" name="nazivSale" placeholder="Naziv:" id="nazivSale" >
-              <input type="text" name="brojSale" placeholder="Broj sale:" id="brojSale" >
-              <input type="number" name="klinika" placeholder="Id klinike:" id="klinika" >
-                    
-               <button type="button" class="button" onclick="dodavanjeSala()">Dodaj</button>
-		</div>  
+               <table>
+            <tr>
+                <td align="right">Naziv sale</td>
+                <td><input type="text" name="nazivSale" id="nazivSale" ></td>
+            </tr>
+            <tr>
+                <td align="right">Broj sale</td>
+                <td><input type="text" name="brojSale" id="brojSale" ></td>
+            </tr>
+            <tr>
+                <td align="right">Id klinike</td>
+                <td><input type="number" name="klinika" id="klinika" ></td>
+            </tr>
+            <tr>
+                <td colspan=2 align="center"><button type="button" class="button" onclick="dodavanjeSala()">Dodaj</button> </td>
+            </tr>
+        </table>
 		</form>      
 	<div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
 		<form class="modal-content animate" action="" id="modalnaF"

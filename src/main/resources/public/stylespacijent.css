@@ -123,6 +123,10 @@ body {
   .dropdown:hover .dropdown-content {
     display: block;
   }
+  
+  .izgledTabele{
+    background-color: white;  
+  }
 
   
 p{

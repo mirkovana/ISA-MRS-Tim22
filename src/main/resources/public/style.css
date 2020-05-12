@@ -12,6 +12,10 @@
 	display: none;
 }
 
+.izgledTabele{
+    background-color: white;  
+  }
+
 .table_cell_space {
 	border-spacing: 8px;
 }
