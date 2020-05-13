@@ -6,55 +6,61 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="js/jquery.min.js"></script>
+		<script src="js/script.js"></script>
     </head>
     <body>
         <div>	
             <h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
         </div>
-        <table>
-            <tr>
-                <td align="right">Ime</td>
-                <td><input type="text" name="ime"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Prezime</td>
-                <td><input type="text" name="prezime"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Email</td>
-                <td><input type="text" name="email"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Adresa</td>
-                <td><input type="text" name="adresa"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Grad</td>
-                <td><input type="text" name="grad"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Država</td>
-                <td><input type="text" name="drzava"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Broj telefona</td>
-                <td><input type="text" name="brojTelefona"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Broj osiguranika</td>
-                <td><input type="text" name="brojOsiguranika"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Lozinka</td>
-                <td><input type="text" name="lozinka"></input></td>
-            </tr>
-            <tr>
-                <td align="right">Potvrda lozinke</td>
-                <td><input type="text" name="potvrdaLozinke"></input></td>
-            </tr>
-            <tr>
-                <td colspan=2 align="center" class="dugme"><a href="neki link" class="button">Registruj se</a></td>
-            </tr>
-        </table>
+        <form action="" id="formaFiltr">
+	        <table>
+	            <tr>
+	                <td align="right">Ime</td>
+	                <td><input type="text" name="ime" id="ime"></input></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Prezime</td>
+	                <td><input type="text" name="prezime" id="prezime"></input></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Email</td>
+	                <td><input type="text" name="email" id="email"></input></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Adresa</td>
+	                <td><input type="text" name="adresa" id="adresa"></input></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Grad</td>
+	                <td><input type="text" name="grad" id="grad"></input></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Država</td>
+	                <td><input type="text" name="drzava" id="drzava"></input></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Broj telefona</td>
+	                <td><input type="text" name="brojTelefona" id="brojTelefona"></input></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Broj osiguranika</td>
+	                <td><input type="text" name="brojOsiguranika" id="brojOsiguranika"></input></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Lozinka</td>
+	                <td><input type="text" name="lozinka" id="lozinka"></input></td>
+	            </tr>
+	            <!--<tr>
+	                <td align="right">Potvrda lozinke</td>
+	                <td><input type="text" name="potvrdaLozinke" id="potvrdaLozinke"></input></td>
+	            </tr>-->
+	            <tr>
+	                <td colspan=2 align="center"><button type="button" class="btn btn-secondary" onclick="dodavanjePacijenta()">Registruj se</button></td>
+	            </tr>
+	        </table>
+            <label id="uspesno" >Uspesno dodat administrator klinike</label>
+            <label id="neuspesno">Niste uspeli  da dodate administrator klinike</label>  
+	</form>
     </body>
 </html>

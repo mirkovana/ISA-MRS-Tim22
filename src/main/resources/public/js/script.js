@@ -28,7 +28,7 @@ function login() {
 				$("#login_war").show();
 			}
 			else{
-			   window.location.replace("/homepagepacijent.html");
+			   
 				
 			}
 			}
@@ -510,6 +510,32 @@ function makeTableRowLekari(l) {
 	
 	return row;
 }
+
+function dodavanjePacijenta(){
+	var data = getFormData($("#formaFiltr"));
+	
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/pacijenti",
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").hide();
+				$("#neuspesno").show();
+				
+			}else{
+				window.location.replace("./homepagepacijent.html");
+			}
+		} 
+
+	});
+	
+}
+
 function dodavanjeAKC(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
