@@ -8,7 +8,7 @@ public class CenovnikDTO {
 	private Integer idCenovnika;
 	private TipPregleda tipPregledaCenovnik;
 	private double cena;
-	
+	private KlinikaDTO klinika;
 	
 	public CenovnikDTO() {
 
@@ -18,7 +18,14 @@ public class CenovnikDTO {
 		idCenovnika = cenovnik.getIdCenovnika();
 		tipPregledaCenovnik = cenovnik.getTipPregledaCenovnik();
 		cena = cenovnik.getCena();
+		klinika= new KlinikaDTO(cenovnik.getKlinika());
 		
+	}
+	public KlinikaDTO getKlinika() {
+		return klinika;
+	}
+	public void setKlinika(KlinikaDTO klinika) {
+		this.klinika = klinika;
 	}
 	public Integer getIdCenovnika() {
 		return idCenovnika;

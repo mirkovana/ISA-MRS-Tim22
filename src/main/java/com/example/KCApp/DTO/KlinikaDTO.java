@@ -11,7 +11,7 @@ public class KlinikaDTO {
 	private String grad;
 	private String opis;
 	private Ocena ocena;
-	private CenovnikDTO cenovnik;
+	//private CenovnikDTO cenovnik;
 	
 	public KlinikaDTO() {
 		
@@ -25,7 +25,7 @@ public class KlinikaDTO {
 		grad = klinika.getGrad();
 		opis = klinika.getOpis();
 		ocena = klinika.getOcena();
-		cenovnik = new CenovnikDTO(klinika.getCenovnik());
+		//cenovnik = new CenovnikDTO(klinika.getCenovnik());
 	}
 
 	public Integer getIdKlinike() {
@@ -76,17 +76,10 @@ public class KlinikaDTO {
 		this.ocena = ocena;
 	}
 
-	public CenovnikDTO getCenovnik() {
-		return cenovnik;
-	}
-
-	public void setCenovnik(CenovnikDTO cenovnik) {
-		this.cenovnik = cenovnik;
-	}
 	@Override
 	public String toString() {
 		return "KlinikaDTO [idKlinike=" + idKlinike + ", naziv=" + naziv + ", adresa=" + adresa + ", grad=" + grad
-				+ ", opis=" + opis + ", ocena=" + ocena + ", cenovnik=" + cenovnik + "]";
+				+ ", opis=" + opis + ", ocena=" + ocena + "]";
 	}
 	
 }

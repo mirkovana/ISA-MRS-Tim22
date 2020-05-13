@@ -86,12 +86,12 @@ public class KlinikaController {
 		klinika.setOpis(klinikaDTO.getOpis());
 		klinika.setOcena(klinikaDTO.getOcena());
 		
-		//MILAN: u modelu ste rekle da su klinika i cenovnik povezane i ovde se onda mora kreirati cenovnik i uvezati sa tom klinikom.
-		Cenovnik cenovnik1 = new Cenovnik();
-		cenovnik1.setTipPregledaCenovnik(klinikaDTO.getCenovnik().getTipPregledaCenovnik());
-		cenovnik1.setCena(klinikaDTO.getCenovnik().getCena());
-		//MILAN: uvezivanje klinike i cenovnika je dovoljno pozivom settera setCenovnik jer je dodat Cascade ALL u klasi Klinika linija 85.
-		klinika.setCenovnik(cenovnik1);
+//		//MILAN: u modelu ste rekle da su klinika i cenovnik povezane i ovde se onda mora kreirati cenovnik i uvezati sa tom klinikom.
+//		Cenovnik cenovnik1 = new Cenovnik();
+//		cenovnik1.setTipPregledaCenovnik(klinikaDTO.getCenovnik().getTipPregledaCenovnik());
+//		cenovnik1.setCena(klinikaDTO.getCenovnik().getCena());
+//		//MILAN: uvezivanje klinike i cenovnika je dovoljno pozivom settera setCenovnik jer je dodat Cascade ALL u klasi Klinika linija 85.
+//		klinika.setCenovnik(cenovnik1);
 		
 		//MILAN: ubacili ste skriptom jedan jeidni Klinicki Centar kome pripada cela aplikacija pa samo sa get(1) uvek dobavljate isti
 		KlinickiCentar kc = kcService.get(1);
