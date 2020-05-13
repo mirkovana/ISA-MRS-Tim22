@@ -14,7 +14,7 @@ public class PacijentDTO {
 	private String brojTelefona;
 	private Integer idKorisnika;
 	private int brojOsiguranika;
-	private ZdravstveniKartonDTO zdravstveniKarton;
+	//private ZdravstveniKartonDTO zdravstveniKarton;
 
 	public PacijentDTO() {
 	}
@@ -30,7 +30,7 @@ public class PacijentDTO {
 		brojTelefona = pacijent.getBrojTelefona();
 		idKorisnika = pacijent.getIdKorisnika();
 		brojOsiguranika = pacijent.getBrojOsiguranika();
-		zdravstveniKarton = new ZdravstveniKartonDTO(pacijent.getZdravstveniKarton());
+		//zdravstveniKarton = new ZdravstveniKartonDTO(pacijent.getZdravstveniKarton());
 	}
 
 	public String getIme() {
@@ -113,13 +113,13 @@ public class PacijentDTO {
 		this.brojOsiguranika = brojOsiguranika;
 	}
 
-	public ZdravstveniKartonDTO getZdravstveniKarton() {
+	/*public ZdravstveniKartonDTO getZdravstveniKarton() {
 		return zdravstveniKarton;
 	}
 
 	public void setZdravstveniKarton(ZdravstveniKartonDTO zdravstveniKarton) {
 		this.zdravstveniKarton = zdravstveniKarton;
-	}
+	}*/
 	
 	
 }

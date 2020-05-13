@@ -91,15 +91,15 @@ public class PacijentController {
 		pacijent.setBrojOsiguranika(pacijentDTO.getBrojOsiguranika());
 		
 		
-		ZdravstveniKarton zdravstveniKarton = new ZdravstveniKarton();
+		/*ZdravstveniKarton zdravstveniKarton = new ZdravstveniKarton();
 		zdravstveniKarton.setTezina(pacijentDTO.getZdravstveniKarton().getTezina());
 		zdravstveniKarton.setVisina(pacijentDTO.getZdravstveniKarton().getVisina());
 		zdravstveniKarton.setDioptrija(pacijentDTO.getZdravstveniKarton().getDioptrija());
 		zdravstveniKarton.setKrvnaGrupa(pacijentDTO.getZdravstveniKarton().getKrvnaGrupa());
-		pacijent.setZdravstveniKarton(zdravstveniKarton);
+		pacijent.setZdravstveniKarton(zdravstveniKarton);*/
 
 		pacijent = service.save(pacijent);
-		zdravstveniKarton = serviceZK.save(zdravstveniKarton);
+		//zdravstveniKarton = serviceZK.save(zdravstveniKarton);
 		return new ResponseEntity<>(new PacijentDTO(pacijent), HttpStatus.CREATED);
 	}
 	
