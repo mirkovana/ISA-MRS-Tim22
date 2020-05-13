@@ -82,9 +82,10 @@ public class Klinika {
 	@Enumerated(EnumType.STRING)
 	private Ocena ocena;
 	
-	@OneToOne(cascade = ALL, fetch = EAGER)
-	@JoinColumn(name = "idCenovnika")
-	private Cenovnik cenovnik;
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	//@JoinColumn(name = "idCenovnika")
+	@JsonBackReference
+	private Set<Cenovnik> cenovnik = new HashSet<Cenovnik>();
 	
 	
 
@@ -152,7 +153,7 @@ public class Klinika {
 	
 	public Klinika(String naziv, String adresa, String grad, String opis, Set<MedicinskaSestra> medicinskeSestre, Set<Lekar> lekari, Set<Sala> sale,
 			Ocena ocena, Set<ZahtevOdsustva> zahteviOdsustva, Set<Operacija> operacije, Set<Pregled> pregledi, 
-			Set<ZahtevZaPregled> zahteviZaPregled, KlinickiCentar klinickiCentar) {
+			Set<ZahtevZaPregled> zahteviZaPregled, KlinickiCentar klinickiCentar, Set<Cenovnik> cenovnik) {
 		this.naziv = naziv;
 		this.adresa = adresa;
 		this.grad = grad;
@@ -166,6 +167,7 @@ public class Klinika {
 		this.pregledi = pregledi;
 		this.zahteviZaPregled = zahteviZaPregled;
 		this.klinickiCentar = klinickiCentar;
+		this.cenovnik=cenovnik;
 	}
 
 	public Integer getIdKlinike() {
@@ -248,11 +250,13 @@ public class Klinika {
 		this.zahteviOdsustva = zahteviOdsustva;
 	}
 
-	public Cenovnik getCenovnik() {
+
+
+	public Set<Cenovnik> getCenovnik() {
 		return cenovnik;
 	}
 
-	public void setCenovnik(Cenovnik cenovnik) {
+	public void setCenovnik(Set<Cenovnik> cenovnik) {
 		this.cenovnik = cenovnik;
 	}
 

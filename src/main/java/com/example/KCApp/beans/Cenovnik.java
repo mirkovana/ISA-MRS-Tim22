@@ -10,7 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -31,15 +31,24 @@ public class Cenovnik {
 	@Column(name="cena", unique=false, nullable=false)
     private double cena;
 	
-	@OneToOne(fetch = LAZY, mappedBy="cenovnik")
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "idKlinike")
 	private Klinika klinika;
     
     public Cenovnik() {}
     
-	public Cenovnik(TipPregleda tipPregledaCenovnik, double cena) {
+	public Cenovnik(TipPregleda tipPregledaCenovnik, double cena, Klinika klinika) {
 		this.tipPregledaCenovnik = tipPregledaCenovnik;
 		this.cena = cena;
+		this.klinika=klinika;
+	}
+
+	public Klinika getKlinika() {
+		return klinika;
+	}
+
+	public void setKlinika(Klinika klinika) {
+		this.klinika = klinika;
 	}
 
 	public TipPregleda getTipPregledaCenovnik() {
