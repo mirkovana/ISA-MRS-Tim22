@@ -26,7 +26,7 @@ public class RadniKalendarL {
 	private Integer idRadnogKalendara;
 	
 	@OneToOne(fetch = LAZY)
-	@JoinColumn(name = "idKorisnika", referencedColumnName="idKorisnika")	
+	@JoinColumn(name = "id", referencedColumnName="id")	
 	@JsonBackReference
 	private Lekar lekar;
 	

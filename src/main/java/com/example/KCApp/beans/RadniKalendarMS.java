@@ -28,7 +28,7 @@ public class RadniKalendarMS {
 	
 	
 	@OneToOne(fetch = LAZY )
-	@JoinColumn(name = "idKorisnikaM", referencedColumnName="idKorisnika")	
+	@JoinColumn(name = "id", referencedColumnName="id")	
 	private MedicinskaSestra medicinskaSestra;
 
 	public Integer getIdRadnogKalendara() {

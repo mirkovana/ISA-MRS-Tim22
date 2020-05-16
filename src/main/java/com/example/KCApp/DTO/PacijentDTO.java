@@ -1,108 +1,23 @@
 package com.example.KCApp.DTO;
 
+import com.example.KCApp.beans.Authority;
 import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.beans.UserTokenState;
 
-public class PacijentDTO {
+public class PacijentDTO extends UserDTO{
 
-	private String ime;
-	private String prezime;
-	private String email;
-	private String lozinka;
-	private String adresa;
-	private String grad;
-	private String drzava;
-	private String brojTelefona;
-	private Integer idKorisnika;
 	private int brojOsiguranika;
 	//private ZdravstveniKartonDTO zdravstveniKarton;
 
-	public PacijentDTO() {
-	}
-
 	public PacijentDTO(Pacijent pacijent) {
-		ime = pacijent.getIme();
-		prezime = pacijent.getPrezime();
-		email = pacijent.getEmail();
-		lozinka = pacijent.getLozinka();
-		adresa = pacijent.getAdresa();
-		grad = pacijent.getGrad();
-		drzava = pacijent.getDrzava();
-		brojTelefona = pacijent.getBrojTelefona();
-		idKorisnika = pacijent.getIdKorisnika();
-		brojOsiguranika = pacijent.getBrojOsiguranika();
+	}
+
+	public PacijentDTO(Pacijent pacijent, UserTokenState token) {
+    	super(pacijent.getIme(), pacijent.getPrezime(), pacijent.getEmail(), pacijent.getUsername(), pacijent.getPassword(), pacijent.getAdresa(), pacijent.getGrad(), pacijent.getDrzava(), pacijent.getBrojTelefona(), pacijent.getLastPasswordResetDate(), pacijent.getId(), token);
+    	for(Object au : pacijent.getAuthorities()) {
+			this.setRole(((Authority) au).getName());}
+    	brojOsiguranika = pacijent.getBrojOsiguranika();
 		//zdravstveniKarton = new ZdravstveniKartonDTO(pacijent.getZdravstveniKarton());
-	}
-
-	public String getIme() {
-		return ime;
-	}
-
-	public void setIme(String ime) {
-		this.ime = ime;
-	}
-
-	public String getPrezime() {
-		return prezime;
-	}
-
-	public void setPrezime(String prezime) {
-		this.prezime = prezime;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getLozinka() {
-		return lozinka;
-	}
-
-	public void setLozinka(String lozinka) {
-		this.lozinka = lozinka;
-	}
-
-	public String getAdresa() {
-		return adresa;
-	}
-
-	public void setAdresa(String adresa) {
-		this.adresa = adresa;
-	}
-
-	public String getGrad() {
-		return grad;
-	}
-
-	public void setGrad(String grad) {
-		this.grad = grad;
-	}
-
-	public String getDrzava() {
-		return drzava;
-	}
-
-	public void setDrzava(String drzava) {
-		this.drzava = drzava;
-	}
-
-	public String getBrojTelefona() {
-		return brojTelefona;
-	}
-
-	public void setBrojTelefona(String brojTelefona) {
-		this.brojTelefona = brojTelefona;
-	}
-
-	public Integer getIdKorisnika() {
-		return idKorisnika;
-	}
-
-	public void setIdKorisnika(Integer idKorisnika) {
-		this.idKorisnika = idKorisnika;
 	}
 
 	public int getBrojOsiguranika() {

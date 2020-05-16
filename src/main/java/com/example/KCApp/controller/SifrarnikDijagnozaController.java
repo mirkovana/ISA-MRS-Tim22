@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +27,10 @@ public class SifrarnikDijagnozaController {
 	private SifrarnikDijagnozaService service;
 	@Autowired
 	private KlinickiCentarService kcService;
-	/*PRIKAZ SVIH SIFRARNIKA LEKOVA*/
+	
+	/*PRIKAZ SVIH SIFRARNIKA DIJAGNOZA*/
 	@GetMapping(value="/sifrarnikDijagnoza")
+	@PreAuthorize("hasRole('ADMINKC') or hasRole('LEKAR')")
 	public List<SifrarnikDijagnoza> getAllSifrarnikDijagnoza(Model model) {
 		List<SifrarnikDijagnoza> sifrarnikDijagnoza = service.listAll();
 		model.addAttribute("sifrarnikDijagnoza", sifrarnikDijagnoza );
@@ -36,6 +39,7 @@ public class SifrarnikDijagnozaController {
 	
 	/*DODAVANJE SIFRARNIKA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
 	@PostMapping(value= "/sifrarnikDijagnoza",consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINKC')")
 	public ResponseEntity<SifrarnikDijagnozaDTO> saveAdminSifrarnikDijagnoza(@RequestBody SifrarnikDijagnozaDTO sifrarnikDijagnozaDTO) {
 
 		SifrarnikDijagnoza sifrarnikDijagnoza = new SifrarnikDijagnoza();

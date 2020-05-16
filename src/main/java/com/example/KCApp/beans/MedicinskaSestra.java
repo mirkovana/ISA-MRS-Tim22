@@ -17,8 +17,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "medicinskaSestra")
 @SequenceGenerator(name = "medicinskaSestraIdSeq", sequenceName = "medicinskaSestraIdGen", initialValue = 1, allocationSize = 1)
-public class MedicinskaSestra extends Korisnik {
-	
+public class MedicinskaSestra extends User {
+
+	private static final long serialVersionUID = 924562463173998925L;
+
 	@OneToOne(fetch = LAZY, mappedBy="medicinskaSestra")
     @JoinColumn(name = "idRadnogKalendara")	
 	private RadniKalendarMS radniKalendarMS;
@@ -39,9 +41,9 @@ public class MedicinskaSestra extends Korisnik {
 	
 	//zahtev odsustva onetomany
 
-	public MedicinskaSestra(String ime, String prezime, String email, String lozinka, String adresa, String grad,
+	public MedicinskaSestra(String ime, String prezime, String email, String username, String password, String adresa, String grad,
 			String drzava, String brojTelefona) {
-		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
+		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 
 	}
 
@@ -49,11 +51,22 @@ public class MedicinskaSestra extends Korisnik {
 		super();
 	}
 
-	public MedicinskaSestra(String ime, String prezime, String email, String lozinka, String adresa, String grad,
+	public MedicinskaSestra(String ime, String prezime, String email, String username, String password, String adresa, String grad,
 			String drzava, String brojTelefona, Set<Recept> recepti, RadniKalendarMS radniKalendar) {
-		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
+		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 		this.radniKalendarMS = radniKalendar;
 		this.recepti = recepti;
+	}
+	
+	public MedicinskaSestra(Integer id, String ime, String prezime, String email, String username, String password, String adresa, String grad,
+			String drzava, String brojTelefona, Set<Recept> recepti, RadniKalendarMS radniKalendar) {
+		super(id, ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
+		this.radniKalendarMS = radniKalendar;
+		this.recepti = recepti;
+	}
+	
+	public MedicinskaSestra(Klinika klinika) {
+		this.klinika = klinika;
 	}
 
 	//public RadniKalendar getRadniKalendar() {

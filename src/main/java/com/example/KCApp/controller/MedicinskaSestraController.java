@@ -1,6 +1,7 @@
 package com.example.KCApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,11 @@ public class MedicinskaSestraController {
 	@Autowired
 	private MedicinskaSestraService service;
 	
-	/*PRIKAZ PACIJENTA PO ID-u*/
-	@GetMapping(value = "/medicinskeSestre/{idKorisnika}")
-	public MedicinskaSestra findPacijentById(@PathVariable Integer idKorisnika) {
-		MedicinskaSestra medicinskaSestra = service.get(idKorisnika);
+	/*PRIKAZ MEDICINSKE SESTRE PO ID-u*/
+	@GetMapping(value = "/medicinskeSestre/{id}")
+	@PreAuthorize("hasRole('MS')")
+	public MedicinskaSestra findPacijentById(@PathVariable Integer id) {
+		MedicinskaSestra medicinskaSestra = service.get(id);
 		return medicinskaSestra;
 	}
 }

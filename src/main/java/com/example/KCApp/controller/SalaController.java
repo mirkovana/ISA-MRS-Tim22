@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +48,7 @@ public class SalaController {
 	
 	/*ISPISIVANJE SALA*/
 	@GetMapping(value="/sale")
+	@PreAuthorize("hasRole('ADMINK')")
 	public List<Sala> getAllSale(Model model) {
 		List<Sala> listaSala = service.listAll();
 		model.addAttribute("listaSala", listaSala);
@@ -55,6 +57,7 @@ public class SalaController {
 	
 	/*BRISANJE SALE SA ODREDJENIM ID*/
 	@DeleteMapping(value= "/sale/{idSale}")
+	@PreAuthorize("hasRole('ADMINK')")
 	public String deleteSala(@PathVariable Integer idSale) {
 		
 		Sala sala = service.get(idSale);
@@ -73,6 +76,7 @@ public class SalaController {
 	
 	/*PRETRAGA SALE PO KRITERIJUMU - BROJ SALE*/
 	@GetMapping(value = "/sale/brojSale/{brojSale}")
+	@PreAuthorize("hasRole('ADMINK')")
 	public Sala findSalaByBrojSale(@PathVariable int brojSale) { //da li treba i po nazivu?
 		Sala sala = service.findByBrojSale(brojSale);
 		return sala;
@@ -80,6 +84,7 @@ public class SalaController {
 	
 	/*DODAVANJE SALA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
 	@PostMapping(value= "/sale",consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINK')")
 	public ResponseEntity<SalaDTO> saveSala(@RequestBody SalaDTO salaDTO) {
 
 		Sala sala = new Sala();
@@ -96,6 +101,7 @@ public class SalaController {
 	
 	/*UPDATE SALE*/
 	@PutMapping(value="/sale/{idSale}", consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINK')")
 	public Sala updateSala(@PathVariable Integer idSale, @Valid @RequestBody SalaDTO salaUpdated) throws NotFoundException {
 		return repository.findById(idSale)
 				.map(sala->{

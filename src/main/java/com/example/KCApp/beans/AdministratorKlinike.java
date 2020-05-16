@@ -7,15 +7,17 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "administratorKlinike")
-public class AdministratorKlinike extends Korisnik{
+public class AdministratorKlinike extends User{
 
+	private static final long serialVersionUID = 3362047507094502871L;
+	
 	@ManyToOne(cascade=ALL)
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 	private Klinika klinika;
 	
-	public AdministratorKlinike(String ime, String prezime, String email, String lozinka, String adresa, String grad,
+	public AdministratorKlinike(String ime, String prezime, String email, String username, String password, String adresa, String grad,
 			String drzava, String brojTelefona) {
-		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
+		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 	}
 	
 	
@@ -24,9 +26,9 @@ public class AdministratorKlinike extends Korisnik{
 	}
 
 
-	public AdministratorKlinike(String ime, String prezime, String email, String lozinka, String adresa, String grad,
+	public AdministratorKlinike(String ime, String prezime, String email, String username, String password, String adresa, String grad,
 			String drzava, String brojTelefona, Klinika klinika) {
-		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
+		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 		this.klinika = klinika;
 	}
 

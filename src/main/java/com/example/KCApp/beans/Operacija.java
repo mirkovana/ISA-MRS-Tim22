@@ -44,7 +44,7 @@ public class Operacija {
 	private Sala sala;
 	
 	@ManyToOne
-	@JoinColumn(name = "idKorisnika", referencedColumnName = "idKorisnika", nullable = false)
+	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
 	private Pacijent pacijent;
 	
 	public Operacija() {}

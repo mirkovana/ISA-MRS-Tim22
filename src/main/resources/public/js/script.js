@@ -15,26 +15,42 @@ function login() {
 	var data = getFormData($("#login"));
 	var s = JSON.stringify(data);
 	$.ajax({
-		url: "rest/login",
-		type: "POST",
-		data: s,
-		contentType: "application/json",
+		url: "/auth/login",
+		method: "POST",
 		dataType: "json",
-		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			console.log(d)
-			if(!d.message) {
-				$("#login_war").text("Pogresan unos!!!");
-				$("#login_war").show();
-			}
-			else{
-			   
-				
-			}
-			}
-		 
+		contentType:"application/json",
+		data: JSON.stringify(user),
+		success: function(result){
+			 localStorage.setItem('user',JSON.stringify(result));
+    location.replace(getAdminUrlSlug(result));
+		}
 	});
 }
+
+function logout(e) {
+	  e.preventDefault();
+	  localStorage.user = null;
+	  location.replace("/login.html");
+	  return false;
+}
+
+function getAdminUrlSlug(user) {
+	  switch(user.role) {
+	    case 'ROLE_ADMINKC':
+	      return '/homepageadminkc.html';
+	    case 'ROLE_ADMINK':
+	      return '/homepageadministratorklinike.html';
+	    case 'ROLE_LEKAR':
+	      return '/homepagelekar.html';
+	    case 'ROLE_MS':
+	      return '/homepagems.html';
+	    case 'ROLE_PACIJENT':
+		  return '/homepagepacijent.html';
+	    default:
+	      return '';
+	  }
+}
+
 //pozivacemo poacijenti
 function setUpUserPage() {
 	$.ajax({
@@ -42,6 +58,9 @@ function setUpUserPage() {
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete: function(data) {
 			pacijenti = JSON.parse(data.responseText);
 			console.log(pacijenti)
@@ -58,6 +77,9 @@ function setUpUserPageAKCSL() {
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete: function(data) {
 			sl = JSON.parse(data.responseText);
 			console.log(sl)
@@ -74,6 +96,9 @@ function setUpUserPageAKCSD() {
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete: function(data) {
 			sd = JSON.parse(data.responseText);
 			console.log(sd)
@@ -90,6 +115,9 @@ function setUpUserPageAK() {
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete: function(data) {
 			sale = JSON.parse(data.responseText);
 			console.log(sale)
@@ -104,6 +132,9 @@ function setUpUserPageAKL() {
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete: function(data) {
 			lekari = JSON.parse(data.responseText);
 			console.log(lekari)
@@ -115,11 +146,19 @@ function setUpUserPageAKL() {
 
 //klinike
 function setUpUserPageAKC() {
+	console.log(localStorage.getItem('user'));
+	console.log(JSON.parse(localStorage.getItem('user')));
+	console.log(JSON.parse(localStorage.getItem('user')).token);
+	console.log(JSON.parse(localStorage.getItem('user')).token.accessToken);
+	console.log('Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken);
 	$.ajax({
 		url: "api/klinike",
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete: function(data) {
 			klinike = JSON.parse(data.responseText);
 			console.log(klinike)
@@ -128,6 +167,7 @@ function setUpUserPageAKC() {
 		}
 	});
 }
+
 //pozivacemo preglede
 function setUpUserPagePP() {
 	$.ajax({
@@ -135,6 +175,9 @@ function setUpUserPagePP() {
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete: function(data) {
 			pregledi = JSON.parse(data.responseText);
 			console.log(pregledi)
@@ -151,6 +194,9 @@ function setUpUserPagePO() {
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete: function(data) {
 			operacije = JSON.parse(data.responseText);
 			console.log(operacije)
@@ -521,6 +567,9 @@ function dodavanjePacijenta(){
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
@@ -547,6 +596,9 @@ function dodavanjeAKC(){
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
@@ -574,6 +626,9 @@ function dodavanjeSL(){
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
@@ -600,6 +655,9 @@ function dodavanjeSD(){
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
@@ -628,6 +686,9 @@ function dodavanjeKlinike(){
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
@@ -643,6 +704,7 @@ function dodavanjeKlinike(){
 	});
 	
 }
+
 function dodavanjeAK(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
@@ -654,6 +716,9 @@ function dodavanjeAK(){
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
@@ -681,8 +746,10 @@ function dodavanjeSala(){
 		type: "POST",
 		data: org,
 		contentType: "application/json",
-		dataType: "json"
-
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    }
 	});
 	
 }
@@ -698,8 +765,10 @@ function dodavanjeLekara(){
 		type: "POST",
 		data: org,
 		contentType: "application/json",
-		dataType: "json"
-
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    }
 	});
 	
 }

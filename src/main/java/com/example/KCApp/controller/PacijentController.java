@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,14 +41,16 @@ public class PacijentController {
 	private PacijentRepository repository;
 	
 	/*PRIKAZ PACIJENTA PO ID-u*/
-	@GetMapping(value = "/pacijenti/{idKorisnika}")
-	public Pacijent findPacijentById(@PathVariable Integer idKorisnika) {
-		Pacijent pacijent = service.get(idKorisnika);
+	@GetMapping(value = "/pacijenti/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public Pacijent findPacijentById(@PathVariable Integer id) {
+		Pacijent pacijent = service.get(id);
 		return pacijent;
 	}
 	
 	/*PRIKAZ PACIJENTA PO IMENU*/
 	@GetMapping(value = "/pacijenti/ime/{ime}") //da li je ok i sta je ono model kod prikaza svih i da li treba i po prezimenu?
+	@PreAuthorize("hasRole('LEKAR') or hasRole('MS')")
 	public List<Pacijent> findPacijentByIme(@PathVariable String ime) {
 		List<Pacijent> listaPacijenataPoImenu = service.findAllByIme(ime);
 		return listaPacijenataPoImenu;
@@ -55,6 +58,7 @@ public class PacijentController {
 	
 	/*PRIKAZ PACIJENTA PO PREZIMENU*/
 	@GetMapping(value = "/pacijenti/prezime/{prezime}")
+	@PreAuthorize("hasRole('LEKAR') or hasRole('MS')")
 	public List<Pacijent> findPacijentByPrezime(@PathVariable String prezime) {
 		List<Pacijent> listaPacijenataPoPrezimenu = service.findAllByPrezime(prezime);
 		return listaPacijenataPoPrezimenu;
@@ -62,6 +66,7 @@ public class PacijentController {
 	
 	/*PRETRAGA PACIJENTA PO KRITERIJUMU - BROJ OSIGURANIKA*/
 	@GetMapping(value = "/pacijenti/brojOsiguranika/{brojOsiguranika}")
+	@PreAuthorize("hasRole('LEKAR') or hasRole('MS')")
 	public Pacijent findPacijentByBrojOsiguranika(@PathVariable int brojOsiguranika) {
 		Pacijent pacijent = service.findByBrojOsiguranika(brojOsiguranika);
 		return pacijent;
@@ -69,6 +74,7 @@ public class PacijentController {
 	
 	/*PRIKAZ SVIH PACIJENATA KLINIKE*/
 	@GetMapping(value="/pacijenti")
+	@PreAuthorize("hasRole('LEKAR') or hasRole('MS') or hasRole('ADMINK')")
 	public List<Pacijent> getAllPacijenti(Model model) {
 		List<Pacijent> listaPacijenata = service.listAll();
 		model.addAttribute("listaPacijenata", listaPacijenata);
@@ -77,13 +83,15 @@ public class PacijentController {
 	
 	/*DODAVANJE PACIJENTA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
 	@PostMapping(value= "/pacijenti",consumes = "application/json")
+	@PreAuthorize("permitAll()") //inace bi trebao to da radi administrator klinickog centra
 	public ResponseEntity<PacijentDTO> savePacijent(@RequestBody PacijentDTO pacijentDTO) {
 
 		Pacijent pacijent = new Pacijent();
 		pacijent.setIme(pacijentDTO.getIme());
 		pacijent.setPrezime(pacijentDTO.getPrezime());
 		pacijent.setEmail(pacijentDTO.getEmail());
-		pacijent.setLozinka(pacijentDTO.getLozinka());
+		pacijent.setUsername(pacijentDTO.getUsername());
+		pacijent.setPassword(pacijentDTO.getPassword());
 		pacijent.setAdresa(pacijentDTO.getAdresa());
 		pacijent.setGrad(pacijentDTO.getGrad());
 		pacijent.setDrzava(pacijentDTO.getDrzava());
@@ -104,20 +112,21 @@ public class PacijentController {
 	}
 	
 	/*UPDATE PACIJENTA*/
-	@PutMapping(value="/pacijenti/{idKorisnika}", consumes = "application/json")
-	public Pacijent updatePacijent(@PathVariable Integer idKorisnika, @Valid @RequestBody PacijentDTO pacijentUpdated) throws NotFoundException {
-		return repository.findById(idKorisnika)
+	@PutMapping(value="/pacijenti/{id}", consumes = "application/json")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public Pacijent updatePacijent(@PathVariable Integer id, @Valid @RequestBody PacijentDTO pacijentUpdated) throws NotFoundException {
+		return repository.findById(id)
 				.map(pacijent->{
 					//klinika.setIdKlinike(klinikaUpdated.getIdKlinike());
 					pacijent.setIme(pacijentUpdated.getIme());
 					pacijent.setPrezime(pacijentUpdated.getPrezime());
-					pacijent.setLozinka(pacijentUpdated.getLozinka());
+					pacijent.setPassword(pacijentUpdated.getPassword());
 					pacijent.setAdresa(pacijentUpdated.getAdresa());
 					pacijent.setGrad(pacijentUpdated.getGrad());
 					pacijent.setDrzava(pacijentUpdated.getDrzava());
 					pacijent.setBrojTelefona(pacijentUpdated.getBrojTelefona());
 					return repository.save(pacijent);
-				}).orElseThrow(() -> new NotFoundException("Pacijent not found with id " + idKorisnika));
+				}).orElseThrow(() -> new NotFoundException("Pacijent not found with id " + id));
 		
 	}
 	

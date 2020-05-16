@@ -1,114 +1,29 @@
 package com.example.KCApp.DTO;
 
+import com.example.KCApp.beans.Authority;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Ocena;
 import com.example.KCApp.beans.TipPregleda;
+import com.example.KCApp.beans.UserTokenState;
 
-public class LekarDTO {
+public class LekarDTO extends UserDTO{
 	
-	private String ime;
-	private String prezime;
-	private String email;
-	private String lozinka;
-	private String adresa;
-	private String grad;
-	private String drzava;
-	private String brojTelefona;
-	private Integer idKorisnika;
 	private Ocena ocena;
 	private TipPregleda tipPregleda;
 	private RadniKalendarLDTO radniKalendarL;
 	private Integer klinika;
 	
-	public LekarDTO() {
-	}
-
 	public LekarDTO(Lekar lekar) {
-		ime = lekar.getIme();
-		prezime = lekar.getPrezime();
-		email = lekar.getEmail();
-		lozinka = lekar.getLozinka();
-		adresa = lekar.getAdresa();
-		grad = lekar.getGrad();
-		drzava = lekar.getDrzava();
-		brojTelefona = lekar.getBrojTelefona();
-		idKorisnika = lekar.getIdKorisnika();
-		ocena = lekar.getOcena();
-		tipPregleda = lekar.getTipPregleda();
-		radniKalendarL = new RadniKalendarLDTO(lekar.getRadniKalendar());
-		klinika = lekar.getKlinika().getIdKlinike();
 	}
 
-	public String getIme() {
-		return ime;
-	}
-
-	public void setIme(String ime) {
-		this.ime = ime;
-	}
-
-	public String getPrezime() {
-		return prezime;
-	}
-
-	public void setPrezime(String prezime) {
-		this.prezime = prezime;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getLozinka() {
-		return lozinka;
-	}
-
-	public void setLozinka(String lozinka) {
-		this.lozinka = lozinka;
-	}
-
-	public String getAdresa() {
-		return adresa;
-	}
-
-	public void setAdresa(String adresa) {
-		this.adresa = adresa;
-	}
-
-	public String getGrad() {
-		return grad;
-	}
-
-	public void setGrad(String grad) {
-		this.grad = grad;
-	}
-
-	public String getDrzava() {
-		return drzava;
-	}
-
-	public void setDrzava(String drzava) {
-		this.drzava = drzava;
-	}
-
-	public String getBrojTelefona() {
-		return brojTelefona;
-	}
-
-	public void setBrojTelefona(String brojTelefona) {
-		this.brojTelefona = brojTelefona;
-	}
-
-	public Integer getIdKorisnika() {
-		return idKorisnika;
-	}
-
-	public void setIdKorisnika(Integer idKorisnika) {
-		this.idKorisnika = idKorisnika;
+	public LekarDTO(Lekar lekar, UserTokenState token) {
+		super(lekar.getIme(), lekar.getPrezime(), lekar.getEmail(), lekar.getUsername(), lekar.getPassword(), lekar.getAdresa(), lekar.getGrad(), lekar.getDrzava(), lekar.getBrojTelefona(), lekar.getLastPasswordResetDate(), lekar.getId(), token);
+        ocena = lekar.getOcena();
+        tipPregleda = lekar.getTipPregleda();
+        radniKalendarL = new RadniKalendarLDTO(lekar.getRadniKalendar());
+        klinika = lekar.getKlinika().getIdKlinike();
+        for(Object au : lekar.getAuthorities()) {
+			this.setRole(((Authority) au).getName());}
 	}
 
 	public Integer getKlinika() {
@@ -142,7 +57,4 @@ public class LekarDTO {
 	public void setRadniKalendarL(RadniKalendarLDTO radniKalendarL) {
 		this.radniKalendarL = radniKalendarL;
 	}
-	
-	
-
 }

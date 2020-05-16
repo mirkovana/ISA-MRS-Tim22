@@ -22,7 +22,7 @@ public class ZahtevZaPregled {
 	private Integer idZahtevaZaPregled;
 	
 	@ManyToOne
-	@JoinColumn(name = "idKorisnika", referencedColumnName = "idKorisnika", nullable = false)
+	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
 	private Pacijent pacijent;
 	
 	//lekar?

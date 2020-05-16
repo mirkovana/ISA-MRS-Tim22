@@ -41,7 +41,7 @@ public class ZdravstveniKarton {
     //private Map<TipPregleda, String> infoPregled; //da li ostaviti ovako ili nekako drugacije?
 	
 	@OneToOne(fetch = LAZY)//na drugu stranu
-	@JoinColumn(name = "idKorisnika")	
+	@JoinColumn(name = "id")	
 	@JsonBackReference
 	private Pacijent pacijent;
     

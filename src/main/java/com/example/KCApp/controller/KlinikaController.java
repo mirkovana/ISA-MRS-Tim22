@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.example.KCApp.DTO.KlinikaDTO;
 import com.example.KCApp.beans.Cenovnik;
 import com.example.KCApp.beans.KlinickiCentar;
@@ -49,6 +50,7 @@ public class KlinikaController {
 	
 	/*ISPISIVANJE KLINIKA*/
 	@GetMapping(value="/klinike")
+	@PreAuthorize("hasRole('ADMINKC') or hasRole('PACIJENT')")
 	public List<Klinika> getAllKlinike(Model model) {
 		List<Klinika> listaKlinika = service.listAll();
 		model.addAttribute("listaKlinika", listaKlinika);
@@ -57,6 +59,7 @@ public class KlinikaController {
 	
 	/*BRISANJE KLINIKE SA ODREDJENIM ID*/
 	@DeleteMapping(value= "/klinike/{idKlinike}")
+	@PreAuthorize("hasRole('ADMINKC')")
 	public String deleteKlinika(@PathVariable Integer idKlinike) {
 		
 		Klinika klinika = service.get(idKlinike);
@@ -70,6 +73,7 @@ public class KlinikaController {
 	}
 
 	@PostMapping(value= "/klinike",consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINKC')")
 	public ResponseEntity<KlinikaDTO> saveKlinika(@RequestBody KlinikaDTO klinikaDTO) {
 
 		
@@ -105,6 +109,7 @@ public class KlinikaController {
 	
 	/*UPDATE*/
 	@PutMapping(value="/klinike/{idKlinike}", consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINK')")
 	public Klinika updateKlinika(@PathVariable Integer idKlinike, @Valid @RequestBody KlinikaDTO klinikaUpdated) throws NotFoundException {
 		return repository.findById(idKlinike)
 				.map(klinika->{
@@ -124,6 +129,7 @@ public class KlinikaController {
 	
 	/*PRETRAGA KLINIKA PO KRITERIJUMU - OCENA*/
 	@GetMapping(value = "/klinike/ocena/{ocena}")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public List<Klinika> findAllKlinikaByOcena(@PathVariable Ocena ocena) {
 		List<Klinika> klinika = service.findAllByOcena(ocena);
 		return klinika;
@@ -131,6 +137,7 @@ public class KlinikaController {
 	
 	/*PRETRAGA KLINIKA PO KRITERIJUMU - GRAD*/
 	@GetMapping(value = "/klinike/grad/{grad}")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public List<Klinika> findAllKlinikaByGrad(@PathVariable String grad) {
 		List<Klinika> klinika = service.findAllByGrad(grad);
 		return klinika;
