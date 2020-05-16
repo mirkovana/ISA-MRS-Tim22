@@ -18,7 +18,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "lekar")
 @SequenceGenerator(name = "lekarIdSeq", sequenceName = "lekarIdGen", initialValue = 1, allocationSize = 1)
-public class Lekar extends Korisnik {
+public class Lekar extends User {
+
+	private static final long serialVersionUID = -3774628095290548261L;
 
 	@OneToOne(fetch = LAZY, mappedBy="lekar", cascade = ALL)
 	@JoinColumn(name = "idRadnogKalendara")	
@@ -38,14 +40,14 @@ public class Lekar extends Korisnik {
 	
 	//klasa ZahtevZaOdmor
 		
-	public Lekar(String ime, String prezime, String email, String lozinka, String adresa, String grad, String drzava,
+	public Lekar(String ime, String prezime, String email, String username, String password, String adresa, String grad, String drzava,
 			String brojTelefona) {
-		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
+		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 	}
 
-	public Lekar(String ime, String prezime, String email, String lozinka, String adresa, String grad, String drzava,
+	public Lekar(String ime, String prezime, String email, String username, String password, String adresa, String grad, String drzava,
 			String brojTelefona, RadniKalendarL radniKalendarL, Ocena ocena, TipPregleda tipPregleda) {
-		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
+		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 		this.radniKalendarL = radniKalendarL;
 		this.ocena = ocena;
 		this.tipPregleda = tipPregleda;

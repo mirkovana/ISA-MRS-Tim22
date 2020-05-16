@@ -27,7 +27,7 @@ public class Recept {
 	private boolean overen;
 	
 	@ManyToOne //da li ovo ili ima nesto za 0
-	@JoinColumn(name = "idKorisnika", referencedColumnName = "idKorisnika", nullable = false)
+	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
 	private MedicinskaSestra medicinskaSestra;
 	
 	@ManyToOne

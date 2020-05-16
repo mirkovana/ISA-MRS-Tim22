@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.KCApp.DTO.PacijentDTO;
 import com.example.KCApp.beans.Klinika;
@@ -46,6 +47,7 @@ public class LekarController {
 	
 	/*PRIKAZ SVIH LEKARA KLINIKE*/
 	@GetMapping(value="/lekari")
+	@PreAuthorize("hasRole('ADMINK')")
 	public List<Lekar> getAllLekari(Model model) {
 		List<Lekar> listaLekara = service.listAll();
 		model.addAttribute("listaLekara", listaLekara);
@@ -53,14 +55,16 @@ public class LekarController {
 	}
 	
 	/*PRIKAZ LEKARA PO ID-u*/
-	@GetMapping(value = "/lekari/{idKorisnika}")
-	public Lekar findLekarById(@PathVariable Integer idKorisnika) {
-		Lekar lekar = service.get(idKorisnika);
+	@PreAuthorize("hasRole('ADMINK')")
+	@GetMapping(value = "/lekari/{id}")
+	public Lekar findLekarById(@PathVariable Integer id) {
+		Lekar lekar = service.get(id);
 		return lekar;
 	}
 	
 	/*PRETRAGA LEKARA PO KRITERIJUMU - TIP PREGLEDA*/
 	@GetMapping(value = "/lekari/tipPregleda/{tipPregleda}")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public List<Lekar> findAllLekarByTipPregleda(@PathVariable TipPregleda tipPregleda) {
 		List<Lekar> lekar = service.findAllByTipPregleda(tipPregleda);
 		return lekar;
@@ -68,13 +72,15 @@ public class LekarController {
 	
 	/*DODAVANJE LEKARA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
 	@PostMapping(value= "/lekari",consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINK')")
 	public ResponseEntity<LekarDTO> saveLekar(@RequestBody LekarDTO lekarDTO) {
 
 		Lekar lekar = new Lekar();
 		lekar.setIme(lekarDTO.getIme());
 		lekar.setPrezime(lekarDTO.getPrezime());
 		lekar.setEmail(lekarDTO.getEmail());
-		lekar.setLozinka(lekarDTO.getLozinka());
+		lekar.setUsername(lekarDTO.getUsername());
+		lekar.setPassword(lekarDTO.getPassword());
 		lekar.setAdresa(lekarDTO.getAdresa());
 		lekar.setGrad(lekarDTO.getGrad());
 		lekar.setDrzava(lekarDTO.getDrzava());
@@ -96,17 +102,18 @@ public class LekarController {
 	
 	
 	/*BRISANJE LEKARA SA ODREDJENIM ID*/
-	@DeleteMapping(value= "/lekari/{idKorisnika}")
-	public String deleteLekar(@PathVariable Integer idKorisnika) {
+	@DeleteMapping(value= "/lekari/{id}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public String deleteLekar(@PathVariable Integer id) {
 		
-		Lekar lekar = service.get(idKorisnika);
+		Lekar lekar = service.get(id);
 	
 		if (lekar != null) {
-			service.delete(idKorisnika);
-			return "Uspesno obrisana lekara sa id: " + idKorisnika;
+			service.delete(id);
+			return "Uspesno obrisana lekara sa id: " + id;
 		} 
 		else {
-			return "Lekar sa id: " + idKorisnika + " nije pronadjen"; //ne prikazuje poruku kad se stavi id koji ne postoji
+			return "Lekar sa id: " + id + " nije pronadjen"; //ne prikazuje poruku kad se stavi id koji ne postoji
 		}
 	}
 }

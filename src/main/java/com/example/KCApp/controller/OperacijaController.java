@@ -3,6 +3,7 @@ package com.example.KCApp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ public class OperacijaController {
 	
 	/*ISPISIVANJE OPERACIJA*/
 	@GetMapping(value="/operacije")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public List<Operacija> getAllOperacije(Model model) {
 		List<Operacija> listaOperacija = service.listAll();
 		model.addAttribute("listaOperacija", listaOperacija);

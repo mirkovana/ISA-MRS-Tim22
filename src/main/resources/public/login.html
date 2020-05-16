@@ -8,36 +8,64 @@
 <script src="js/script.js"></script>
 <link href="style.css" rel="stylesheet">
 <link rel="stylesheet" href="bootstrap-4.4.1-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./styleRegistracija.css">
 
 <script src="bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
-<script>
-	$(document).ready(function() {
-		isLoggedIn();
-	});
-</script>
-</head>
-<body>
-	<form id="login" onsubmit="return(login());">
-			<div class="form-group row">
-				<div class="col-xs-4" style="width: 300px;">
-					<label for="exampleInputEmail1">Email address</label> <input
-						type="email" class="form-control" id="exampleInputEmail1"
-						aria-describedby="emailHelp" placeholder="Enter email"
-						name="email" required>
-				</div>
-			</div>
-			<div class="form-group row">
-				<div class="col-xs-4" style="width: 300px;">
-					<label for="exampleInputPassword1">Password</label> <input
-						type="password" class="form-control" id="exampleInputPassword1"
-						placeholder="Password" name="lozinka" required>
-				</div>
-			</div>
-			<div class="form-group row">
-				<button type="submit" class="btn btn-primary">Prijavi se</button>
-			</div>
-			<fieldset id="login_war"><fieldset>
-	</form>
-	<!-- Default form login -->
-</body>
+    <script>
+    
+    var loginLink = "/auth/login";
+    $(document).ready(function(){
+      $('.message a').click(function(){
+        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+      });
+    	$(".loginForm").on('submit',function(e){
+    		e.preventDefault();
+    		
+    		user = {};
+    		user.username = document.getElementById("username").value;
+    		user.password = document.getElementById("password").value;
+    		
+    		$.ajax({
+    			url: loginLink,
+    			method: "POST",
+    			dataType: "json",
+    			contentType:"application/json",
+    			data: JSON.stringify(user),
+    			success: function(result){
+    				console.log(result);
+    				 localStorage.setItem('user',JSON.stringify(result));
+            location.replace(getAdminUrlSlug(result));
+    			
+    			}
+    		})
+    	})
+    })
+    </script>
+  </head>
+  <body>
+    <div class="alert" id="warning-message" hidden>
+    </div>
+    <span id="message"></span>
+    <div class="login-page">
+      <div class="form">
+        <form class="loginForm">
+          <table>
+              <tr>
+	                <td align="right">Email</td>
+	                <td><input id="username" type="text" placeholder="Username"/></td>
+	            </tr>
+	            <tr>
+	                <td align="right">Lozinka</td>
+	                <td><input id="password" type="password" placeholder="Password"/></td>
+	            </tr>
+	            <tr>
+	                <td colspan=2 align="center"><button type="submit" class="btn btn-secondary">Login</button></td>
+	            </tr>
+          </table>
+          <p class="message">Not registered? <a href="/index.html">Create an account</a></p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
 </html>

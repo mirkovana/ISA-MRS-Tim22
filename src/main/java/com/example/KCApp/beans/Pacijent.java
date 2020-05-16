@@ -24,8 +24,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name=Pacijent.TABLE_NAME)
-public class Pacijent extends Korisnik{
+public class Pacijent extends User{
 	
+	private static final long serialVersionUID = 7590433633631961539L;
+
+
 	public static final String TABLE_NAME= "PACIJENTI";
 	
 
@@ -111,10 +114,10 @@ public class Pacijent extends Korisnik{
 		return TABLE_NAME;
 	}
 
-	public Pacijent(String ime, String prezime, String email, String lozinka, String adresa, String grad, String drzava,
+	public Pacijent(String ime, String prezime, String email, String username, String password, String adresa, String grad, String drzava,
 			String brojTelefona, ZdravstveniKarton zdravstveniKarton, int brojOsiguranika, Set<Pregled> pregledi,
 			Set<ZahtevZaPregled> zahteviZP) {
-		super(ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
+		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 		this.zdravstveniKarton = zdravstveniKarton;
 		this.brojOsiguranika = brojOsiguranika;
 		this.pregledi = pregledi;
@@ -123,13 +126,16 @@ public class Pacijent extends Korisnik{
 		
 	}
 
-	public Pacijent(Integer idKorisnika, String ime, String prezime, String email, String lozinka, String adresa, String grad, String drzava,
+	public Pacijent(Integer id, String ime, String prezime, String email, String username, String password, String adresa, String grad, String drzava,
 			String brojTelefona, int brojOsiguranika) {
-		super(idKorisnika, ime, prezime, email, lozinka, adresa, grad, drzava, brojTelefona);
+		super(id, ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 		this.brojOsiguranika = brojOsiguranika;
 	}
 	
-	
+	public Pacijent(int brojOsiguranika) {
+		//super(idKorisnika);
+		this.brojOsiguranika = brojOsiguranika;
+	}
 	
 	
 }

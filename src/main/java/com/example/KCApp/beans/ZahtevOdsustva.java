@@ -33,7 +33,7 @@ public class ZahtevOdsustva {
 	private Date datumKraja;
 	
 	@ManyToOne
-	@JoinColumn(name = "idKorisnika", referencedColumnName = "idKorisnika", nullable = false)
+	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
 	private Lekar lekar;
 	
 	//@ManyToOne

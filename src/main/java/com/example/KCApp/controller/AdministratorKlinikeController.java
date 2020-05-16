@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.KCApp.DTO.AdministratorKlinickogCentraDTO;
 import com.example.KCApp.DTO.AdministratorKlinikeDTO;
@@ -31,15 +32,17 @@ public class AdministratorKlinikeController {
 	private KlinikaService klinikaService;
 	
 	/*PRIKAZ ADMINISTRATORA KLINIKE PO ID-u*/
-	@GetMapping(value = "/adminiKlinike/{idKorisnika}")
-	public AdministratorKlinike findAdministratorKlinikeById(@PathVariable Integer idKorisnika) {
-		AdministratorKlinike administratorKlinike = service.get(idKorisnika);
+	@GetMapping(value = "/adminiKlinike/{id}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public AdministratorKlinike findAdministratorKlinikeById(@PathVariable Integer id) {
+		AdministratorKlinike administratorKlinike = service.get(id);
 		return administratorKlinike;
 	}
 	
 	
 	/*PRIKAZ SVIH ADMINA KLINIKE*/
 	@GetMapping(value="/adminiKlinike")
+	@PreAuthorize("hasRole('ADMINKC')")
 	public List<AdministratorKlinike> getAllAdministratorKlinike(Model model) {
 		List<AdministratorKlinike> administratorKlinike = service.listAll();
 		model.addAttribute("administratorKlinike", administratorKlinike);
@@ -48,13 +51,15 @@ public class AdministratorKlinikeController {
 	
 	/*DODAVANJE ADMINISTRATORA KLINIKE*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
 	@PostMapping(value= "/adminiKlinike",consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINKC') or hasRole('ADMINK')")
 	public ResponseEntity<AdministratorKlinikeDTO> saveAdminKlinike(@RequestBody AdministratorKlinikeDTO administratorKlinikeDTO) {
 
 		AdministratorKlinike administratorKlinike = new AdministratorKlinike();
 		administratorKlinike.setIme(administratorKlinikeDTO.getIme());
 		administratorKlinike.setPrezime(administratorKlinikeDTO.getPrezime());
 		administratorKlinike.setEmail(administratorKlinikeDTO.getEmail());
-		administratorKlinike.setLozinka(administratorKlinikeDTO.getLozinka());
+		administratorKlinike.setUsername(administratorKlinikeDTO.getUsername());
+		administratorKlinike.setPassword(administratorKlinikeDTO.getPassword());
 		administratorKlinike.setAdresa(administratorKlinikeDTO.getAdresa());
 		administratorKlinike.setGrad(administratorKlinikeDTO.getGrad());
 		administratorKlinike.setDrzava(administratorKlinikeDTO.getDrzava());

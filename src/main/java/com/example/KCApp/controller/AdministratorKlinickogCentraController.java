@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.KCApp.DTO.AdministratorKlinickogCentraDTO;
 import com.example.KCApp.beans.AdministratorKlinickogCentra;
@@ -26,22 +27,25 @@ public class AdministratorKlinickogCentraController {
 	@Autowired
 	private KlinickiCentarService kcService;
 	
-	/*PRIKAZ PACIJENTA PO ID-u*/
-	@GetMapping(value = "/adminiKC/{idKorisnika}")
-	public  AdministratorKlinickogCentra findPacijentById(@PathVariable Integer idKorisnika) {
-		 AdministratorKlinickogCentra adminiKC = service.get(idKorisnika);
+	/*PRIKAZ ADMINA KLINICKOG CENTRA PO ID-u*/
+	@GetMapping(value = "/adminiKC/{id}")
+	@PreAuthorize("hasRole('ADMINKC')")
+	public  AdministratorKlinickogCentra findPacijentById(@PathVariable Integer id) {
+		 AdministratorKlinickogCentra adminiKC = service.get(id);
 		return adminiKC;
 	}
 	
-	/*DODAVANJE PACIJENTA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
+	/*DODAVANJE ADMINISTRATORA KLINICKOG CENTRA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
 	@PostMapping(value= "/adminiKC",consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINKC')")
 	public ResponseEntity<AdministratorKlinickogCentraDTO> saveAdminKC(@RequestBody AdministratorKlinickogCentraDTO administratorKlinickogCentraDTO) {
 
 		AdministratorKlinickogCentra administratorKlinickogCentra = new AdministratorKlinickogCentra();
 		administratorKlinickogCentra.setIme(administratorKlinickogCentraDTO.getIme());
 		administratorKlinickogCentra.setPrezime(administratorKlinickogCentraDTO.getPrezime());
 		administratorKlinickogCentra.setEmail(administratorKlinickogCentraDTO.getEmail());
-		administratorKlinickogCentra.setLozinka(administratorKlinickogCentraDTO.getLozinka());
+		administratorKlinickogCentra.setUsername(administratorKlinickogCentraDTO.getUsername());
+		administratorKlinickogCentra.setPassword(administratorKlinickogCentraDTO.getPassword());
 		administratorKlinickogCentra.setAdresa(administratorKlinickogCentraDTO.getAdresa());
 		administratorKlinickogCentra.setGrad(administratorKlinickogCentraDTO.getGrad());
 		administratorKlinickogCentra.setDrzava(administratorKlinickogCentraDTO.getDrzava());
