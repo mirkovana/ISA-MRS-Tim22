@@ -562,14 +562,14 @@ function dodavanjePacijenta(){
 	
 	var org = JSON.stringify(data);
 	$.ajax({
-		url: "api/pacijenti",
+		url: "auth/signup",
 		type: "POST",
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
-		headers: {
+		/*headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },
+	    },*/
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {

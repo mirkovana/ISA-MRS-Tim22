@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.KCApp.DTO.PacijentDTO;
+import com.example.KCApp.DTO.UserDTO;
 import com.example.KCApp.beans.Authority;
 import com.example.KCApp.beans.User;
 import com.example.KCApp.beans.UserRequest;
@@ -44,8 +45,8 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 
-	@Override
-	public User save(PacijentDTO userRequest) {
+	/*@Override
+	public User save(UserDTO userRequest) {
 		User u = new User();
 		u.setUsername(userRequest.getUsername());
 		// pre nego sto postavimo lozinku u atribut hesiramo je
@@ -60,6 +61,11 @@ public class UserServiceImpl implements UserService {
 		
 		u = this.userRepository.save(u);
 		return u;
+	}*/
+	
+	public User save(User userRequest) {
+		return this.userRepository.save(userRequest);
 	}
+	
 
 }

@@ -31,6 +31,8 @@ public class AuthorityServiceImpl implements AuthorityService {
     auths.add(auth);
     return auths;
   }
-
-
+  
+  public Authority findOne(Integer id) {
+		return authorityRepository.getOne(id);
+  }
 }
