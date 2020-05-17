@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.example.KCApp.beans.User;
 import com.example.KCApp.DTO.PacijentDTO;
+import com.example.KCApp.DTO.UserDTO;
 
 public interface UserService {
     User findById(Integer id);
     User findByUsername(String username);
     List<User> findAll ();
     //bilo je UserRequers, ali nama je ta klasa identicna sa PacijentDTO
-	User save(PacijentDTO userRequest);
+	User save(User userRequest);
 }

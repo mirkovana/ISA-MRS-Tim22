@@ -1,5 +1,6 @@
 package com.example.KCApp.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ import com.example.KCApp.security.TokenUtils;
 import com.example.KCApp.security.auth.JwtAuthenticationRequest;
 import com.example.KCApp.service.AdministratorKlinickogCentraService;
 import com.example.KCApp.service.AdministratorKlinikeService;
+import com.example.KCApp.service.AuthorityService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.MedicinskaSestraService;
 import com.example.KCApp.service.PacijentService;
@@ -89,6 +91,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private PacijentService pacijentService;
+	
+	@Autowired
+	private AuthorityService authorityService;
 
 	// Prvi endpoint koji pogadja korisnik kada se loguje.
 	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -145,17 +150,21 @@ public class AuthenticationController {
 
 	// Endpoint za registraciju novog korisnika
 	@PostMapping("/signup")
-	public ResponseEntity<User> addUser(@RequestBody PacijentDTO userRequest, UriComponentsBuilder ucBuilder) {
-
-		User existUser = this.userService.findByUsername(userRequest.getUsername());
-		if (existUser != null) {
-			throw new ResourceConflictException(userRequest.getId(), "Username already exists");
-		}
-
-		User user = this.userService.save(userRequest);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
+	public ResponseEntity<?> addUser(@RequestBody UserDTO userData) {
+		 	Pacijent user = new Pacijent();
+		 	user.setPassword(passwordEncoder.encode(userData.getPassword()));
+		 	user.setUsername(userData.getUsername());
+		 	user.setGrad(userData.getGrad());
+		 	user.setDrzava(userData.getDrzava());
+		 	user.setBrojTelefona(userData.getBrojTelefona());
+		 	user.setIme(userData.getIme());
+		 	user.setPrezime(userData.getPrezime());
+		 	user.setEmail(userData.getEmail());
+		 	user.setAdresa(userData.getAdresa());
+		 	user.setLastPasswordResetDate(userData.getLastPasswordResetDate());
+		 	user.setAuthorities(Arrays.asList(authorityService.findOne(5)));
+		 	userService.save(user);
+		 	return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 
 	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
