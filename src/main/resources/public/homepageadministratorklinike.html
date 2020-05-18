@@ -17,7 +17,7 @@
 		</div>
 			<div class="navbar" id="myForm">
 				<a href="#home" data-target="#myModal">Pocetna stranica</a>
-				<a href="#profil">Profil</a>
+				<a href="#profil" onclick="pregledModAK()">Profil</a>
 				<a href="#listapacijenata" onClick="setUpUserPage()">Lista pacijenata</a>
 				<a href="#listalekara" OnClick="setUpUserPageAKL()">Lista lekara</a>
 				<a href="#spisaksala" onClick="setUpUserPageAK()">Spisak sala</a>
@@ -32,5 +32,11 @@
 			  </table>
               <table class="table" id="tabela_pacijenti">
               </table>
+              <div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
+				<form class="modal-content animate" action="" id="modalnaF"
+					onsubmit="">
+					<div class="form-group" id="modalnaForma"></div>
+				</form>
+			</div>
 	</body>
 </html>
