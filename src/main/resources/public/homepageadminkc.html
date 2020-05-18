@@ -20,7 +20,7 @@
 		
 			<div class="navbar"  id="myForm">
 				<a href="#home" data-target="#myModal">Pocetna stranica</a>
-				<a href="#profil">Profil</a>
+				<a href="#profil" onclick="pregledModAKC()">Profil</a>
 				<a href="#sifrarnikLekova" onClick="setUpUserPageAKCSL()">Prikaz sifrarnika lekova</a>
 				<a href="#sifrarnikDijagnoza" onClick="setUpUserPageAKCSD()">Prikaz sifrarnika dijagnoza</a>
 				<a href="./dodavanjeSL.html" >Dodavanje sifrarnika lekova</a>
@@ -37,6 +37,11 @@
 			  <table class="table" id="tabela_sd">
 			  </table>
 
-	
+			<div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
+						<form class="modal-content animate" action="" id="modalnaF"
+					onsubmit="">
+					<div class="form-group" id="modalnaForma"></div>
+				</form>
+			</div>
 	</body>
 </html>
