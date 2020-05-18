@@ -19,7 +19,7 @@
 		</div>
         <div class="navbar">
             <a href="#homepac" data-target="#myModalpac">Pocetna stranica</a>
-            <a href="#profilpac">Profil</a>
+            <a href="#profilpac" onclick="pregledModPacijent()">Profil</a>
             <a href="#listaklinika" onClick="setUpUserPageAKC()">Lista klinika</a>
             <a href="#istorijapregleda" onClick="setUpUserPagePP()">Istorija pregleda</a>
             <a href="#istorijaoperacija" onClick="setUpUserPagePO()">Istorija operacija</a>
@@ -32,5 +32,11 @@
 		</table>
 		<table class="table table-light" id="tabela_klinike">
 		</table>
+		<div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
+				<form class="modal-content animate" action="" id="modalnaF"
+					onsubmit="">
+					<div class="form-group" id="modalnaForma"></div>
+				</form>
+		</div>
 	</body>
 </html>
