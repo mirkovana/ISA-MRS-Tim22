@@ -17,6 +17,7 @@ INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, dr
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (3, 'kor3@nesto.com', '$2a$04$52k6A0/UyGxOynirBrA0Rujaf3P7.CjK6EvQYm4.IdOVHtxTegqRW', 'Marko', 'Markovic', 'kor3@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (4, 'kor4@nesto.com', '$2a$04$KqyVa3roUm.huHtwyuMqAeYoeKYSLG02chedIZwwRijp5UpWuNv4K', 'Marko', 'Markovic', 'kor4@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (5, 'kor5@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Marko', 'Markovic', 'kor5@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
+INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (6, 'kor6@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Jovana', 'Markovic', 'kor6@nesto.com', 'Perina 12', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 
 insert into pacijenti(id,broj_osiguranika) values (5 ,123);
 --insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id_korisnika) values (1, 1.05, 'A+', 55.5, 170.00, 5);
@@ -48,6 +49,7 @@ insert into administrator_klinickog_centra(id, id_klinickog_centra)values(1,1);
 insert into administrator_klinike(id, id_klinike)values(2,1);
 
 insert into medicinska_sestra(id, id_klinike )values(4,1 );
+insert into medicinska_sestra(id, id_klinike )values(6,1 );
 
 insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (1, 10, 'Sala10', 1);
 insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (2, 11, 'Sala11', 1);
@@ -62,7 +64,7 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 2);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 5);
-
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 4);
 
 
 

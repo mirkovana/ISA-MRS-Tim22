@@ -59,7 +59,7 @@ public class User implements UserDetails{
     private Timestamp lastPasswordResetDate;
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="korisnikIdGen")
-	@SequenceGenerator(name = "korisnikIdGen", sequenceName = "korisnik_id_seq", initialValue = 6, allocationSize=1)
+	@SequenceGenerator(name = "korisnikIdGen", sequenceName = "korisnik_id_seq", initialValue = 7, allocationSize=1)
 	@Column(name="id", unique=true, nullable=false)
 	private Integer id;
 

@@ -159,7 +159,7 @@ public class AuthenticationController {
 		 	user.setBrojTelefona(userData.getBrojTelefona());
 		 	user.setIme(userData.getIme());
 		 	user.setPrezime(userData.getPrezime());
-		 	user.setEmail(userData.getEmail());
+		 	user.setEmail(userData.getUsername());
 		 	user.setAdresa(userData.getAdresa());
 		 	user.setLastPasswordResetDate(userData.getLastPasswordResetDate());
 		 	user.setAuthorities(Arrays.asList(authorityService.findOne(5)));
