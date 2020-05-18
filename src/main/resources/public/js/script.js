@@ -941,3 +941,113 @@ function pregledModPacijent(){
 		$("#modal-wrapper").show();
 	
 }
+
+function pregledModLekar(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$("#modalnaForma div").remove(); 
+	
+	console.log(obj);
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Profil lekara</h1></div>
+			<div class="container">
+			<br>
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="ime">Ime</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="msIme" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="msPrezime">Prezime</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="msPrezime" id="msPrezime" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="email">Email</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="password">Lozinka</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="adresa">Adresa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="grad">Grad</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" disabled></td>
+					</tr>					
+					<tr>
+					<td  class='align-middle'><label for="drzava">Drzava</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" disabled></td>
+					</tr>					
+					<tr>
+					<td  class='align-middle'><label for="brojTelefona">Broj telefona</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" disabled></td>
+					</tr>				
+				</tbody>
+			</table>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+	
+}
+
+function pregledModAK(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$("#modalnaForma div").remove(); 
+	
+	console.log(obj);
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Profil administratora klinike</h1></div>
+			<div class="container">
+			<br>
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="ime">Ime</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="msIme" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="msPrezime">Prezime</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="msPrezime" id="msPrezime" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="email">Email</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="password">Lozinka</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="adresa">Adresa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="grad">Grad</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" disabled></td>
+					</tr>					
+					<tr>
+					<td  class='align-middle'><label for="drzava">Drzava</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" disabled></td>
+					</tr>					
+					<tr>
+					<td  class='align-middle'><label for="brojTelefona">Broj telefona</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" disabled></td>
+					</tr>				
+				</tbody>
+			</table>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+	
+}
