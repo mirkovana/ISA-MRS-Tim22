@@ -18,7 +18,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,9 +74,14 @@ public class AuthenticationController {
 	@Autowired
 	private ObjectMapper mapper;
 	
+	//OVAKO JE BILO PRE
+	/*@Autowired
+	@Lazy
+	private PasswordEncoder passwordEncoder;*/
+	
 	@Autowired
 	@Lazy
-	private PasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private AdministratorKlinickogCentraService AKCService;
@@ -101,6 +107,8 @@ public class AuthenticationController {
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
 			HttpServletResponse response) {
 
+		System.out.println("NAS ISPIS: " + authenticationRequest.getUsername());
+		System.out.println("NAS ISPIS: " + authenticationRequest.getPassword());
 		// 
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),

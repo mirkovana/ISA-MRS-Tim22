@@ -559,8 +559,9 @@ function makeTableRowLekari(l) {
 
 function dodavanjePacijenta(){
 	var data = getFormData($("#formaFiltr"));
-	
+	console.log(data);
 	var org = JSON.stringify(data);
+	//localStorage.setItem('user',JSON.stringify(data));
 	$.ajax({
 		url: "auth/signup",
 		type: "POST",
@@ -577,7 +578,8 @@ function dodavanjePacijenta(){
 				$("#neuspesno").show();
 				
 			}else{
-				window.location.replace("./homepagepacijent.html");
+				localStorage.setItem('user',JSON.stringify(data));
+				window.location.replace("./login.html");
 			}
 		} 
 
