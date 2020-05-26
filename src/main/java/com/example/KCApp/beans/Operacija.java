@@ -106,6 +106,15 @@ public class Operacija {
 	public void setSala(Sala sala) {
 		this.sala = sala;
 	}
+
+	public Pacijent getPacijent() {
+		return pacijent;
+	}
+
+	public void setPacijent(Pacijent pacijent) {
+		this.pacijent = pacijent;
+	}
+	
 	
 	
 }

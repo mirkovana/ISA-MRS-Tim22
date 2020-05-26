@@ -170,8 +170,9 @@ function setUpUserPageAKC() {
 
 //pozivacemo preglede
 function setUpUserPagePP() {
+	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
-		url: "api/pregledi",
+		url: "api/pregledi/" + obj.id,
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
@@ -189,8 +190,10 @@ function setUpUserPagePP() {
 
 //pozivacemo operacije
 function setUpUserPagePO() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	console.log("DA VIDIM IDDDDDDDDDDDDDDDDDD: "+obj.id);
 	$.ajax({
-		url: "api/operacije",
+		url: "api/operacije/" + obj.id,
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
