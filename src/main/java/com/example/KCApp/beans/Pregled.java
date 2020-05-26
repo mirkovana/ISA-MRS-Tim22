@@ -138,6 +138,13 @@ public class Pregled {
 	public void setPacijent(Pacijent pacijent) {
 		this.pacijent = pacijent;
 	}
+
+	@Override
+	public String toString() {
+		return "Pregled [idPregleda=" + idPregleda + ", vreme=" + vreme + ", trajanje=" + trajanje + ", tipPregleda="
+				+ tipPregleda + ", sala=" + sala + ", klinika=" + klinika + ", recepti=" + recepti + ", pacijent="
+				+ pacijent + "]";
+	}
 	
 	
 	

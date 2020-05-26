@@ -1,5 +1,6 @@
 package com.example.KCApp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.DTO.PacijentDTO;
-import com.example.KCApp.beans.Lekar;
+import com.example.KCApp.beans.Klinika;
+import com.example.KCApp.beans.MedicinskaSestra;
 import com.example.KCApp.beans.Pacijent;
-import com.example.KCApp.beans.ZdravstveniKarton;
+import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.repository.PacijentRepository;
+import com.example.KCApp.service.MedicinskaSestraService;
 import com.example.KCApp.service.PacijentService;
+import com.example.KCApp.service.PregledService;
 import com.example.KCApp.service.ZdravstveniKartonService;
 
 import javassist.NotFoundException;
@@ -33,6 +37,12 @@ public class PacijentController {
 
 	@Autowired
 	private PacijentService service;
+	
+	@Autowired
+	private PregledService servicePregled;
+	
+	@Autowired
+	private MedicinskaSestraService serviceMS;
 	@Autowired
 	private ZdravstveniKartonService serviceZK;
 	
@@ -78,6 +88,24 @@ public class PacijentController {
 	public List<Pacijent> getAllPacijenti(Model model) {
 		List<Pacijent> listaPacijenata = service.listAll();
 		model.addAttribute("listaPacijenata", listaPacijenata);
+		return listaPacijenata;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA KLINIKE ZA MED SESTRU*/
+	@GetMapping(value="/pacijenti/ms/{id}")
+	@PreAuthorize("hasRole('MS')")
+	public List<Pacijent> getAllPacijentiKlinikeMS(Model model, @PathVariable Integer id) {
+		MedicinskaSestra ms = serviceMS.get(id);
+		Klinika klinikaMS = ms.getKlinika();
+		List<Pacijent> listaPacijenata = new ArrayList<Pacijent>();
+		//ovde ide sada provera 
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaMS);
+		for(Pregled pre:preglediKlinike) {
+			listaPacijenata.add(pre.getPacijent());
+			model.addAttribute("listaPacijenata", listaPacijenata);
+			return listaPacijenata;
+		}
+		//model.addAttribute("listaPacijenata", listaPacijenata);
 		return listaPacijenata;
 	}
 	

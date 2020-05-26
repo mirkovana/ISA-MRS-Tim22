@@ -53,8 +53,9 @@ function getAdminUrlSlug(user) {
 
 //pozivacemo poacijenti
 function setUpUserPage() {
+	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
-		url: "api/pacijenti",
+		url: "api/pacijenti/ms/" +obj.id,
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
