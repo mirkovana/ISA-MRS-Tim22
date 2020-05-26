@@ -1,10 +1,6 @@
 
 --insert into pacijenti(id_korisnika, ime, prezime, email, lozinka, adresa, grad, drzava, broj_telefona, broj_osiguranika) values 
 -- (1, 'Pera', 'Peric','pera@gmail.com','1234','Perina 10', 'Novi Sad', 'Srbija', '062555888', 123);
- 
- 
---insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id_korisnika) values 
--- (1, 1.05, 'A+', 55.5, 170.00,1);
 
 INSERT INTO AUTHORITY (id, name) VALUES (1, 'ROLE_ADMINKC');
 INSERT INTO AUTHORITY (id, name) VALUES (2, 'ROLE_ADMINK');
@@ -58,6 +54,7 @@ insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (4, 13, 'Sal
 
 insert into pregled(id_pregleda, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale)values(1, 'PEDIJATRIJA', 1, '2020-5-1 12:00:00', 1, 5, 1);
 insert into operacija(id_operacije, dodatne_infoooperaciji, trajanje, vreme_operacije, id_klinike, id_sale, id)values(1, 'operacija tetive', 2, '2020-6-1 12:00:00', 2, 3, 5);
+insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id) values (1, 1.05, 'A+', 55.5, 170.00,5);
 
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (1, 1);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 2);

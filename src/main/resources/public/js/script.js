@@ -209,6 +209,25 @@ function setUpUserPagePO() {
 	});
 }
 
+function setUpZK() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/kartoni/svi/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			kartoni = JSON.parse(data.responseText);
+			console.log(kartoni)
+			pregledModZKPacijenta(kartoni);
+			
+		}
+	});
+}
+
 //popunjavanje tabele sala
 function loadSale(sale) {
 	$("#tabela_sale tbody tr").remove(); 
@@ -779,6 +798,42 @@ function dodavanjeLekara(){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    }
 	});
+	
+}
+
+function pregledModZKPacijenta(kartoni) {
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Zdravstveni karton pacijenta</h1></div>
+			<div class="container">
+			<br>
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="tezina">Tezina</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${kartoni.tezina}" name="tezina" id="tezina" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="visina">Visina</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${kartoni.visina}" name="visina" id="visina" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="dioptrija">Dioptrija</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${kartoni.dioptrija}" name="dioptrija" id="dioptrija" disabled></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="krvnaGrupa">Krvna grupa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${kartoni.krvnaGrupa}" name="krvnaGrupa" id="krvnaGrupa" disabled></td>
+					</tr>					
+				</tbody>
+			</table>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
 	
 }
 
