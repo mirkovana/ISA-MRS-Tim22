@@ -608,6 +608,7 @@ function dodavanjeAKC(){
 				$("#neuspesno").hide();
 				
 			}else{
+				window.location.replace("./homepageadminkc.html");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
 			}
@@ -638,6 +639,7 @@ function dodavanjeSL(){
 				$("#neuspesno").hide();
 				
 			}else{
+				window.location.replace("./homepageadminkc.html");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
 			}
@@ -667,6 +669,7 @@ function dodavanjeSD(){
 				$("#neuspesno").hide();
 				
 			}else{
+				window.location.replace("./homepageadminkc.html");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
 			}
@@ -698,6 +701,7 @@ function dodavanjeKlinike(){
 				$("#neuspesno").hide();
 				
 			}else{
+				window.location.replace("./homepageadminkc.html");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
 			}
