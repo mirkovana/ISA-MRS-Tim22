@@ -301,7 +301,47 @@ function loadPregledi(pregledi) {
 	table.append(makeTableHeaderPP());	
 	for(let p of pregledi) {
 		table.append(makeTableRowPregledi(p));
+		var sel = document.getElementById('ocenaL');
+		document.getElementById('showTxt').onclick = function () {
+	        // access text property of selected option
+	        prikaz = sel.options[sel.selectedIndex].text;
+	        console.log("OCENA L: " + prikaz + " ID LEKARA: " + p.lekar.id);
+	        oceniLekara(prikaz, p.lekar.id);
+	    }
+		var sel1 = document.getElementById('ocenaK');
+		document.getElementById('showTxt1').onclick = function () {
+	        // access text property of selected option
+	        prikaz = sel1.options[sel1.selectedIndex].text;
+	        console.log("OCENA K: " + prikaz + " ID KLINIKE: " + p.klinika.idKlinike);
+	        oceniKliniku(prikaz, p.klinika.idKlinike);
+		}    
 	}
+}
+
+function oceniLekara(prikaz, idL) {
+	$.ajax({
+		url: "api/lekari/" + idL + "/" + prikaz,
+		type: "PUT",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {}
+	});
+}
+
+function oceniKliniku(prikaz, idK) {
+	$.ajax({
+		url: "api/klinike/" + idK + "/" + prikaz,
+		type: "PUT",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {}
+	});
 }
 
 //popunjavanje tabele operacija
@@ -312,6 +352,20 @@ function loadOperacije(operacije) {
 	table.append(makeTableHeaderPO());	
 	for(let o of operacije) {
 		table.append(makeTableRowOperacije(o));
+		var sel = document.getElementById('ocenaL');
+		document.getElementById('showTxt').onclick = function () {
+	        // access text property of selected option
+	        prikaz = sel.options[sel.selectedIndex].text;
+	        console.log("OCENA L: " + prikaz + " ID LEKARA: " + o.lekar.id);
+	        oceniLekara(prikaz, o.lekar.id);
+	    }
+		var sel1 = document.getElementById('ocenaK');
+		document.getElementById('showTxt1').onclick = function () {
+	        // access text property of selected option
+	        prikaz = sel1.options[sel1.selectedIndex].text;
+	        console.log("OCENA K: " + prikaz + " ID KLINIKE: " + o.klinika.idKlinike);
+	        oceniKliniku(prikaz, o.klinika.idKlinike);
+		}    
 	}
 }
 
@@ -410,6 +464,8 @@ function makeTableHeaderPP(){
 						<th>Trajanje</th>
 						<th>Sala</th>
 						<th>Tip</th>
+						<th>Ocena klinike</th>
+						<th>Ocena lekara</th>
 					</tr>
 				</thead>`;
 		
@@ -428,6 +484,8 @@ function makeTableHeaderPO(){
 						<th>Trajanje</th>
 						<th>Dodatne info</th>
 						<th>Sala</th>
+						<th>Ocena klinike</th>
+						<th>Ocena lekara</th>
 					</tr>
 				</thead>`;
 		
@@ -519,8 +577,36 @@ function makeTableRowPregledi(p) {
 			<td class="izgledTabele" id='${p.trajanje}'>${p.trajanje}</td>
 			<td class="izgledTabele" id='${p.sala}'>${p.sala.nazivSale}</td>
 			<td class="izgledTabele" id='${p.tipPregleda}'>${p.tipPregleda}</td>
+			<td class="izgledTabele" id='klinika'>
+			    <label for="ocenaK">${p.klinika.naziv}</label>
+				<form action="/nesto.php">
+		  			<select name="ocenaK" id="ocenaK">
+		  				<option value="1">1</option>
+		  				<option value="2">2</option>
+		  				<option value="3">3</option>
+		  				<option value="4">4</option>
+		  				<option value="5">5</option>
+		  			</select>
+		  		</form>
+		  		<input type="button" id="showTxt1" value="Oceni" />
+		  	</td>
+			<td class="izgledTabele" id='lekar'>
+				<label for="ocenaL">${p.lekar.ime}</label>
+			    <label for="ocenaL">${p.lekar.prezime}</label>
+				<form action="/nesto.php">
+		  			<select name="ocenaL" id="ocenaL">
+		  				<option value="1">1</option>
+		  				<option value="2">2</option>
+		  				<option value="3">3</option>
+		  				<option value="4">4</option>
+		  				<option value="5">5</option>
+		  			</select>
+		  		</form>
+		  		<input type="button" id="showTxt" value="Oceni" />
+			</td>
 		</tr>`;
-	
+	var idLekara = p.lekar.id;
+	console.log(idLekara);
 	return row;
 }
 
@@ -538,6 +624,33 @@ function makeTableRowOperacije(o) {
 			<td class="izgledTabele" id='${o.trajanje}'>${o.trajanje}</td>
 			<td class="izgledTabele" id='${o.dodatneInfoOOperaciji}'>${o.dodatneInfoOOperaciji}</td>
 			<td class="izgledTabele" id='${o.sala}'>${o.sala.nazivSale}</td>
+			<td class="izgledTabele" id='klinika'>
+			    <label for="ocenaK">${o.klinika.naziv}</label>
+				<form action="/nesto.php">
+		  			<select name="ocenaK" id="ocenaK">
+		  				<option value="1">1</option>
+		  				<option value="2">2</option>
+		  				<option value="3">3</option>
+		  				<option value="4">4</option>
+		  				<option value="5">5</option>
+		  			</select>
+		  		</form>
+		  		<input type="button" id="showTxt1" value="Oceni" />
+		  	</td>
+			<td class="izgledTabele" id='lekar'>
+			    <label for="ocenaL">${o.lekar.ime}</label>
+			    <label for="ocenaL">${o.lekar.prezime}</label>
+				<form action="/nesto.php">
+		  			<select name="ocenaL" id="ocenaL">
+		  				<option value="1">1</option>
+		  				<option value="2">2</option>
+		  				<option value="3">3</option>
+		  				<option value="4">4</option>
+		  				<option value="5">5</option>
+		  			</select>
+		  		</form>
+		  		<input type="button" id="showTxt" value="Oceni" />
+			</td>
 		</tr>`;
 	
 	return row;

@@ -10,7 +10,7 @@ public class KlinikaDTO {
 	private String adresa;
 	private String grad;
 	private String opis;
-	private Ocena ocena;
+	private double ocena;
 	//private CenovnikDTO cenovnik;
 	
 	public KlinikaDTO() {
@@ -68,11 +68,11 @@ public class KlinikaDTO {
 		this.opis = opis;
 	}
 
-	public Ocena getOcena() {
+	public double getOcena() {
 		return ocena;
 	}
 
-	public void setOcena(Ocena ocena) {
+	public void setOcena(double ocena) {
 		this.ocena = ocena;
 	}
 

@@ -47,6 +47,10 @@ public class Operacija {
 	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
 	private Pacijent pacijent;
 	
+	@ManyToOne
+	@JoinColumn(name = "idLekara", referencedColumnName = "id", nullable = false)
+	private Lekar lekar;
+	
 	public Operacija() {}
 	
 	public Operacija(Integer idOperacije, Date vremeOperacije, int trajanje, 
@@ -114,7 +118,12 @@ public class Operacija {
 	public void setPacijent(Pacijent pacijent) {
 		this.pacijent = pacijent;
 	}
-	
-	
-	
+
+	public Lekar getLekar() {
+		return lekar;
+	}
+
+	public void setLekar(Lekar lekar) {
+		this.lekar = lekar;
+	}	
 }

@@ -48,6 +48,10 @@ public class Pregled {
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 	private Klinika klinika;
 	
+	@ManyToOne
+	@JoinColumn(name = "idLekara", referencedColumnName = "id", nullable = false)
+	private Lekar lekar;
+	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "pregled")
 	private Set<Recept> recepti = new HashSet<Recept>();
 	
@@ -137,6 +141,14 @@ public class Pregled {
 
 	public void setPacijent(Pacijent pacijent) {
 		this.pacijent = pacijent;
+	}
+
+	public Lekar getLekar() {
+		return lekar;
+	}
+
+	public void setLekar(Lekar lekar) {
+		this.lekar = lekar;
 	}
 
 	@Override

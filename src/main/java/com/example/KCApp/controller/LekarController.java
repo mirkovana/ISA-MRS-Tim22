@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.KCApp.DTO.PacijentDTO;
+import com.example.KCApp.DTO.UserDTO;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.MedicinskaSestra;
@@ -26,11 +28,13 @@ import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.RadniKalendarL;
 import com.example.KCApp.beans.Sala;
 import com.example.KCApp.beans.TipPregleda;
+import com.example.KCApp.beans.User;
 import com.example.KCApp.beans.ZdravstveniKarton;
 import com.example.KCApp.service.KlinikaService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.DTO.LekarDTO;
 import com.example.KCApp.repository.LekarRepository;
+import com.example.KCApp.repository.UserRepository;
 import com.example.KCApp.service.LekarService;
 
 import javassist.NotFoundException;
@@ -44,6 +48,9 @@ public class LekarController {
 	
 	@Autowired
 	private KlinikaService klinikaService;
+	
+	@Autowired
+	private LekarRepository repository;
 	
 	/*PRIKAZ SVIH LEKARA KLINIKE*/
 	@GetMapping(value="/lekari")
@@ -98,8 +105,18 @@ public class LekarController {
 		return new ResponseEntity<>(new LekarDTO(lekar), HttpStatus.CREATED);
 	}
 	
-	
-	
+	//IZMENA OCENE
+		@PutMapping(value="/lekari/{id}/{ocena}", consumes = "application/json")
+		@PreAuthorize("hasRole('PACIJENT')")
+		public User updateOcenaLekara(@PathVariable Integer id, @PathVariable double ocena) throws NotFoundException {
+			return repository.findById(id)
+					.map(user->{
+						
+						user.prosecnaOcena(ocena);
+						return repository.save(user);
+					}).orElseThrow(() -> new NotFoundException("Lekar nije pronadjen sa id : " + id));
+			
+		}
 	
 	/*BRISANJE LEKARA SA ODREDJENIM ID*/
 	@DeleteMapping(value= "/lekari/{id}")

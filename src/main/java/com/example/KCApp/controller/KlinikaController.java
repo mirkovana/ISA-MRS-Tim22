@@ -24,6 +24,7 @@ import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Ocena;
 import com.example.KCApp.beans.TipPregleda;
+import com.example.KCApp.beans.User;
 import com.example.KCApp.repository.KlinikaRepository;
 import com.example.KCApp.service.CenovnikService;
 import com.example.KCApp.service.KlinickiCentarService;
@@ -142,5 +143,18 @@ public class KlinikaController {
 		List<Klinika> klinika = service.findAllByGrad(grad);
 		return klinika;
 	}
+	
+	//IZMENA OCENE
+			@PutMapping(value="/klinike/{id}/{ocena}", consumes = "application/json")
+			@PreAuthorize("hasRole('PACIJENT')")
+			public Klinika updateOcenaKlinike(@PathVariable Integer id, @PathVariable double ocena) throws NotFoundException {
+				return repository.findById(id)
+						.map(klinika->{
+							
+							klinika.prosecnaOcena(ocena);
+							return repository.save(klinika);
+						}).orElseThrow(() -> new NotFoundException("Klinika nije pronadjen sa id : " + id));
+				
+			}
 	
 }
