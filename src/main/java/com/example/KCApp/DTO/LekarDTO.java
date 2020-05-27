@@ -8,7 +8,7 @@ import com.example.KCApp.beans.UserTokenState;
 
 public class LekarDTO extends UserDTO{
 	
-	private Ocena ocena;
+	private double ocena;
 	private TipPregleda tipPregleda;
 	private RadniKalendarLDTO radniKalendarL;
 	private Integer klinika;
@@ -34,11 +34,11 @@ public class LekarDTO extends UserDTO{
 		this.klinika = klinika;
 	}
 
-	public Ocena getOcena() {
+	public double getOcena() {
 		return ocena;
 	}
 
-	public void setOcena(Ocena ocena) {
+	public void setOcena(double ocena) {
 		this.ocena = ocena;
 	}
 

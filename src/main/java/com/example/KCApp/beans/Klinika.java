@@ -79,8 +79,7 @@ public class Klinika {
 	  }
 	
 	@Column(name="Ocena") 
-	@Enumerated(EnumType.STRING)
-	private Ocena ocena;
+	private double ocena;
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
 	//@JoinColumn(name = "idCenovnika")
@@ -152,7 +151,7 @@ public class Klinika {
 	public Klinika() {}
 	
 	public Klinika(String naziv, String adresa, String grad, String opis, Set<MedicinskaSestra> medicinskeSestre, Set<Lekar> lekari, Set<Sala> sale,
-			Ocena ocena, Set<ZahtevOdsustva> zahteviOdsustva, Set<Operacija> operacije, Set<Pregled> pregledi, 
+			double ocena, Set<ZahtevOdsustva> zahteviOdsustva, Set<Operacija> operacije, Set<Pregled> pregledi, 
 			Set<ZahtevZaPregled> zahteviZaPregled, KlinickiCentar klinickiCentar, Set<Cenovnik> cenovnik) {
 		this.naziv = naziv;
 		this.adresa = adresa;
@@ -234,12 +233,16 @@ public class Klinika {
 		this.sale = sale;
 	}
 
-	public Ocena getOcena() {
+	public double getOcena() {
 		return ocena;
 	}
 
-	public void setOcena(Ocena ocena) {
+	public void setOcena(double ocena) {
 		this.ocena = ocena;
+	}
+	
+	public void prosecnaOcena(double ocena1) {
+		this.ocena = (this.ocena + ocena1) / 2;
 	}
 
 	public Set<ZahtevOdsustva> getZahteviOdsustva() {

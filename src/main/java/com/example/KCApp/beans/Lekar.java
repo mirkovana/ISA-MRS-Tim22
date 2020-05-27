@@ -3,12 +3,16 @@ package com.example.KCApp.beans;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -27,8 +31,7 @@ public class Lekar extends User {
 	private RadniKalendarL radniKalendarL;
 	
 	@Column(name="Ocena") 
-	@Enumerated(EnumType.STRING)
-	private Ocena ocena;
+	private double ocena;
 	
 	@Column(name="TipPregleda") 
 	@Enumerated(EnumType.STRING)
@@ -38,6 +41,14 @@ public class Lekar extends User {
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 	private Klinika klinika;
 	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "lekar")
+	@JsonBackReference
+	private Set<Pregled> pregledi = new HashSet<Pregled>(); 
+	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "lekar")
+	@JsonBackReference
+	private Set<Operacija> operacije = new HashSet<Operacija>(); 
+	
 	//klasa ZahtevZaOdmor
 		
 	public Lekar(String ime, String prezime, String email, String username, String password, String adresa, String grad, String drzava,
@@ -46,7 +57,7 @@ public class Lekar extends User {
 	}
 
 	public Lekar(String ime, String prezime, String email, String username, String password, String adresa, String grad, String drzava,
-			String brojTelefona, RadniKalendarL radniKalendarL, Ocena ocena, TipPregleda tipPregleda) {
+			String brojTelefona, RadniKalendarL radniKalendarL, double ocena, TipPregleda tipPregleda) {
 		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 		this.radniKalendarL = radniKalendarL;
 		this.ocena = ocena;
@@ -57,12 +68,16 @@ public class Lekar extends User {
 		super();
 	}
 
-	public Ocena getOcena() {
+	public double getOcena() {
 		return ocena;
 	}
 
-	public void setOcena(Ocena ocena) {
+	public void setOcena(double ocena) {
 		this.ocena = ocena;
+	}
+	
+	public void prosecnaOcena(double ocena1) {
+		this.ocena = (this.ocena + ocena1) / 2;
 	}
 
 	public RadniKalendarL getRadniKalendar() {
