@@ -17,7 +17,8 @@ public class AdministratorKlinikeDTO extends UserDTO{
 			this.setRole(((Authority) au).getName());}
     	klinika = ak.getKlinika().getIdKlinike();
     }
-
+    public AdministratorKlinikeDTO() {
+    }
 	public Integer getKlinika() {
 		return klinika;
 	}

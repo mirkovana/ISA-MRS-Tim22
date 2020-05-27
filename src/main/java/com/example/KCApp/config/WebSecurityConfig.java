@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/homepagems.html").hasRole("MS")
 				.antMatchers("/homepagelekar.html").hasRole("LEKAR")
 				.antMatchers("/homepageadministratorklinike.html", "/dodavanjeLekara.html", "/dodavanjeSala.html").hasRole("ADMINK")
-				.antMatchers("/homepageadminkc.html", "/dodavanjeSL.html", "/dodavanjeSD.html", "/registracijaKlinike.html", "/registracijaAK.html", "/registracijaAKC.html").hasRole("ADMINKC")
+				.antMatchers("/homepageadminkc.html", "/dodavanjeSL.html", "/dodavanjeSD.html", "/registracijaKlinike.html", "/registracijaAK.html", "/registracijaAKC.html", "/api/sifrarnikLekova").hasRole("ADMINKC")
 				
 				// za svaki drugi zahtev korisnik mora biti autentifikovan
 				.anyRequest().authenticated().and()

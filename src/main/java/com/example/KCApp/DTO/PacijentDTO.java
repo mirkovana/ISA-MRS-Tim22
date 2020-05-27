@@ -19,7 +19,8 @@ public class PacijentDTO extends UserDTO{
     	brojOsiguranika = pacijent.getBrojOsiguranika();
 		//zdravstveniKarton = new ZdravstveniKartonDTO(pacijent.getZdravstveniKarton());
 	}
-
+	public PacijentDTO() {
+	}
 	public int getBrojOsiguranika() {
 		return brojOsiguranika;
 	}
