@@ -158,7 +158,7 @@ public class AuthenticationController {
 
 	// Endpoint za registraciju novog korisnika
 	@PostMapping("/signup")
-	public ResponseEntity<?> addUser(@RequestBody UserDTO userData) {
+	public ResponseEntity<?> addUser(@RequestBody PacijentDTO userData) {
 		 	Pacijent user = new Pacijent();
 		 	user.setPassword(passwordEncoder.encode(userData.getPassword()));
 		 	user.setUsername(userData.getUsername());
@@ -171,6 +171,7 @@ public class AuthenticationController {
 		 	user.setAdresa(userData.getAdresa());
 		 	user.setLastPasswordResetDate(userData.getLastPasswordResetDate());
 		 	user.setAuthorities(Arrays.asList(authorityService.findOne(5)));
+		 	user.setBrojOsiguranika(userData.getBrojOsiguranika());
 		 	userService.save(user);
 		 	return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
