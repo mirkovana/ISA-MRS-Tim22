@@ -52,7 +52,7 @@ insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (2, 11, 'Sal
 insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (3, 12, 'Sala12', 2);
 insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (4, 13, 'Sala13', 2);
 
-insert into pregled(id_pregleda, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(1, 'PEDIJATRIJA', 1, '2020-5-1 12:00:00', 1, 5, 1, 3);
+insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(1, 1000, 'PEDIJATRIJA', 1, '2020-5-1 12:00:00', 1, 5, 1, 3);
 insert into operacija(id_operacije, dodatne_infoooperaciji, trajanje, vreme_operacije, id_klinike, id_sale, id, id_lekara)values(1, 'operacija tetive', 2, '2020-6-1 12:00:00', 2, 3, 5, 3);
 insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id) values (1, 1.05, 'A+', 55.5, 170.00,5);
 

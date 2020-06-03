@@ -105,7 +105,6 @@ function setUpUserPageAKCSD() {
 			sd = JSON.parse(data.responseText);
 			console.log(sd)
 			loadSifrarnikDijagnoza(sd);
-			
 		}
 	});
 }
@@ -124,10 +123,10 @@ function setUpUserPageAK() {
 			sale = JSON.parse(data.responseText);
 			console.log(sale)
 			loadSale(sale);
-			
 		}
 	});
 }
+
 function setUpUserPageAKL() {
 	$.ajax({
 		url: "api/lekari",
@@ -225,7 +224,42 @@ function setUpZK() {
 			kartoni = JSON.parse(data.responseText);
 			console.log(kartoni)
 			pregledModZKPacijenta(kartoni);
-			
+		}
+	});
+}
+
+function setUpKlinikeAK() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/klinike/admink/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			klinika = JSON.parse(data.responseText);
+			console.log(klinika)
+			pregledModKlinikeAK(klinika);
+		}
+	});
+}
+
+function setUpKlinike() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/klinike/id/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			klinika = JSON.parse(data.responseText);
+			console.log(klinika)
+			pregledModKlinike(klinika);
 		}
 	});
 }
@@ -816,6 +850,38 @@ function dodavanjeSD(){
 	
 }
 
+function definisanjeSTP(){
+	console.log("aaaaa")
+	var data = getFormData($("#formaFiltr"));
+	var obj = JSON.parse(localStorage.getItem('user'));
+	console.log(data)
+	console.log(obj)
+	
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/pregledi/idAK/" + obj.id,
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				window.location.replace("./homepageadministratorklinike.html");
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
+	});
+}
+
 
 function dodavanjeKlinike(){
 	console.log("aaaaa")
@@ -895,7 +961,6 @@ function dodavanjeSala(){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    }
 	});
-	
 }
 
 
@@ -1064,6 +1129,71 @@ function pregledModAKC(){
 			modal.append(m);
 		$("#modal-wrapper").show();
 	
+}
+
+function pregledModKlinikeAK(klinika){
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Profil klinike</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="naziv">Naziv</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${klinika.naziv}" name="naziv" id="nazivKlinike" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="adresa">Adresa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${klinika.adresa}" name="adresa" id="adresaKlinike" ></td>
+					</tr>s
+					<tr>
+					<td  class='align-middle'><label for="opis">Opis</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${klinika.opis}" name="opis" id="opisKlinike" ></td>
+					</tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="izmenaProfilaKlinike(klinika)">Sacuvaj izmene</button></td></tr>				
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+}
+
+function pregledModKlinike(klinika){
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Profil klinike</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="naziv">Naziv</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${klinika.naziv}" name="naziv" id="nazivKlinike" readonly></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="adresa">Adresa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${klinika.adresa}" name="adresa" id="adresaKlinike" readonly></td>
+					</tr>s
+					<tr>
+					<td  class='align-middle'><label for="opis">Opis</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${klinika.opis}" name="opis" id="opisKlinike" readonly></td>
+					</tr>
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
 }
 
 function pregledModPacijent(){
@@ -1272,3 +1402,40 @@ function izmenaProfilaAKC(){
 	});
 	
 }
+
+function izmenaProfilaKlinike(klinika){
+
+	var dat = getFormData($("#formaIzmena"));
+	
+	var org = JSON.stringify(dat);
+	$.ajax({
+		url: "api/klinike/" + klinika.id,
+		type: "PUT",
+		data: org,
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			//localStorage.setItem('user',trenutni);
+			//d = JSON.parse(data.responseText);
+			//console.log(org);
+			//console.log("OVO JE DATA " + JSON.stringify(data).responseJSON);
+//			console.log("OVO JE DATA druga varijanta" + JSON.stringify(data.responseJSON));
+//			data.responseJSON.token=tok;
+//			data.responseJSON.role=aut;
+//			localStorage.setItem('user',JSON.stringify(data.responseJSON));
+//			//localStorage.setItem('user.token',tok);
+//			console.log("ovo je user novi???????" + localStorage.getItem('user') );
+			
+		} 
+	 /*   success: function(result){
+			 console.log(result);
+			 localStorage.setItem('user',JSON.stringify(result));
+			 localStorage.setItem(setItem('user')).token.accessToken, tok);
+			 }*/
+	});
+	
+}
+

@@ -1,5 +1,6 @@
 package com.example.KCApp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional; 
 import javax.validation.Valid;
@@ -18,17 +19,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
 import com.example.KCApp.DTO.KlinikaDTO;
+import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Cenovnik;
 import com.example.KCApp.beans.KlinickiCentar;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
+import com.example.KCApp.beans.MedicinskaSestra;
 import com.example.KCApp.beans.Ocena;
+import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.TipPregleda;
 import com.example.KCApp.beans.User;
 import com.example.KCApp.repository.KlinikaRepository;
+import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.CenovnikService;
 import com.example.KCApp.service.KlinickiCentarService;
 import com.example.KCApp.service.KlinikaService;
+import com.example.KCApp.service.MedicinskaSestraService;
 
 import javassist.NotFoundException;
 
@@ -39,6 +46,9 @@ public class KlinikaController {
 	@Autowired
 	private KlinikaService service;
 	
+	@Autowired
+	private AdministratorKlinikeService serviceAK;
+	
 //	@Autowired(required=false)
 //	private CenovnikService serviceCenovnik;
 //	
@@ -48,6 +58,15 @@ public class KlinikaController {
 	
 	@Autowired
 	private KlinickiCentarService kcService;
+	
+	/*PRIKAZ KLINIKE ADMINA KLINIKE*/
+	@GetMapping(value="/klinike/admink/{id}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public Klinika getKlinikaAdminaK(Model model, @PathVariable Integer id) {
+		AdministratorKlinike ak = serviceAK.get(id);
+		Klinika klinikaAK = ak.getKlinika();
+		return klinikaAK;
+	}
 	
 	/*ISPISIVANJE KLINIKA*/
 	@GetMapping(value="/klinike")
@@ -144,6 +163,14 @@ public class KlinikaController {
 		return klinika;
 	}
 	
+	/*PRETRAGA KLINIKA PO KRITERIJUMU - ID*/
+	@GetMapping(value = "/klinike/id/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public Klinika findKlinikaById(@PathVariable Integer id) {
+		Klinika klinika = service.get(id);
+		return klinika;
+	}
+	
 	//IZMENA OCENE
 			@PutMapping(value="/klinike/{id}/{ocena}", consumes = "application/json")
 			@PreAuthorize("hasRole('PACIJENT')")
@@ -156,5 +183,4 @@ public class KlinikaController {
 						}).orElseThrow(() -> new NotFoundException("Klinika nije pronadjen sa id : " + id));
 				
 			}
-	
 }

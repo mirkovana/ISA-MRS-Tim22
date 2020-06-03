@@ -82,6 +82,8 @@ public class SalaController {
 		return sala;
 	}
 	
+	
+	
 	/*DODAVANJE SALA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
 	@PostMapping(value= "/sale",consumes = "application/json")
 	@PreAuthorize("hasRole('ADMINK')")

@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Definisanje slobodnih termina pregleda</title>
+        <link rel="stylesheet" type="text/css" href="./definisanjeSTPstyle.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="js/jquery.min.js"></script>
+		<script src="js/script.js"></script>
+    </head>
+    <body>
+        <div>	
+            <h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
+        </div>
+        <form action="" id="formaFiltr">
+               <table>
+            <tr>
+                <td align="right">Datum i vreme pregleda</td>
+                <td><input type="text" name="vreme" id="vreme" ></td>
+            </tr>
+            <tr>
+                <td align="right">Tip pregleda</td>
+                <td><input type="text" name="tipPregleda" id="tipPregleda" ></td>
+            </tr>
+            <tr>
+                <td align="right">Trajanje pregleda</td>
+                <td><input type="text" name="trajanje" id="trajanje" ></td>
+            </tr>
+            <tr>
+                <td align="right">Sala</td>
+                <td><input type="text" name="idSale" id="idSale" ></td>
+            </tr>
+            <tr>
+                <td align="right">Lekar</td>
+                <td><input type="text" name="idLekara" id="id" ></td>
+            </tr>
+            <tr>
+                <td align="right">Cena</td>
+                <td><input type="number" name="cena" id="cena" ></td>
+            </tr>
+            <tr>
+                <td colspan=2 align="center"><button type="button" class="button" onclick="definisanjeSTP()">Dodaj</button> </td>
+            </tr>
+        </table>
+		</form>      
+	<div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
+		<form class="modal-content animate" action="" id="modalnaF"
+			onsubmit="">
+			<div class="form-group" id="modalnaForma"></div>
+		</form>
+	</div>
+    </body>
+</html>
