@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "pregled")
-@SequenceGenerator(name = "pregledIdSeq", sequenceName = "pregledIdGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "pregledIdSeq", sequenceName = "pregledIdGen", initialValue = 2, allocationSize = 1)
 public class Pregled {
 
 	@Id
@@ -35,6 +35,9 @@ public class Pregled {
 	
 	@Column(name="trajanje", unique=false, nullable=false)
 	private int trajanje;
+	
+	@Column(name="cena", unique=false, nullable=false)
+	private int cena;
 	
 	@Column(name="TipPregleda") 
 	@Enumerated(EnumType.STRING)
@@ -63,13 +66,13 @@ public class Pregled {
 	  }
 	
 	@ManyToOne
-	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "id", referencedColumnName = "id", nullable = true)
 	private Pacijent pacijent;
 	
 	
 	public Pregled() {}
 	
-	public Pregled(Date vreme, int trajanje, TipPregleda tipPregleda, Sala sala, Klinika klinika, Set<Recept> recepti, Pacijent pacijent) {
+	public Pregled(Date vreme, int trajanje, TipPregleda tipPregleda, Sala sala, Lekar lekar, Klinika klinika, Set<Recept> recepti, Pacijent pacijent, int cena) {
 		this.vreme = vreme;
 		this.trajanje = trajanje;
 		this.tipPregleda = tipPregleda;
@@ -77,6 +80,8 @@ public class Pregled {
 		this.klinika = klinika;
 		this.recepti = recepti;
 		this.pacijent = pacijent;
+		this.cena = cena;
+		this.lekar = lekar;
 	}
 
 	public Date getVreme() {
@@ -149,6 +154,14 @@ public class Pregled {
 
 	public void setLekar(Lekar lekar) {
 		this.lekar = lekar;
+	}
+
+	public int getCena() {
+		return cena;
+	}
+
+	public void setCena(int cena) {
+		this.cena = cena;
 	}
 
 	@Override
