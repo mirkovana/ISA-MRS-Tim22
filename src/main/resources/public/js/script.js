@@ -758,6 +758,36 @@ function dodavanjePacijenta(){
 	
 }
 
+function dodavanjeZahtevaOdsustva(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	var data = getFormData($("#formaFiltr"));
+	
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/zahteviOdsustva/" + obj.id,
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				window.location.replace("./homepagems.html");
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
+
+	});
+	
+}
 function dodavanjeAKC(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
