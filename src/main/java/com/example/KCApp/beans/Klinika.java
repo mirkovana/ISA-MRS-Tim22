@@ -88,18 +88,18 @@ public class Klinika {
 	
 	
 
-	
-	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
-	@JsonBackReference
-	private Set<ZahtevOdsustva> zahteviOdsustva = new HashSet<ZahtevOdsustva>();
-	
-	public void add(ZahtevOdsustva item) {
-	    if (item.getKlinika() != null)
-	      item.getKlinika().getZahteviOdsustva().remove(item);
-	    item.setKlinika(this);
-	    getZahteviOdsustva().add(item);
-	  }
-	
+//	
+//	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+//	@JsonBackReference
+//	private Set<ZahtevOdsustva> zahteviOdsustva = new HashSet<ZahtevOdsustva>();
+//	
+//	public void add(ZahtevOdsustva item) {
+//	    if (item.getKlinika() != null)
+//	      item.getKlinika().getZahteviOdsustva().remove(item);
+//	    item.setKlinika(this);
+//	    getZahteviOdsustva().add(item);
+//	  }
+//	
 	@OneToMany(cascade = {ALL}, fetch = EAGER, mappedBy = "klinika")
 	@JsonBackReference
 	private Set<AdministratorKlinike> administratoriKlinike = new HashSet<AdministratorKlinike>();
@@ -151,7 +151,7 @@ public class Klinika {
 	public Klinika() {}
 	
 	public Klinika(String naziv, String adresa, String grad, String opis, Set<MedicinskaSestra> medicinskeSestre, Set<Lekar> lekari, Set<Sala> sale,
-			double ocena, Set<ZahtevOdsustva> zahteviOdsustva, Set<Operacija> operacije, Set<Pregled> pregledi, 
+			double ocena,  Set<Operacija> operacije, Set<Pregled> pregledi, 
 			Set<ZahtevZaPregled> zahteviZaPregled, KlinickiCentar klinickiCentar, Set<Cenovnik> cenovnik) {
 		this.naziv = naziv;
 		this.adresa = adresa;
@@ -161,7 +161,7 @@ public class Klinika {
 		this.lekari = lekari;
 		this.sale = sale;
 		this.ocena = ocena;
-		this.zahteviOdsustva = zahteviOdsustva;
+		//this.zahteviOdsustva = zahteviOdsustva;
 		this.operacije = operacije;
 		this.pregledi = pregledi;
 		this.zahteviZaPregled = zahteviZaPregled;
@@ -244,14 +244,14 @@ public class Klinika {
 	public void prosecnaOcena(double ocena1) {
 		this.ocena = (this.ocena + ocena1) / 2;
 	}
-
-	public Set<ZahtevOdsustva> getZahteviOdsustva() {
-		return zahteviOdsustva;
-	}
-
-	public void setZahteviOdsustva(Set<ZahtevOdsustva> zahteviOdsustva) {
-		this.zahteviOdsustva = zahteviOdsustva;
-	}
+//
+//	public Set<ZahtevOdsustva> getZahteviOdsustva() {
+//		return zahteviOdsustva;
+//	}
+//
+//	public void setZahteviOdsustva(Set<ZahtevOdsustva> zahteviOdsustva) {
+//		this.zahteviOdsustva = zahteviOdsustva;
+//	}
 
 
 

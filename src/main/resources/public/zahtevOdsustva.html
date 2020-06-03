@@ -16,27 +16,21 @@
         <form action="" id="formaFiltr">
         <table>
               
-                  <tr>     
-              <td><input type="text" name="naziv" placeholder="Naziv:" id="naziv" ></td>
+                 <tr>    
+               <td><input type="text" name="datumKraja" placeholder="datum kraj" id="datumKraja" ></td>
                </tr>
                 <tr>
-              <td><input type="text" name="adresa" placeholder="adresa" id="adresa" ></td>
-               </tr>
-               <tr>
-               
-              <td><input type="text" name="grad" placeholder="Grad:" id="grad" ></td>
+               <td><input type="text" name="datumPocetka" placeholder="datum pocetak" id="datumPocetka" ></td>
                </tr>
                 <tr>
-              <td><input type="text" name="opis" placeholder="opis:" id="opis" ></td>
-               </tr>
-                <tr>
-              <td><input type="text" name="ocena" placeholder="ocena:" id="ocena" ></td>
-               </tr>
-              
+             <td> <input type="text" name="razlog" placeholder="razlog" id="razlog" ></td>
              
-                  <tr>   
-              <td> <button type="button" class="btn btn-secondary" onclick="dodavanjeKlinike()">Dodaj</button></td>
-                </tr>
+               </tr>
+             
+                   <tr>
+             <td><button type="button" class="btn btn-secondary" onclick="dodavanjeZahtevaOdsustva()">Dodaj</button></td> 
+                 </tr>
+           
                <label id="uspesno" >Uspesno dodata klinika</label>
                <label id="neuspesno">Niste uspeli da dodate kliniku</label>
 	</table>  

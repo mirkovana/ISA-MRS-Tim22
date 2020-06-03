@@ -15,12 +15,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "zahtevOdsustva")
-@SequenceGenerator(name = "zahtevOdsustvaIdSeq", sequenceName = "zahtevOdsustvaIdGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "zahtevOdsustvaIdSeq", sequenceName = "zahtevOdsustvaIdGen", initialValue = 2, allocationSize = 1)
 public class ZahtevOdsustva {
 	
 	@Column(name = "razlog", unique = false, nullable = false)
 	private String razlog;
 	
+	@Column(name = "odobren", unique = false, nullable = true)
+	private boolean odobren;
 	@Id
 	@GeneratedValue(strategy = SEQUENCE, generator = "zahtevOdsustvaIdSeq")
 	@Column(name = "idZahtevaOdsustva", unique = true, nullable = false)
@@ -32,29 +34,38 @@ public class ZahtevOdsustva {
 	@Column(name = "datumKraja", unique = false, nullable = false)
 	private Date datumKraja;
 	
+//	@ManyToOne
+//	@JoinColumn(name = "idLekara", referencedColumnName = "id", nullable = false)
+//	private Lekar lekar;
+	
 	@ManyToOne
 	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
-	private Lekar lekar;
+	private User user;
 	
-	//@ManyToOne
-	//@JoinColumn(name = "idKorisnika", referencedColumnName = "idKorisnika", nullable = false)
-	//private MedicinskaSestra medicinskaSestra;
-	
-	@ManyToOne
-	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
-	private Klinika klinika;
+//	@ManyToOne
+//	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
+//	private Integer klinika;
 
-	public ZahtevOdsustva(String razlog, Integer idZahtevaOdsustva, Date datumPocetka, Date datumKraja, Lekar lekar,
-			Klinika klinika) {
+	public ZahtevOdsustva(String razlog,boolean odobren, Integer idZahtevaOdsustva, Date datumPocetka, Date datumKraja, User user
+			) {
 		this.razlog = razlog;
+		this.odobren=odobren;
 		this.idZahtevaOdsustva = idZahtevaOdsustva;
 		this.datumPocetka = datumPocetka;
 		this.datumKraja = datumKraja;
-		this.lekar = lekar;
+		this.user = user;
 		//this.medicinskaSestra = medicinskaSestra;
-		this.klinika = klinika;
+		//this.klinika = klinika;
 	}
 	
+	public boolean isOdobren() {
+		return odobren;
+	}
+
+	public void setOdobren(boolean odobren) {
+		this.odobren = odobren;
+	}
+
 	public ZahtevOdsustva() {}
 
 	public String getRazlog() {
@@ -89,13 +100,23 @@ public class ZahtevOdsustva {
 		this.datumKraja = datumKraja;
 	}
 
-	public Lekar getLekar() {
-		return lekar;
+	public User getUser() {
+		return user;
 	}
 
-	public void setLekar(Lekar lekar) {
-		this.lekar = lekar;
+	public void setUser(User user) {
+		this.user = user;
 	}
+
+//	public Integer getKlinika() {
+//		return klinika;
+//	}
+//
+//	public void setKlinika(Integer klinika) {
+//		this.klinika = klinika;
+//	}
+
+	
 
 	//public MedicinskaSestra getMedicinskaSestra() {
 	//	return medicinskaSestra;
@@ -105,14 +126,7 @@ public class ZahtevOdsustva {
 	//	this.medicinskaSestra = medicinskaSestra;
 	//}
 
-	public Klinika getKlinika() {
-		return klinika;
-	}
 
-	public void setKlinika(Klinika klinika) {
-		this.klinika = klinika;
-	}
-	
 	
 
 }
