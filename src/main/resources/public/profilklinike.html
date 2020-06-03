@@ -19,7 +19,7 @@
 		
 			<div class="navbar"  id="myForm">
 				<a href="#home" data-target="#myModal">Pocetna stranica</a>
-				<a href="#profil" onclick="setUpKlinike()">Profil</a>
+				<a href="#profil" onClick="setUpKlinike()">Profil</a>
 				<a href="#slobodniTerminiPregleda" onClick="prikazSlobodnihTerminaPregleda()">Slobodni termini pregleda</a>
 				<a href="#spisakLekara" onClick="setUpUserPageAKL()">Spisak lekara</a>
 				<a href="#cenovnik" onClick="cenovnik">Cenovnik</a>
@@ -29,6 +29,8 @@
 			  </table>
 			  <table class="table" id="tabela_lekari">
 			  </table>
+			  <table class="table table-light" id="tabela_definisaniPregledi">
+		      </table>
 
 			<div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
 						<form class="modal-content animate" action="" id="modalnaF"
@@ -36,5 +38,6 @@
 					<div class="form-group" id="modalnaForma"></div>
 				</form>
 			</div>
+			
 	</body>
 </html>
