@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.DTO.PacijentDTO;
 import com.example.KCApp.beans.Klinika;
+import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.MedicinskaSestra;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.repository.PacijentRepository;
+import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.MedicinskaSestraService;
 import com.example.KCApp.service.PacijentService;
 import com.example.KCApp.service.PregledService;
@@ -46,6 +48,8 @@ public class PacijentController {
 	@Autowired
 	private ZdravstveniKartonService serviceZK;
 	
+	@Autowired
+	private LekarService serviceL;
 	
 	@Autowired
 	private PacijentRepository repository;
@@ -100,6 +104,24 @@ public class PacijentController {
 		List<Pacijent> listaPacijenata = new ArrayList<Pacijent>();
 		//ovde ide sada provera 
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaMS);
+		for(Pregled pre:preglediKlinike) {
+			listaPacijenata.add(pre.getPacijent());
+			model.addAttribute("listaPacijenata", listaPacijenata);
+			return listaPacijenata;
+		}
+		//model.addAttribute("listaPacijenata", listaPacijenata);
+		return listaPacijenata;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA KLINIKE ZA LEKARA*/
+	@GetMapping(value="/pacijenti/lekar/{id}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pacijent> getAllPacijentiKlinikeLekara(Model model, @PathVariable Integer id) {
+		Lekar l = serviceL.get(id);
+		Klinika klinikaL = l.getKlinika();
+		List<Pacijent> listaPacijenata = new ArrayList<Pacijent>();
+		//ovde ide sada provera 
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre:preglediKlinike) {
 			listaPacijenata.add(pre.getPacijent());
 			model.addAttribute("listaPacijenata", listaPacijenata);
