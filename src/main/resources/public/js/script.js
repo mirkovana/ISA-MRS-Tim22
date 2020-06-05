@@ -71,6 +71,26 @@ function setUpUserPage() {
 	});
 }
 
+//pozivacemo poacijenti
+function setUpUserPageLekar() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pacijenti/lekar/" +obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			pacijenti = JSON.parse(data.responseText);
+			console.log(pacijenti)
+			loadPacijenti(pacijenti);
+			
+		}
+	});
+}
+
 //pozivacemo sifrarbik lekova
 function setUpUserPageAKCSL() {
 	console.log("USAO SAM KOD LEKOVA I OVO JE USER " + localStorage.getItem('user') );
