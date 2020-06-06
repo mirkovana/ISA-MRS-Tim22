@@ -1089,42 +1089,45 @@ function pregledModMS(){
 	      <h1 style="text-align:center">Profil medicinske sestre</h1></div>
 			<div class="container">
 			<br>
+			<form action="" id="formaIzmena">
 			<table class="table " id="tabela_modal">
 				<tbody>
 					<tr>
 					<td  class='align-middle'><label for="ime">Ime</label></td>
-					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="msIme" disabled></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="msIme" ></td>
 					</tr>
 					<tr>
-					<td  class='align-middle'><label for="msPrezime">Prezime</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="msPrezime" id="msPrezime" disabled></td>
+					<td  class='align-middle'><label for="prezime">Prezime</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="prezime" id="msPrezime" ></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="email">Email</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" readonly></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="password">Lozinka</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" readonly></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="adresa">Adresa</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" ></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="grad">Grad</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" ></td>
 					</tr>					
 					<tr>
 					<td  class='align-middle'><label for="drzava">Drzava</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" ></td>
 					</tr>					
 					<tr>
 					<td  class='align-middle'><label for="brojTelefona">Broj telefona</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" disabled></td>
-					</tr>				
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" ></td>
+					</tr>	
+					<tr><td  class='align-middle' ><button type="button" onclick="izmenaProfilaMS()">Sacuvaj izmene</button></td></tr>							
 				</tbody>
 			</table>
+				</form>
 			<fieldset id="log_war"></fieldset>
 		    </div>`;
 			modal.append(m);
@@ -1585,4 +1588,29 @@ function zakaziPregled(idPregleda) {
 	    },
 		complete: function(data) {}
 	});
+}
+
+function izmenaProfilaMS(){
+	var tok=JSON.parse(localStorage.getItem('user')).token;
+	var aut= JSON.parse(localStorage.getItem('user')).role;
+	var dat = getFormData($("#formaIzmena"));
+	
+	var org = JSON.stringify(dat);
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/medicinskeSestre/" + obj.id,
+		type: "PUT",
+		data: org,
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			
+			
+		} 
+	 
+	});
+	
 }

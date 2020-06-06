@@ -100,7 +100,7 @@ public class AdministratorKlinickogCentraController {
 					//klinika.setIdKlinike(klinikaUpdated.getIdKlinike());
 					user.setIme(akctUpdated.getIme());
 					user.setPrezime(akctUpdated.getPrezime());
-					user.setPassword(akctUpdated.getPassword());
+					
 					user.setAdresa(akctUpdated.getAdresa());
 					user.setGrad(akctUpdated.getGrad());
 					user.setDrzava(akctUpdated.getDrzava());
