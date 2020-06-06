@@ -167,6 +167,11 @@ function setUpUserPageAKL() {
 
 //klinike
 function setUpUserPageAKC() {
+	$("#pretraga").show();
+	$("#dan").show();
+	$("#mesec").show();
+	$("#godina").show();
+	$("#pretrazi").show();
 	console.log(localStorage.getItem('user'));
 	console.log(JSON.parse(localStorage.getItem('user')));
 	console.log(JSON.parse(localStorage.getItem('user')).token);
@@ -286,6 +291,7 @@ function setUpKlinike() {
 
 //popunjavanje tabele sala
 function loadSale(sale) {
+	obrisiTabele();
 	$("#tabela_sale tbody tr").remove(); 
 	$("#tabela_sale thead ").remove();
 	var table = $("#tabela_sale");
@@ -297,6 +303,7 @@ function loadSale(sale) {
 
 //popunjavanje klinike
 function loadKlinike(klinike) {
+	obrisiTabele();
 	$("#tabela_klinike tbody tr").remove(); 
 	$("#tabela_klinike thead ").remove();
 	var table = $("#tabela_klinike");
@@ -307,6 +314,7 @@ function loadKlinike(klinike) {
 }
 
 function loadPacijenti(pacijenti) {
+	obrisiTabele();
 	$("#tabela_pacijenti tbody tr").remove(); 
 	$("#tabela_pacijenti thead ").remove();
 	var table = $("#tabela_pacijenti");
@@ -317,6 +325,7 @@ function loadPacijenti(pacijenti) {
 }
 //sifrarnik lekova
 function loadSifrarnikLekova(sl) {
+	obrisiTabele();
 	$("#tabela_sl tbody tr").remove(); 
 	$("#tabela_sl thead ").remove();
 	var table = $("#tabela_sl");
@@ -328,6 +337,7 @@ function loadSifrarnikLekova(sl) {
 
 //sifrarbik dijagnoza
 function loadSifrarnikDijagnoza(sd) {
+	obrisiTabele();
 	$("#tabela_sd tbody tr").remove(); 
 	$("#tabela_sd thead ").remove();
 	var table = $("#tabela_sd");
@@ -338,6 +348,7 @@ function loadSifrarnikDijagnoza(sd) {
 }
 
 function loadLekari(lekari) {
+	obrisiTabele();
 	$("#tabela_lekari tbody tr").remove(); 
 	$("#tabela_lekari thead ").remove();
 	var table = $("#tabela_lekari");
@@ -349,6 +360,8 @@ function loadLekari(lekari) {
 
 //popunjavanje tabele pregleda
 function loadPregledi(pregledi) {
+	obrisiTabele();
+	obrisiPretragu();
 	$("#tabela_pregledi tbody tr").remove(); 
 	$("#tabela_pregledi thead ").remove();
 	var table = $("#tabela_pregledi");
@@ -400,6 +413,8 @@ function oceniKliniku(prikaz, idK) {
 
 //popunjavanje tabele operacija
 function loadOperacije(operacije) {
+	obrisiTabele();
+	obrisiPretragu();
 	$("#tabela_operacije tbody tr").remove(); 
 	$("#tabela_operacije thead ").remove();
 	var table = $("#tabela_operacije");
@@ -608,7 +623,7 @@ function makeTableRowKlinike(k) {
 	  row =
 		`
 		    <tr>
-			<td class="izgledTabele" > <a href="#" onClick="prebaciNaKliniku(${k.idKlinike})"> ${k.naziv} </a> </td>
+			<td class="izgledTabele" > <a href="#" onClick="prebaciNaKliniku(${k.idKlinike})"> ${k.naziv} </a></td>
 			<td class="izgledTabele" >${k.adresa}</td>
 			<td class="izgledTabele" >${k.grad}</td>
 			<td class="izgledTabele" >${k.opis}</td>
@@ -1530,6 +1545,7 @@ function prikazSlobodnihTerminaPregleda() {
 }
 
 function loadDefinisaniPregledi(pregledi) {
+	obrisiTabele();
 	$("#tabela_definisaniPregledi tbody tr").remove(); 
 	$("#tabela_definisaniPregledi thead ").remove();
 	var table = $("#tabela_definisaniPregledi");
@@ -1613,4 +1629,111 @@ function izmenaProfilaMS(){
 	 
 	});
 	
+}
+
+function pretragaKlinika(){
+	var tipPregleda = document.getElementById("pretraga").value;
+	var tipP = tipPregleda.toUpperCase();
+	var dan = document.getElementById("dan").value;
+	var mesec = document.getElementById("mesec").value;
+	var godina = document.getElementById("godina").value;
+	$.ajax({
+		url: "api/lekari/tipPregleda/" + tipP,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			klinike = JSON.parse(data.responseText);
+			loadKlinikePretrazene(klinike);	
+		}
+	});	
+}
+
+function loadKlinikePretrazene(klinike) {
+	obrisiTabele();
+	$("#tabela_klinike_pretrazene tbody tr").remove(); 
+	$("#tabela_klinike_pretrazene thead ").remove();
+	var table = $("#tabela_klinike_pretrazene");
+	table.append(makeTableHeaderKlinikePretrazene());	
+	for(let k of klinike) {
+		table.append(makeTableRowKlinikePretrazene(k));
+	}
+}
+
+function makeTableHeaderKlinikePretrazene(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Naziv</th>
+						<th>Adresa</th>
+						<th>Grad</th>
+						<th>Ocena</th>
+						<th>Cena</th>
+				     </tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowKlinikePretrazene(k) {
+	var row = "";
+	var tipPregleda = document.getElementById("pretraga").value;
+	var tipP = tipPregleda.toUpperCase();
+	cenaPregleda(k.idKlinike, tipP);
+	var cenovnik = JSON.parse(localStorage.getItem('cena'));
+	console.log(cenovnik);
+	row =
+		`<tr>
+			<td class="izgledTabele" '>${k.naziv}</td>
+			<td class="izgledTabele" '>${k.adresa}</td>
+			<td class="izgledTabele" '>${k.grad}</td>
+			<td class="izgledTabele" '>${k.ocena}</td>
+			<td class="izgledTabele" '>${cenovnik}</td>
+		</tr>`;
+	
+	return row;
+}
+
+function obrisiTabele(){
+	$("#tabela_klinike_pretrazene tbody tr").remove(); 
+	$("#tabela_klinike_pretrazene thead ").remove();
+	$("#tabela_klinike tbody tr").remove(); 
+	$("#tabela_klinike thead ").remove();
+	$("#tabela_operacije tbody tr").remove(); 
+	$("#tabela_operacije thead ").remove();
+	$("#tabela_pregledi tbody tr").remove(); 
+	$("#tabela_pregledi thead ").remove();
+}
+
+function obrisiPretragu(){
+	$("#pretraga").hide();
+	$("#dan").hide();
+	$("#mesec").hide();
+	$("#godina").hide();
+	$("#pretrazi").hide();
+}
+
+function cenaPregleda(idK, tipP){
+	$.ajax({
+		url: "api/cenovnik/" + idK + "/" + tipP,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			cenovnik = JSON.parse(data.responseText);
+			console.log(cenovnik);
+			localStorage.setItem('cena',cenovnik.cena);
+			console.log(cenovnik.cena);
+			
+		} 
+	 
+	});	
 }

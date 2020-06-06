@@ -1,13 +1,12 @@
 package com.example.KCApp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.validation.Valid;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,24 +16,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.access.prepost.PreAuthorize;
 
-import com.example.KCApp.DTO.PacijentDTO;
-import com.example.KCApp.DTO.UserDTO;
+import com.example.KCApp.DTO.LekarDTO;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
-import com.example.KCApp.beans.MedicinskaSestra;
-import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.RadniKalendarL;
-import com.example.KCApp.beans.Sala;
 import com.example.KCApp.beans.TipPregleda;
 import com.example.KCApp.beans.User;
-import com.example.KCApp.beans.ZdravstveniKarton;
-import com.example.KCApp.service.KlinikaService;
-import com.example.KCApp.service.LekarService;
-import com.example.KCApp.DTO.LekarDTO;
 import com.example.KCApp.repository.LekarRepository;
-import com.example.KCApp.repository.UserRepository;
+import com.example.KCApp.service.KlinikaService;
 import com.example.KCApp.service.LekarService;
 
 import javassist.NotFoundException;
@@ -72,9 +62,15 @@ public class LekarController {
 	/*PRETRAGA LEKARA PO KRITERIJUMU - TIP PREGLEDA*/
 	@GetMapping(value = "/lekari/tipPregleda/{tipPregleda}")
 	@PreAuthorize("hasRole('PACIJENT')")
-	public List<Lekar> findAllLekarByTipPregleda(@PathVariable TipPregleda tipPregleda) {
-		List<Lekar> lekar = service.findAllByTipPregleda(tipPregleda);
-		return lekar;
+	public List<Klinika> findAllLekarByTipPregleda(@PathVariable TipPregleda tipPregleda) {
+		List<Lekar> lekari = service.findAllByTipPregleda(tipPregleda);
+		List<Klinika> klinike = new ArrayList<Klinika>();
+		for(Lekar l : lekari)
+		{
+		    Klinika k = klinikaService.get(l.getKlinika().getIdKlinike());
+		    klinike.add(k);
+		}
+		return klinike;
 	}
 	
 	/*DODAVANJE LEKARA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
