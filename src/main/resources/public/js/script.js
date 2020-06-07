@@ -1,3 +1,6 @@
+var pretrazeneKlinike;
+var filtriraneKlinike;
+
 function getFormData($form) {
 	var unindexedArray = $form.serializeArray();
 	console.log(unindexedArray)
@@ -1654,12 +1657,25 @@ function pretragaKlinika(){
 	    },
 		complete: function(data) {
 			klinike = JSON.parse(data.responseText);
+			pretrazeneKlinike = klinike;
 			loadKlinikePretrazene(klinike);	
 		}
 	});	
 }
 
 function loadKlinikePretrazene(klinike) {
+	$("#filterNaziv").show();
+	$("#filterKlinikaNaziv").show();
+	$("#filterGrad").show();
+	$("#filterKlinikaGrad").show();
+	$("#filterOcenaNajmanja").show();
+	$("#minus").show();
+	$("#filterOcenaNajveca").show();
+	$("#filterKlinikaOcena").show();
+	$("#filterCenaNajmanja").show();
+	$("#minusCena").show();
+	$("#filterCenaNajveca").show();
+	$("#filterKlinikaCena").show();
 	obrisiTabele();
 	$("#tabela_klinike_pretrazene tbody tr").remove(); 
 	$("#tabela_klinike_pretrazene thead ").remove();
@@ -1680,7 +1696,6 @@ function makeTableHeaderKlinikePretrazene(){
 			`<thead class="thead-light" bgcolor="white">
 					<tr>
 						<th>Naziv</th>
-						<th>Adresa</th>
 						<th>Grad</th>
 						<th>Ocena</th>
 						<th>Cena</th>
@@ -1701,7 +1716,6 @@ function makeTableRowKlinikePretrazene(k) {
 	row =
 		`<tr>
 			<td class="izgledTabele" '>${k.naziv}</td>
-			<td class="izgledTabele" '>${k.adresa}</td>
 			<td class="izgledTabele" '>${k.grad}</td>
 			<td class="izgledTabele" '>${k.ocena}</td>
 			<td class="izgledTabele" '>${cenovnik}</td>
@@ -1744,6 +1758,18 @@ function obrisiPretragu(){
 	$("#ocenaL").hide();
 	$("#ocena").hide();
 	$("#pretraziLekare").hide();
+	$("#filterNaziv").hide();
+	$("#filterKlinikaNaziv").hide();
+	$("#filterGrad").hide();
+	$("#filterKlinikaGrad").hide();
+	$("#filterOcenaNajmanja").hide();
+	$("#minus").hide();
+	$("#filterOcenaNajveca").hide();
+	$("#filterKlinikaOcena").hide();
+	$("#filterCenaNajmanja").hide();
+	$("#minusCena").hide();
+	$("#filterCenaNajveca").hide();
+	$("#filterKlinikaCena").hide();
 }
 
 function cenaPregleda(idK, tipP){
@@ -2012,4 +2038,33 @@ function pretragaLekara(){
 			loadLekariKlinike(lekari);	
 		}
 	});	
+}
+
+function filtrirajNaziKlinike(){
+	var nazivKlinike = document.getElementById("filterNaziv").value;
+	var naziv2 = nazivKlinike.toUpperCase();
+	console.log("NAJNOVIJE " + JSON.stringify(pretrazeneKlinike));
+	//var listaPretrazenihKlinika = JSON.stringify(pretrazeneKlinike);
+	//pocetno veliko ostalo mala
+	/*for(let k of pretrazeneKlinike) {
+		var naziv1 = k.naziv.totoUpperCase();
+		if(naziv1.localeCompare(naziv2)){
+			filtriraneKlinike
+		}
+	}*/
+	//loadKlinikePretrazene(filtriraneKlinike);
+	/*$.ajax({
+		url: "api/klinike/filterNaziv/" + nazivKlinike + "/" + listaPretrazenihKlinika,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			klinike = JSON.parse(data.responseText);
+			console.log(klinike)
+			loadKlinikePretrazene(klinike);
+		}
+	});	*/
 }
