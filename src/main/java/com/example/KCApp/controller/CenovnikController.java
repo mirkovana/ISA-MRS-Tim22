@@ -31,13 +31,14 @@ public class CenovnikController {
 	@PreAuthorize("hasRole('PACIJENT')")
 	public Cenovnik find(@PathVariable Integer idKlinike, @PathVariable TipPregleda tipPregleda) {
 		List<Cenovnik> cenovnici= new ArrayList<Cenovnik>();
+		Cenovnik cen= new Cenovnik();
 		Klinika k = serviceKlinika.get(idKlinike);
 		cenovnici = serviceCenovnik.findAllByKlinika(k);
 		for(Cenovnik c : cenovnici) {
 			if(c.getTipPregledaCenovnik() == tipPregleda) {
-				return c;
+			    cen = c;
 			}
 		}
-		return null;
+		return cen;
 	}
 }

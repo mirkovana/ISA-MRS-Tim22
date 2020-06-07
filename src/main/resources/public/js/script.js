@@ -35,6 +35,8 @@ function logout(e) {
 }
 
 function getAdminUrlSlug(user) {
+	localStorage.tipPregleda = null;
+	localStorage.cena = null;
 	  switch(user.role) {
 	    case 'ROLE_ADMINKC':
 	      return '/homepageadminkc.html';
@@ -462,6 +464,7 @@ function makeTableHeaderKlinike(){
 						<th>Grad</th>
 						<th>Opis</th>
 						<th>Ocena</th>
+						<th>Prikazi</th>
 				     </tr>
 				</thead>`;
 		
@@ -623,11 +626,12 @@ function makeTableRowKlinike(k) {
 	  row =
 		`
 		    <tr>
-			<td class="izgledTabele" > <a href="#" onClick="prebaciNaKliniku(${k.idKlinike})"> ${k.naziv} </a></td>
+			<td class="izgledTabele" >${k.naziv}</td>
 			<td class="izgledTabele" >${k.adresa}</td>
 			<td class="izgledTabele" >${k.grad}</td>
 			<td class="izgledTabele" >${k.opis}</td>
 			<td class="izgledTabele" >${k.ocena}</td>
+			<td class="izgledTabele" ><input type="button" id="profilKlinike" value="Profil klinike" onClick="prebaciNaKliniku(${k.idKlinike})"/></td>
 		    </tr>
 		 `
 		;
@@ -754,7 +758,6 @@ function makeTableRowP(p) {
 }
 
 function makeTableRowLekari(l) {
-	//var aktivan = vm.radi ? "Radi" : "Ne radi";
 	var row = "";
 	
 	  row =
@@ -1527,6 +1530,7 @@ function izmenaProfilaKlinike(klinika){
 
 //ispis termina za unapred definisane preglede 
 function prikazSlobodnihTerminaPregleda() {
+	obrisiPretragu();
 	var obj = JSON.parse(localStorage.getItem('idKlinike'));
 	$.ajax({
 		url: "api/pregledi/klinika/" + obj,
@@ -1634,6 +1638,9 @@ function izmenaProfilaMS(){
 function pretragaKlinika(){
 	var tipPregleda = document.getElementById("pretraga").value;
 	var tipP = tipPregleda.toUpperCase();
+	localStorage.setItem('tipPregleda',tipP);
+	console.log("OBICNO: " + tipP);
+	console.log("SA GETOM" + localStorage.getItem('tipPregleda'))
 	var dan = document.getElementById("dan").value;
 	var mesec = document.getElementById("mesec").value;
 	var godina = document.getElementById("godina").value;
@@ -1658,7 +1665,10 @@ function loadKlinikePretrazene(klinike) {
 	$("#tabela_klinike_pretrazene thead ").remove();
 	var table = $("#tabela_klinike_pretrazene");
 	table.append(makeTableHeaderKlinikePretrazene());	
+	var tipPregleda = document.getElementById("pretraga").value;
+	var tipP = tipPregleda.toUpperCase();
 	for(let k of klinike) {
+		cenaPregleda(k.idKlinike, tipP);
 		table.append(makeTableRowKlinikePretrazene(k));
 	}
 }
@@ -1674,6 +1684,7 @@ function makeTableHeaderKlinikePretrazene(){
 						<th>Grad</th>
 						<th>Ocena</th>
 						<th>Cena</th>
+						<th>Prikazi</th>
 				     </tr>
 				</thead>`;
 		
@@ -1682,9 +1693,9 @@ function makeTableHeaderKlinikePretrazene(){
 
 function makeTableRowKlinikePretrazene(k) {
 	var row = "";
-	var tipPregleda = document.getElementById("pretraga").value;
-	var tipP = tipPregleda.toUpperCase();
-	cenaPregleda(k.idKlinike, tipP);
+	//var tipPregleda = document.getElementById("pretraga").value;
+	//var tipP = tipPregleda.toUpperCase();
+	//cenaPregleda(k.idKlinike, tipP);
 	var cenovnik = JSON.parse(localStorage.getItem('cena'));
 	console.log(cenovnik);
 	row =
@@ -1694,6 +1705,7 @@ function makeTableRowKlinikePretrazene(k) {
 			<td class="izgledTabele" '>${k.grad}</td>
 			<td class="izgledTabele" '>${k.ocena}</td>
 			<td class="izgledTabele" '>${cenovnik}</td>
+			<td class="izgledTabele" ><input type="button" id="profilKlinike" value="Profil klinike" onClick="prebaciNaKliniku(${k.idKlinike})"/></td>
 		</tr>`;
 	
 	return row;
@@ -1712,6 +1724,13 @@ function obrisiTabele(){
 	$("#tabela_pacijenti thead ").remove();
 	$("#tabela_recepti tbody tr").remove(); 
 	$("#tabela_recepti thead ").remove();
+	$("#tabela_lekari tbody tr").remove(); 
+	$("#tabela_lekari thead ").remove();
+	$("#tabela_lekari_tipPregleda tbody tr").remove(); 
+	$("#tabela_lekari_tipPregleda thead ").remove();
+	$("#tabela_definisaniPregledi tbody tr").remove(); 
+	$("#tabela_definisaniPregledi thead ").remove();
+	
 }
 
 function obrisiPretragu(){
@@ -1720,6 +1739,11 @@ function obrisiPretragu(){
 	$("#mesec").hide();
 	$("#godina").hide();
 	$("#pretrazi").hide();
+	$("#pretragaIme").hide();
+	$("#pretragaPrezime").hide();
+	$("#ocenaL").hide();
+	$("#ocena").hide();
+	$("#pretraziLekare").hide();
 }
 
 function cenaPregleda(idK, tipP){
@@ -1831,4 +1855,161 @@ function odradiOveru(idRecepta){
 		} 
 	 
 	});
+}
+
+function prikazSvihLekaraKlinike(){
+	$("#pretragaIme").show();
+	$("#pretragaPrezime").show();
+	$("#ocenaL").show();
+	$("#ocena").show();
+	$("#pretraziLekare").show();
+	obrisiTabele();
+	var obj = JSON.parse(localStorage.getItem('idKlinike'));
+	$.ajax({
+		url: "api/lekari/klinika/" + obj,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			lekari = JSON.parse(data.responseText);
+			console.log(lekari)
+			loadLekariKlinike(lekari);
+		}
+	});
+}
+
+function prikazLekaraKlinike(){
+	$("#pretragaIme").show();
+	$("#pretragaPrezime").show();
+	$("#ocenaL").show();
+	$("#ocena").show();
+	$("#pretraziLekare").show();
+	obrisiTabele();
+	var obj = JSON.parse(localStorage.getItem('idKlinike'));
+	var tipPregleda = localStorage.getItem('tipPregleda');
+	$.ajax({
+		url: "api/lekari/klinika/" + obj + "/" + tipPregleda,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			lekari = JSON.parse(data.responseText);
+			console.log(lekari)
+			loadLekariKlinikeTipPregleda(lekari);
+		}
+	});
+}
+
+function loadLekariKlinike(lekari) {
+	obrisiTabele();
+	$("#tabela_lekari tbody tr").remove(); 
+	$("#tabela_lekari thead ").remove();
+	var table = $("#tabela_lekari");
+	table.append(makeTableHeaderLekariKlinike());	
+	for(let l of lekari) {
+		table.append(makeTableRowLekariKlinike(l));
+	}
+}
+
+function makeTableHeaderLekariKlinike(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Ime</th>
+						<th>Prezime</th>
+						<th>Ocena</th>
+						<th>Prikazi</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowLekariKlinike(l) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele">${l.ime}</td>
+			<td class="izgledTabele">${l.prezime}</td>
+			<td class="izgledTabele">${l.ocena}</td>
+			<td class="izgledTabele">Lista</td>
+		</tr>`;
+	
+	return row;
+}
+
+function loadLekariKlinikeTipPregleda(lekari) {
+	obrisiTabele();
+	$("#tabela_lekari_tipPregleda tbody tr").remove(); 
+	$("#tabela_lekari_tipPregleda thead ").remove();
+	var table = $("#tabela_lekari_tipPregleda");
+	table.append(makeTableHeaderLekariKlinikeTipPregleda());	
+	for(let l of lekari) {
+		table.append(makeTableRowLekariKlinikeTipPregleda(l));
+	}
+}
+
+function makeTableHeaderLekariKlinikeTipPregleda(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Ime</th>
+						<th>Prezime</th>
+						<th>Ocena</th>
+						<th>Prikazi</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowLekariKlinikeTipPregleda(l) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele">${l.ime}</td>
+			<td class="izgledTabele">${l.prezime}</td>
+			<td class="izgledTabele">${l.ocena}</td>
+			<td class="izgledTabele">Lista</td>
+		</tr>`;
+	
+	return row;
+}
+
+function pretragaLekara(){
+	var idK = localStorage.getItem('idKlinike');
+	console.log(idK);
+	var imeLekara = document.getElementById("pretragaIme").value;
+	var maloIme = imeLekara.toLowerCase();
+	var ime = maloIme.charAt(0).toUpperCase() + maloIme.slice(1);
+	var prezimeLekara = document.getElementById("pretragaPrezime").value;
+	var maloPrezime = prezimeLekara.toLowerCase();
+	var prezime = maloPrezime.charAt(0).toUpperCase() + maloPrezime.slice(1);
+	var ocena = document.getElementById("ocena").value;
+	$.ajax({
+		url: "api/lekari/klinika/" + idK + "/" + ime + "/" + prezime + "/" + ocena,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			lekari = JSON.parse(data.responseText);
+			console.log(JSON.stringify(lekari));
+			loadLekariKlinike(lekari);	
+		}
+	});	
 }
