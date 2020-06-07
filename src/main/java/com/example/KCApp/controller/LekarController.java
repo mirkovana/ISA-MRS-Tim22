@@ -129,4 +129,77 @@ public class LekarController {
 			return "Lekar sa id: " + id + " nije pronadjen"; //ne prikazuje poruku kad se stavi id koji ne postoji
 		}
 	}
+	
+	/*PRIKAZ LEKARA PO KRITERIJUMU - ID KLINIKE KOJOJ LEKAR PRIPADA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/{tipPregleda}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByIdKlinike(@PathVariable Integer idKlinike, @PathVariable TipPregleda tipPregleda) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		for(Lekar l:lekari)
+		{
+			if(l.getKlinika() == k && l.getTipPregleda() == tipPregleda) {
+				lekariKlinike.add(l);
+			}
+		}
+		return lekariKlinike;
+	}
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - ID KLINIKE*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByIdKlinikeSvi(@PathVariable Integer idKlinike) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		for(Lekar l:lekari)
+		{
+			if(l.getKlinika() == k) {
+				lekariKlinike.add(l);
+			}
+		}
+		return lekariKlinike;
+	}
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - IME,PREZIME,OCENA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/{ime}/{prezime}/{ocena}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByIPO(@PathVariable Integer idKlinike, @PathVariable String ime, @PathVariable String prezime, @PathVariable int ocena) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> lekariKlinike1 = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getIme().equals(ime) && l.getPrezime().equals(prezime)) {
+				lekariKlinike.add(l);
+			}
+		}
+		
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		
+		for(Lekar l : lekariKlinike) {
+			if(ocena == 1) {
+				if(l.getOcena()>=1 && l.getOcena()<2) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 2) {
+				if(l.getOcena()>=2 && l.getOcena()<3) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 3) {
+				if(l.getOcena()>=3 && l.getOcena()<4) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 4) {
+				if(l.getOcena()>=4 && l.getOcena()<=5) {
+					lekariKlinike1.add(l);
+				}
+			}
+		}
+		return lekariKlinike1;
+	}
 }
