@@ -735,7 +735,7 @@ function makeTableRowOperacije(o) {
 }
 
 function makeTableRowP(p) {
-	//var aktivan = vm.radi ? "Radi" : "Ne radi";
+	
 	var row = "";
 	
 	  row =
@@ -1708,6 +1708,10 @@ function obrisiTabele(){
 	$("#tabela_operacije thead ").remove();
 	$("#tabela_pregledi tbody tr").remove(); 
 	$("#tabela_pregledi thead ").remove();
+	$("#tabela_pacijenti tbody tr").remove(); 
+	$("#tabela_pacijenti thead ").remove();
+	$("#tabela_recepti tbody tr").remove(); 
+	$("#tabela_recepti thead ").remove();
 }
 
 function obrisiPretragu(){
@@ -1736,4 +1740,95 @@ function cenaPregleda(idK, tipP){
 		} 
 	 
 	});	
+}
+
+
+
+//pozivacemo poacijenti
+function overeRecepata() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/recepti/ms/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			recepti = JSON.parse(data.responseText);
+			console.log(recepti)
+			//loadPregledi(pregledi);
+		//	window.location.replace("./overaRecepata.html");
+			loadRecepti(recepti);
+		}
+	});
+}
+
+
+function loadRecepti(recepti) {
+	obrisiPretragu();
+	var table = $("#tabela_recepti");
+	table.append(makeTableHeaderRecepti());	
+	for(let r of recepti) {
+		table.append(makeTableRowRecepti(r));
+	}
+	
+}
+function makeTableHeaderRecepti(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Naziv leka</th>
+						<th >Ime lekara</th>
+						<th >Prezime lekara</th>
+						<th >Ime pacijenta</th>
+						<th >Prezime pacijenta</th>
+						<th>Overi</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowRecepti(r) {
+	console.log(r);
+	console.log(r.sifraLeka.nazivLeka);
+	var row = "";
+	
+	  row =
+		`<tr bgcolor="white">
+			<td  >${r.sifraLeka.nazivLeka}</td>
+			<td >${r.pregled.lekar.ime}</td>
+			<td >${r.pregled.lekar.prezime}</td>
+			<td >${r.pregled.pacijent.ime}</td>
+			<td >${r.pregled.pacijent.prezime}</td>
+			<td ><button class="button" onClick="odradiOveru(${r.idRecepta})">Overi</button></i></button></td >
+		</tr>`;
+	
+	return row;
+}
+
+function odradiOveru(idRecepta){
+	
+	var obj=JSON.parse(localStorage.getItem('user'));
+	
+	
+	
+	$.ajax({
+		url: "api/recepti/" + obj.id + "/" + idRecepta,
+		type: "PUT",
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			
+			
+		} 
+	 
+	});
 }
