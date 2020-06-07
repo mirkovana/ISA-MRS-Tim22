@@ -56,7 +56,10 @@ insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(2, 1000, 'PEDIJATRIJA', 1, '2020-5-1 15:00:00', 2, null, 1, 3);
 insert into operacija(id_operacije, dodatne_infoooperaciji, trajanje, vreme_operacije, id_klinike, id_sale, id, id_lekara)values(1, 'operacija tetive', 2, '2020-6-1 12:00:00', 2, 3, 5, 3);
 insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id) values (1, 1.05, 'A+', 55.5, 170.00,5);
+insert into recept(id_recepta, overen,id,id_pregleda, id_sifrarnika)values(1,false,null,1,1);
+insert into recept(id_recepta, overen,id,id_pregleda, id_sifrarnika)values(2,true,4,2,1);
 
+--insert into recept(id_recepta, overen,id,id_pregleda,id_sifrarnika)values(2,false,null,4,2,1);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (1, 1);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 2);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 3);

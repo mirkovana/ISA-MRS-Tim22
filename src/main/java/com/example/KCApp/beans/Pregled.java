@@ -2,6 +2,7 @@ package com.example.KCApp.beans;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.util.Date;
@@ -17,8 +18,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "pregled")
@@ -55,15 +59,11 @@ public class Pregled {
 	@JoinColumn(name = "idLekara", referencedColumnName = "id", nullable = false)
 	private Lekar lekar;
 	
-	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "pregled")
-	private Set<Recept> recepti = new HashSet<Recept>();
+	@OneToOne(fetch = LAZY, mappedBy="pregled")
+    @JoinColumn(name = "idRecepta", nullable = false)	
+	@JsonBackReference
+	private Recept recept;
 	
-	public void add(Recept item) {
-	    if (item.getPregled() != null)
-	      item.getPregled().getRecepti().remove(item);
-	    item.setPregled(this);
-	    getRecepti().add(item);
-	  }
 	
 	@ManyToOne
 	@JoinColumn(name = "id", referencedColumnName = "id", nullable = true)
@@ -72,13 +72,13 @@ public class Pregled {
 	
 	public Pregled() {}
 	
-	public Pregled(Date vreme, int trajanje, TipPregleda tipPregleda, Sala sala, Lekar lekar, Klinika klinika, Set<Recept> recepti, Pacijent pacijent, int cena) {
+	public Pregled(Date vreme, int trajanje, TipPregleda tipPregleda, Sala sala, Lekar lekar, Klinika klinika, Recept recept, Pacijent pacijent, int cena) {
 		this.vreme = vreme;
 		this.trajanje = trajanje;
 		this.tipPregleda = tipPregleda;
 		this.sala = sala;
 		this.klinika = klinika;
-		this.recepti = recepti;
+		this.recept = recept;
 		this.pacijent = pacijent;
 		this.cena = cena;
 		this.lekar = lekar;
@@ -132,13 +132,6 @@ public class Pregled {
 		this.klinika = klinika;
 	}
 
-	public Set<Recept> getRecepti() {
-		return recepti;
-	}
-
-	public void setRecepti(Set<Recept> recepti) {
-		this.recepti = recepti;
-	}
 
 	public Pacijent getPacijent() {
 		return pacijent;
@@ -164,12 +157,15 @@ public class Pregled {
 		this.cena = cena;
 	}
 
-	@Override
-	public String toString() {
-		return "Pregled [idPregleda=" + idPregleda + ", vreme=" + vreme + ", trajanje=" + trajanje + ", tipPregleda="
-				+ tipPregleda + ", sala=" + sala + ", klinika=" + klinika + ", recepti=" + recepti + ", pacijent="
-				+ pacijent + "]";
+	public Recept getRecept() {
+		return recept;
 	}
+
+	public void setRecept(Recept recept) {
+		this.recept = recept;
+	}
+
+
 	
 	
 	
