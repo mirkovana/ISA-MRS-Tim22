@@ -41,4 +41,13 @@ public class CenovnikController {
 		}
 		return cen;
 	}
+	
+	@GetMapping(value = "/cenovnik/{idKlinike}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Cenovnik> prikazCenovnikaKlinike(@PathVariable Integer idKlinike) {
+		List<Cenovnik> cenovnici= new ArrayList<Cenovnik>();
+		Klinika k = serviceKlinika.get(idKlinike);
+		cenovnici = serviceCenovnik.findAllByKlinika(k);
+		return cenovnici;
+	}
 }

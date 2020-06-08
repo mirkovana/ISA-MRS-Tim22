@@ -38,7 +38,7 @@ insert into cenovnik(id_cenovnika, cena, tip_pregleda, id_klinike)values(nextval
 --insert into medicinska_sestra(id_korisnika, adresa, broj_telefona, drzava, email, grad, ime, lozinka, prezime,id_klinike )values(2, 'Mikina 1','021555222', 'Srbija', 'mika@gmail.com', 'Beograd', 'Mika','mika123', 'Mikic',1 );
 insert into lekar(id, ocena, id_klinike, tip_pregleda)values(3,5,1 ,'DERMATOLOGIJA');
 insert into lekar(id, ocena, id_klinike, tip_pregleda)values(7,3.5,1 ,'KARDIOLOGIJA');
-insert into lekar(id, ocena, id_klinike, tip_pregleda)values(8,1,1 ,'GINEKOLOGIJA');
+insert into lekar(id, ocena, id_klinike, tip_pregleda)values(8,1,2,'GINEKOLOGIJA');
 insert into lekar(id, ocena, id_klinike, tip_pregleda)values(9,2,1 ,'GINEKOLOGIJA');
 
 --insert into lekar(id_korisnika, adresa, broj_telefona, drzava, email, grad, ime, lozinka, prezime,ocena, id_klinike, tip_pregleda)values(3, 'Mikina 12','02188888', 'Srbija', 'jova@gmail.com', 'Beograd', 'Jova','jova123', 'Jovic','PET',1 ,'DERMATOLOGIJA');
