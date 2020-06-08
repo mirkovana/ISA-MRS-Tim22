@@ -15,7 +15,9 @@ body {
     font-family: cursive;
 
   }
-
+textarea {
+  resize: none;
+}
   .dropdown:hover .dropbtn {background-color: #3e8e41;} */
 
 

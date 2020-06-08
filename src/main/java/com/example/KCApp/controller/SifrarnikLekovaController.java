@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.KCApp.DTO.SifrarnikDijagnozaDTO;
 import com.example.KCApp.DTO.SifrarnikLekovaDTO;
 import com.example.KCApp.beans.KlinickiCentar;
+import com.example.KCApp.beans.SifrarnikDijagnoza;
 import com.example.KCApp.beans.SifrarnikLekova;
 import com.example.KCApp.service.KlinickiCentarService;
 import com.example.KCApp.service.SifrarnikLekovaService;
@@ -33,6 +34,16 @@ public class SifrarnikLekovaController {
 	@GetMapping(value="/sifrarnikLekova")
 	@PreAuthorize("hasRole('ADMINKC') or hasRole('LEKAR')")
 	public List<SifrarnikLekova> getAllSifrarnikLekova(Model model) {
+		List<SifrarnikLekova> sifrarnikLekova = service.listAll();
+		model.addAttribute("sifrarnikLekova", sifrarnikLekova );
+		return sifrarnikLekova ;
+	}
+	
+
+	/*PRIKAZ SVIH SIFRARNIKA DIJAGNOZA*/
+	@GetMapping(value="/sl/novo")
+	@PreAuthorize("hasRole('ADMINKC') or hasRole('LEKAR')")
+	public List<SifrarnikLekova> getAllSifrarnikDijagnoza(Model model) {
 		List<SifrarnikLekova> sifrarnikLekova = service.listAll();
 		model.addAttribute("sifrarnikLekova", sifrarnikLekova );
 		return sifrarnikLekova ;

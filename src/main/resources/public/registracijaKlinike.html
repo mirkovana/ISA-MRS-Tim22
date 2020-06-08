@@ -16,26 +16,28 @@
         <form action="" id="formaFiltr">
         <table>
               
-                  <tr>     
-              <td><input type="text" name="naziv" placeholder="Naziv:" id="naziv" ></td>
+                  <tr>  
+                  
+              <td> <label>Naziv</label>  </td> <td>  <input type="text" name="naziv" id="naziv" ></td>
                </tr>
                 <tr>
-              <td><input type="text" name="adresa" placeholder="adresa" id="adresa" ></td>
+                
+              <td> <label>Adresa</label> </td> <td>  <input type="text" name="adresa" id="adresa" ></td>
                </tr>
                <tr>
                
-              <td><input type="text" name="grad" placeholder="Grad:" id="grad" ></td>
+              <td> <label >Grad</label> </td> <td>  <input type="text" name="grad" id="grad" ></td>
                </tr>
                 <tr>
-              <td><input type="text" name="opis" placeholder="opis:" id="opis" ></td>
+              <td> <label >Opis</label> </td> <td>  <input type="text" name="opis"  id="opis" ></td>
                </tr>
-                <tr>
-              <td><input type="text" name="ocena" placeholder="ocena:" id="ocena" ></td>
+                <tr> 
+              <td><label>Ocena</label> </td> <td>  <input type="text" name="ocena"  id="ocena" ></td>
                </tr>
               
              
                   <tr>   
-              <td> <button type="button" class="btn btn-secondary" onclick="dodavanjeKlinike()">Dodaj</button></td>
+              <td colspan=2> <button type="button" class="btn btn-secondary" onclick="dodavanjeKlinike()">Dodaj</button></td>
                 </tr>
                <label id="uspesno" >Uspesno dodata klinika</label>
                <label id="neuspesno">Niste uspeli da dodate kliniku</label>

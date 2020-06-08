@@ -34,7 +34,7 @@ public class ZdravstveniKartonController {
 	private ZdravstveniKartonRepository repository;
 	
 	@GetMapping(value="/kartoni/svi/{id}")
-	@PreAuthorize("hasRole('PACIJENT')")
+	@PreAuthorize("hasRole('PACIJENT') or hasRole('LEKAR')")
 	public ZdravstveniKarton getAllZdravstveniKartoni(Model model, @PathVariable Integer id) {
 		List<ZdravstveniKarton> listaZdravstveniKartoni = service.listAll();
 		for(ZdravstveniKarton zk : listaZdravstveniKartoni)

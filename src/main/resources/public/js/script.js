@@ -2,7 +2,7 @@ var pretrazeneKlinike;
 var filtriraneKlinike;
 var datum;
 var vremeG;
-
+var sifrarnikD;
 function getFormData($form) {
 	var unindexedArray = $form.serializeArray();
 	console.log(unindexedArray)
@@ -584,6 +584,7 @@ function makeTableHeaderP(){
 						<th>Drzava</th>
 						<th>Broj telefona</th>
 						<th>Broj osiguranika</th>
+						<th>Profil pacijenta</th>
 					</tr>
 				</thead>`;
 		
@@ -655,7 +656,12 @@ function prebaciNaKliniku(idKlinike) {
 	localStorage.setItem('idKlinike', idKlinike);
 	window.location.replace("./profilklinike.html");
 }
-
+function prebaciNaPacijenta(idPacijenta) {
+	
+    localStorage.setItem('idPacijenta', idPacijenta);
+    dobaviSD();
+	window.location.replace("./profilpacijenta.html");
+}
 function makeTableRowPregledi(p) {
 	var row = "";
 	var deli = p.vreme.split("T");
@@ -763,6 +769,7 @@ function makeTableRowP(p) {
 			<td class="izgledTabele">${p.drzava}</td>
 			<td class="izgledTabele">${p.brojTelefona}</td>
 			<td class="izgledTabele">${p.brojOsiguranika}</td>
+			<td class="izgledTabele"><input type="button" id="profilPacijenta" value="Prikazi" onClick="prebaciNaPacijenta(${p.id})"/></td>
 		</tr>`;
 	
 	return row;
@@ -2255,3 +2262,376 @@ function sacuvajZahtevZaPregled(idLek){
 
 	});
 }
+
+function dobaviPacijenta(){
+	var obj= localStorage.getItem('idPacijenta');
+	$.ajax({
+		url: "api/pacijenti/" + obj,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			pacijent = JSON.parse(data.responseText);
+			console.log(JSON.stringify(pacijent))
+			profilPacijenta(pacijent);
+			
+		}
+	});
+}
+function profilPacijenta(obj){
+	
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Profil pacijenta</h1></div>
+			<div class="container">
+			<br>
+			
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="ime">Ime</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="ime" readonly></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="prezime">Prezime</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="prezime" id="prezime" readonly></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="brojOsiguranika">Broj osiguranika</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojOsiguranika}" name="brojOsiguranika" id="brojOsiguranika" readonly></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="adresa">Adresa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" readonly></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="grad">Grad</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" readonly></td>
+					</tr>					
+					<tr>
+					<td  class='align-middle'><label for="drzava">Drzava</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" readonly></td>
+					</tr>					
+					<tr>
+					<td  class='align-middle'><label for="brojTelefona">Broj telefona</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" readonly></td>
+					</tr>
+									
+				</tbody>
+			</table>
+			
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+}
+function setUpZKLekar() {
+	var obj = JSON.parse(localStorage.getItem('idPacijenta'));
+	$.ajax({
+		url: "api/kartoni/svi/" + obj,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			kartoni = JSON.parse(data.responseText);
+			console.log(kartoni)
+			pregledModZKKodLekara(kartoni);
+		}
+	});
+}
+
+function pregledModZKKodLekara(kartoni) {
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Zdravstveni karton pacijenta</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="tezina">Tezina</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${kartoni.tezina}" name="tezina" id="tezina" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="visina">Visina</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${kartoni.visina}" name="visina" id="visina" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="dioptrija">Dioptrija</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${kartoni.dioptrija}" name="dioptrija" id="dioptrija" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="krvnaGrupa">Krvna grupa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${kartoni.krvnaGrupa}" name="krvnaGrupa" id="krvnaGrupa" ></td>
+					</tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="sacuvajIzmeneZK(\'${kartoni.idZdravstvenogKartona}\')">Sacuvaj izmene</button></td></tr>							
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+	
+}
+function sacuvajIzmeneZK(idZdravstvenogKartona) {
+
+	var dat = getFormData($("#formaIzmena"));
+	
+	var org = JSON.stringify(dat);
+    $.ajax({
+		url: "api/kartoni/" + idZdravstvenogKartona,
+		type: "PUT",
+		data: org,
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			
+			
+		} 
+	 
+	});
+}
+
+
+function listaPregledaPac(){
+	var pac = JSON.parse(localStorage.getItem('idPacijenta'));
+	var lek = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pregledi/lekar/" + pac + "/" + lek.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			pregledi = JSON.parse(data.responseText);
+			console.log(pregledi)
+			loadPreglediLek(pregledi);
+		}
+	});
+}
+function loadPreglediLek(pregledi){
+
+	var table = $("#tabela_pregledi");
+	table.append(makeTableHeaderPreglediL());	
+	for(let p of pregledi) {
+		table.append(makeTableRowPreglediL(p));
+}
+}
+
+function makeTableHeaderPreglediL(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Datum</th>
+						<th>Vreme</th>
+						<th>Trajanje</th>
+						<th>Sala</th>
+						<th></th>
+				     </tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowPreglediL(p) {
+	var row = "";
+	var deli = p.vreme.split("T");
+	var datum = deli[0];
+	var deli1 = deli[1].split(".");
+	var vreme = deli1[0];
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${p.vreme}'>${datum}</td>
+			<td class="izgledTabele" id='${p.vreme}'>${vreme}</td>
+			<td class="izgledTabele" id='${p.trajanje}'>${p.trajanje}</td>
+			<td class="izgledTabele" id='${p.sala}'>${p.sala.nazivSale}</td>
+			<td><input type="button" id="zp" value="Zapocni pregled" onClick="zapocniPregled(\'${p.idPregleda}\')"/></td>
+		</tr>`;
+	
+	return row;
+}
+function dobaviSD(){
+	var povratna;
+	$.ajax({
+		url: "api/sifrarnikDijagnoza",
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function(data) {
+			sd = JSON.parse(data.responseText);
+			napuniCBSD(sd);
+			
+		}
+	});
+	
+}
+function dobaviSL(){
+	var povratna;
+	$.ajax({
+		url: "api/sl/novo",
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function(data) {
+			sl = JSON.parse(data.responseText);
+			napuniCBSL(sl);
+			
+		}
+	});
+	
+}
+function napuniCBSD(sd){
+	console.log(sd);
+	var m = "";	
+	var modal=$("#nazivDijagnoze");	
+	for(let s of sd){
+		console.log(s.nazivDijagnoze);
+		m = `<option id="nazivDijagnoze" value=${s.nazivDijagnoze}>${s.nazivDijagnoze}</option>`;
+		modal.append(m);
+	}
+}
+function napuniCBSL(sl){
+	console.log(sl);
+	var m = "";	
+	var modal=$("#nazivLeka");	
+	for(let s of sl){
+		
+		m = `<option id="nazivLeka" value=${s.nazivLeka}>${s.nazivLeka}</option>`;
+		modal.append(m);
+	}
+}
+function zapocniPregled(idPregleda){
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Izvestaj o pregledu</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+						  <td colspan = 2><textarea name="info"  id = "info"></textarea></td>
+				    </tr>
+					<tr><td>
+					<select name="nazivDijagnoze" id="nazivDijagnoze">
+		  				
+		  			</select>
+		  			</td>
+		  			
+		  			<td>
+					<select name="nazivLeka" id="nazivLeka">
+		  				
+		  			</select>
+		  			</td></tr>
+		  			
+		  			<tr><td><input type="button" id="iop" value="Zavrsi pregled" onClick="sacuvajIzvestajOPregledu(\'${idPregleda}\')"/></td>
+		  			<td><input type="button" id="rec" value="Kreiraj recept" onClick="kreirajRecept(\'${idPregleda}\')"/></td></tr>
+						
+			</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+			dobaviSL();
+			dobaviSD();
+			
+		$("#modal-wrapper").show(); 
+		
+}
+///izvestajOPregleduDTO/{idPregleda}
+
+function sacuvajIzvestajOPregledu(idPregleda){
+	var data = getFormData($("#formaIzmena"));
+	
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/izvestajOPregleduDTO/" + idPregleda,
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
+
+	});
+	
+	}
+
+function kreirajRecept(idPregleda){
+	
+	
+var data = getFormData($("#formaIzmena"));
+
+console.log(data.nazivLeka);
+	
+
+	$.ajax({
+		url: "api/recepti/dodaj/" + data.nazivLeka + "/" + idPregleda,
+		type: "POST",
+
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
+
+	});
+	
+	}
