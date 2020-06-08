@@ -49,10 +49,10 @@ public class PregledController {
 
 	@Autowired
 	private LekarService serviceL;
-	
+
 	@Autowired
 	private PacijentService serviceP;
-	
+
 	@Autowired
 	private PregledRepository repository;
 
@@ -146,17 +146,37 @@ public class PregledController {
 		pregled = service.save(pregled);
 		return new ResponseEntity<>(new PregledDTO(pregled), HttpStatus.CREATED);
 	}
-	
-	@PutMapping(value="/pregledi/{id}/{idPregleda}", consumes = "application/json")
+
+	@PutMapping(value = "/pregledi/{id}/{idPregleda}", consumes = "application/json")
 	@PreAuthorize("hasRole('PACIJENT')")
 	public Pregled updatePregled(@PathVariable Integer id, @PathVariable Integer idPregleda) throws NotFoundException {
 		Pacijent p = serviceP.get(id);
-		return repository.findById(idPregleda)
-				.map(pregled->{
-					
-					pregled.setPacijent(p);
-					return repository.save(pregled);
-				}).orElseThrow(() -> new NotFoundException("Pregled nije pronadjen sa id : " + idPregleda));
-		
+		return repository.findById(idPregleda).map(pregled -> {
+
+			pregled.setPacijent(p);
+			return repository.save(pregled);
+		}).orElseThrow(() -> new NotFoundException("Pregled nije pronadjen sa id : " + idPregleda));
+
+	}
+
+	/* ISPISIVANJE PREGLEDA NA OSNOVU LEKARA I PACIJENTA */
+	@GetMapping(value = "/pregledi/lekar/{idPacijenta}/{idLekara}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pregled> getPreglediZaPacILek(Model model, @PathVariable Integer idPacijenta,
+			@PathVariable Integer idLekara) {
+		List<Pregled> listaPregled = service.listAll();
+		List<Pregled> pregledi = new ArrayList<Pregled>();
+
+		for (Pregled p : listaPregled) {
+
+			if (p.getPacijent() != null && p.getLekar().getId() == idLekara && p.getPacijent().getId() == idPacijenta) {
+
+				model.addAttribute("listaPregled", pregledi);
+				pregledi.add(p);
+
+			}
+		}
+
+		return pregledi;
 	}
 }

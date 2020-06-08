@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "recept")
-@SequenceGenerator(name = "receptIdSeq", sequenceName = "receptIdGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "receptIdSeq", sequenceName = "receptIdGen", initialValue = 3, allocationSize = 1)
 public class Recept {
 	
 	//private SifrarnikLekova sifraLeka;
