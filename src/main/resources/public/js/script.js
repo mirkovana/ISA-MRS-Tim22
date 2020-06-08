@@ -1,5 +1,7 @@
 var pretrazeneKlinike;
 var filtriraneKlinike;
+var datum;
+var vremeG;
 
 function getFormData($form) {
 	var unindexedArray = $form.serializeArray();
@@ -40,6 +42,7 @@ function logout(e) {
 function getAdminUrlSlug(user) {
 	localStorage.tipPregleda = null;
 	localStorage.cena = null;
+	localStorage.datum = null;
 	  switch(user.role) {
 	    case 'ROLE_ADMINKC':
 	      return '/homepageadminkc.html';
@@ -644,6 +647,11 @@ function makeTableRowKlinike(k) {
 
 function prebaciNaKliniku(idKlinike) {
 	///klinike/id/{id}
+	var dan = document.getElementById("dan").value;
+	var mesec = document.getElementById("mesec").value;
+	var godina = document.getElementById("godina").value;
+    datum = godina + "-" + mesec + "-" + dan;
+    localStorage.setItem('datum', datum);
 	localStorage.setItem('idKlinike', idKlinike);
 	window.location.replace("./profilklinike.html");
 }
@@ -1300,46 +1308,49 @@ function pregledModPacijent(){
 	      <h1 style="text-align:center">Profil pacijenta</h1></div>
 			<div class="container">
 			<br>
+			<form action="" id="formaIzmena">
 			<table class="table " id="tabela_modal">
 				<tbody>
 					<tr>
 					<td  class='align-middle'><label for="ime">Ime</label></td>
-					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="msIme" disabled></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="ime"></td>
 					</tr>
 					<tr>
-					<td  class='align-middle'><label for="msPrezime">Prezime</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="msPrezime" id="msPrezime" disabled></td>
+					<td  class='align-middle'><label for="prezime">Prezime</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="prezime" id="prezime"></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="email">Email</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" readonly></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="password">Lozinka</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" readonly></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="brojOsiguranika">Broj osiguranika</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojOsiguranika}" name="brojOsiguranika" id="brojOsiguranika" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojOsiguranika}" name="brojOsiguranika" id="brojOsiguranika" readonly></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="adresa">Adresa</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa"></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="grad">Grad</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad"></td>
 					</tr>					
 					<tr>
 					<td  class='align-middle'><label for="drzava">Drzava</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava"></td>
 					</tr>					
 					<tr>
 					<td  class='align-middle'><label for="brojTelefona">Broj telefona</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" disabled></td>
-					</tr>				
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona"></td>
+					</tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="izmenaProfilaPacijenta()">Sacuvaj izmene</button></td></tr>				
 				</tbody>
 			</table>
+			</form>
 			<fieldset id="log_war"></fieldset>
 		    </div>`;
 			modal.append(m);
@@ -1647,20 +1658,25 @@ function pretragaKlinika(){
 	var dan = document.getElementById("dan").value;
 	var mesec = document.getElementById("mesec").value;
 	var godina = document.getElementById("godina").value;
-	$.ajax({
-		url: "api/lekari/tipPregleda/" + tipP,
-		type: "GET",
-		contentType: "application/json",
-		dataType: "json",
-		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },
-		complete: function(data) {
-			klinike = JSON.parse(data.responseText);
-			pretrazeneKlinike = klinike;
-			loadKlinikePretrazene(klinike);	
-		}
-	});	
+    datum = godina + "-" + mesec + "-" + dan;
+    localStorage.setItem('datum', datum);
+    console.log("DATUM " + datum);
+    if(tipP != ""){
+    	$.ajax({
+    		url: "api/lekari/tipPregleda/" + tipP,
+    		type: "GET",
+    		contentType: "application/json",
+    		dataType: "json",
+    		headers: {
+    	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+    	    },
+    		complete: function(data) {
+    			klinike = JSON.parse(data.responseText);
+    			pretrazeneKlinike = klinike;
+    			loadKlinikePretrazene(klinike);	
+    		}
+    	});
+    }
 }
 
 function loadKlinikePretrazene(klinike) {
@@ -1744,7 +1760,8 @@ function obrisiTabele(){
 	$("#tabela_lekari_tipPregleda thead ").remove();
 	$("#tabela_definisaniPregledi tbody tr").remove(); 
 	$("#tabela_definisaniPregledi thead ").remove();
-	
+	$("#tabela_cenovnika tbody tr").remove(); 
+	$("#tabela_cenovnika thead ").remove();	
 }
 
 function obrisiPretragu(){
@@ -1951,8 +1968,10 @@ function makeTableHeaderLekariKlinike(){
 					<tr>
 						<th>Ime</th>
 						<th>Prezime</th>
+						<th>Tip pregleda</th>
 						<th>Ocena</th>
-						<th>Prikazi</th>
+						<th>Vreme</th>
+						<th>Zahtev za pregled</th>
 					</tr>
 				</thead>`;
 		
@@ -1966,8 +1985,18 @@ function makeTableRowLekariKlinike(l) {
 		`<tr>
 			<td class="izgledTabele">${l.ime}</td>
 			<td class="izgledTabele">${l.prezime}</td>
+			<td class="izgledTabele">${l.tipPregleda}</td>
 			<td class="izgledTabele">${l.ocena}</td>
-			<td class="izgledTabele">Lista</td>
+			<td class="izgledTabele">
+			    <select name="vreme" id="vreme">
+		  				<option value="11:00:00.000-00">11:00</option>
+		  				<option value="12:00:00.000-00">12:00</option>
+		  				<option value="13:00:00.000-00">13:00</option>
+		  				<option value="14:00:00.000-00">14:00</option>
+		  				<option value="15:00:00.000-00">15:00</option>
+		  	    </select>
+			</td>
+			<td class="izgledTabele"><input type="button" id="zzp" value="Kreiraj zahtev" onClick="prebaciNaZahtevZaPregled(\'${l.ime}\',\'${l.prezime}\',\'${l.tipPregleda}\',\'${l.klinika.naziv}\',\'${l.id}\')"/></td>
 		</tr>`;
 	
 	return row;
@@ -1993,7 +2022,8 @@ function makeTableHeaderLekariKlinikeTipPregleda(){
 						<th>Ime</th>
 						<th>Prezime</th>
 						<th>Ocena</th>
-						<th>Prikazi</th>
+						<th>Vreme</th>
+						<th>Zahtev za pregled</th>
 					</tr>
 				</thead>`;
 		
@@ -2008,7 +2038,16 @@ function makeTableRowLekariKlinikeTipPregleda(l) {
 			<td class="izgledTabele">${l.ime}</td>
 			<td class="izgledTabele">${l.prezime}</td>
 			<td class="izgledTabele">${l.ocena}</td>
-			<td class="izgledTabele">Lista</td>
+			<td class="izgledTabele">
+			    <select name="vreme" id="vreme">
+		  				<option value="11:00:00.000-00">11:00</option>
+		  				<option value="12:00:00.000-00">12:00</option>
+		  				<option value="13:00:00.000-00">13:00</option>
+		  				<option value="14:00:00.000-00">14:00</option>
+		  				<option value="15:00:00.000-00">15:00</option>
+		  	    </select>
+			</td>
+			<td class="izgledTabele"><input type="button" id="zzp" value="Kreiraj zahtev" onClick="prebaciNaZahtevZaPregled(\'${l.ime}\',\'${l.prezime}\',\'${l.tipPregleda}\',\'${l.klinika.naziv}\',\'${l.id}\')"/></td>
 		</tr>`;
 	
 	return row;
@@ -2067,4 +2106,152 @@ function filtrirajNaziKlinike(){
 			loadKlinikePretrazene(klinike);
 		}
 	});	*/
+}
+
+function izmenaProfilaPacijenta(){
+	var dat = getFormData($("#formaIzmena"));
+	var org = JSON.stringify(dat);
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pacijenti/izmena/" + obj.id,
+		type: "PUT",
+		data: org,
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			
+			
+		} 
+	 
+	});
+}
+
+function prikazCenovnika(){
+	var idK = JSON.parse(localStorage.getItem('idKlinike')); 
+	$.ajax({
+		url: "api/cenovnik/" + idK,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			cenovnici = JSON.parse(data.responseText);
+			console.log(cenovnici);
+			loadCenovnici(cenovnici);
+		} 
+	});	
+}
+
+function loadCenovnici(cenovnici){
+	obrisiTabele();
+	obrisiPretragu();
+	$("#tabela_cenovnika tbody tr").remove(); 
+	$("#tabela_cenovnika thead ").remove();
+	var table = $("#tabela_cenovnika");
+	table.append(makeTableHeaderCenovnici());	
+	for(let c of cenovnici) {
+		table.append(makeTableRowCenovnici(c));
+	}
+}
+
+function makeTableHeaderCenovnici(){
+	var row="";
+	row =
+		`<thead class="thead-light" bgcolor="white">
+				<tr>
+					<th>Tip pregleda</th>
+					<th>Cena</th>
+				</tr>
+		</thead>`;
+	return row;
+}
+
+function makeTableRowCenovnici(c) {
+	var row = "";
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${c.tipPregledaCenovnik}'>${c.tipPregledaCenovnik}</td>
+			<td class="izgledTabele" id='${c.cena}'>${c.cena}</td>
+		</tr>`;
+	return row;
+}
+
+function prebaciNaZahtevZaPregled(imeL, prezimeL, tipP, nazivK, idL){
+	vremeG = document.getElementById("vreme").value;
+	console.log("VRMEEEEE: " + vremeG);
+	var datum = localStorage.getItem('datum');
+	var spojeno = datum + " " + vremeG;
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Zdravstveni karton pacijenta</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaKreiranje">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="ime">Ime lekara</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" name="ime" value="${imeL}" id="ime" readonly></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="prezime">Prezime lekara</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" name="prezime" value="${prezimeL}" id="prezime" readonly></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="tipPregleda">Tip pregleda</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" name="tipPregleda" value="${tipP}" id="tipPregleda" readonly></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="nazivKlinike">Naziv klinike</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" name="nazivKlinike" value="${nazivK}" id="nazivKlinike" readonly></td>
+					</tr>	
+					<tr>
+					<td  class='align-middle'><label for="vreme">Datum i vreme pregleda</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" name="vreme" value="${spojeno}" id="vreme" readonly></td>
+					</tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="sacuvajZahtevZaPregled(\'${idL}\')">Posalji zahtev</button></td></tr>									
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+}
+
+function sacuvajZahtevZaPregled(idLek){
+	console.log(idLek);
+	var obj = JSON.parse(localStorage.getItem('user'));
+	var data = getFormData($("#formaKreiranje"));
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/zahteviZaPregled/" + obj.id + "/" + idLek,
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
+
+	});
 }

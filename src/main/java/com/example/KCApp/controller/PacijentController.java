@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.DTO.PacijentDTO;
+import com.example.KCApp.DTO.UserDTO;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.MedicinskaSestra;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.Pregled;
+import com.example.KCApp.beans.User;
 import com.example.KCApp.repository.PacijentRepository;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.MedicinskaSestraService;
@@ -180,5 +182,20 @@ public class PacijentController {
 		
 	}
 	
-	
+	//IZMENA PROFILA
+	@PutMapping(value="/pacijenti/izmena/{id}", consumes = "application/json")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public User updatePacijent(@PathVariable Integer id, @Valid @RequestBody UserDTO pacijentUpdated) throws NotFoundException {
+		return repository.findById(id)
+				.map(user->{
+					user.setIme(pacijentUpdated.getIme());
+					user.setPrezime(pacijentUpdated.getPrezime());
+					user.setAdresa(pacijentUpdated.getAdresa());
+					user.setGrad(pacijentUpdated.getGrad());
+					user.setDrzava(pacijentUpdated.getDrzava());
+					user.setBrojTelefona(pacijentUpdated.getBrojTelefona());
+					return repository.save(user);
+				}).orElseThrow(() -> new NotFoundException("Pacijent nije pronadjen sa id : " + id));
+		
+	}
 }
