@@ -202,6 +202,26 @@ function setUpUserPageAKC() {
 	});
 }
 
+
+//lista klinika za akc
+function setUpUserPageKAKC() {
+	
+	$.ajax({
+		url: "api/klinike",
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			klinike = JSON.parse(data.responseText);
+			console.log(klinike)
+			loadKlinikeAKC(klinike);
+			
+		}
+	});
+}
 //pozivacemo preglede
 function setUpUserPagePP() {
 	var obj = JSON.parse(localStorage.getItem('user'));
@@ -318,6 +338,17 @@ function loadKlinike(klinike) {
 	table.append(makeTableHeaderKlinike());	
 	for(let k of klinike) {
 		table.append(makeTableRowKlinike(k));
+	}
+}
+
+function loadKlinikeAKC(klinike) {
+	obrisiTabele();
+	$("#tabela_klinikeAKC tbody tr").remove(); 
+	$("#tabela_klinikeAKC thead ").remove();
+	var table = $("#tabela_klinikeAKC");
+	table.append(makeTableHeaderKlinikeAKC());	
+	for(let k of klinike) {
+		table.append(makeTableRowKlinikeAKC(k));
 	}
 }
 
@@ -476,6 +507,23 @@ function makeTableHeaderKlinike(){
 		
 		return row;
 }
+function makeTableHeaderKlinikeAKC(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Naziv</th>
+						<th>Adresa</th>
+						<th>Grad</th>
+						<th>Opis</th>
+						<th>Ocena</th>
+					
+				     </tr>
+				</thead>`;
+		
+		return row;
+}
 
 //header za SL
 function makeTableHeaderSL(){
@@ -627,21 +675,32 @@ function makeTableRowSD(s) {
 	return row;
 }
 
+function makeTableRowKlinikeAKC(k) {
+	var row = "";
+	
+	row =
+		`<tr>
+			<td class="izgledTabele">${k.naziv}</td>
+			<td class="izgledTabele" >${k.adresa}</td>
+			<td class="izgledTabele" >${k.grad}</td>
+			<td class="izgledTabele" >${k.opis}</td>
+			<td class="izgledTabele" >${k.ocena}</td>
+		</tr>`;
+	
+	return row;
+}
 function makeTableRowKlinike(k) {
 	var row = "";
 	
-	  row =
-		`
-		    <tr>
-			<td class="izgledTabele" >${k.naziv}</td>
+	row =
+		`<tr>
+			<td class="izgledTabele">${k.naziv}</td>
 			<td class="izgledTabele" >${k.adresa}</td>
 			<td class="izgledTabele" >${k.grad}</td>
 			<td class="izgledTabele" >${k.opis}</td>
 			<td class="izgledTabele" >${k.ocena}</td>
 			<td class="izgledTabele" ><input type="button" id="profilKlinike" value="Profil klinike" onClick="prebaciNaKliniku(${k.idKlinike})"/></td>
-		    </tr>
-		 `
-		;
+		</tr>`;
 	
 	return row;
 }
@@ -1769,6 +1828,12 @@ function obrisiTabele(){
 	$("#tabela_definisaniPregledi thead ").remove();
 	$("#tabela_cenovnika tbody tr").remove(); 
 	$("#tabela_cenovnika thead ").remove();	
+	$("#tabela_klinikeAKC tbody tr").remove(); 
+	$("#tabela_klinikeAKC thead ").remove();
+	$("#tabela_sl tbody tr").remove(); 
+	$("#tabela_sl thead ").remove();
+	$("#tabela_sd tbody tr").remove(); 
+	$("#tabela_sd thead ").remove();
 }
 
 function obrisiPretragu(){
@@ -1842,6 +1907,7 @@ function overeRecepata() {
 
 function loadRecepti(recepti) {
 	obrisiPretragu();
+	obrisiTabele();
 	var table = $("#tabela_recepti");
 	table.append(makeTableHeaderRecepti());	
 	for(let r of recepti) {

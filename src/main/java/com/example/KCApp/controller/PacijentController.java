@@ -58,7 +58,7 @@ public class PacijentController {
 	
 	/*PRIKAZ PACIJENTA PO ID-u*/
 	@GetMapping(value = "/pacijenti/{id}")
-	@PreAuthorize("hasRole('PACIJENT') or hasRole('LEKAR')")
+	@PreAuthorize("hasRole('PACIJENT') or hasRole('LEKAR') or hasRole('MS')")
 	public Pacijent findPacijentById(@PathVariable Integer id) {
 		Pacijent pacijent = service.get(id);
 		return pacijent;
