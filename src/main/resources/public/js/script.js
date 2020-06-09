@@ -332,6 +332,7 @@ function loadSale(sale) {
 //popunjavanje klinike
 function loadKlinike(klinike) {
 	obrisiTabele();
+	obrisiFilter();
 	$("#tabela_klinike tbody tr").remove(); 
 	$("#tabela_klinike thead ").remove();
 	var table = $("#tabela_klinike");
@@ -401,6 +402,7 @@ function loadLekari(lekari) {
 function loadPregledi(pregledi) {
 	obrisiTabele();
 	obrisiPretragu();
+	obrisiFilter();
 	$("#tabela_pregledi tbody tr").remove(); 
 	$("#tabela_pregledi thead ").remove();
 	var table = $("#tabela_pregledi");
@@ -454,6 +456,7 @@ function oceniKliniku(prikaz, idK) {
 function loadOperacije(operacije) {
 	obrisiTabele();
 	obrisiPretragu();
+	obrisiFilter();
 	$("#tabela_operacije tbody tr").remove(); 
 	$("#tabela_operacije thead ").remove();
 	var table = $("#tabela_operacije");
@@ -1759,7 +1762,12 @@ function loadKlinikePretrazene(klinike) {
 	$("#filterCenaNajveca").show();
 	$("#filterKlinikaCena").show();
 	obrisiTabele();
-	obrisiPretragu();
+	//obrisiPretragu();
+	$("#pretraga").hide();
+	$("#dan").hide();
+	$("#mesec").hide();
+	$("#godina").hide();
+	$("#pretrazi").hide()
 	$("#tabela_klinike_pretrazene tbody tr").remove(); 
 	$("#tabela_klinike_pretrazene thead ").remove();
 	var table = $("#tabela_klinike_pretrazene");
@@ -2205,31 +2213,96 @@ function pretragaLekara(){
 
 function filtrirajNaziKlinike(){
 	var nazivKlinike = document.getElementById("filterNaziv").value;
-	var naziv2 = nazivKlinike.toUpperCase();
 	console.log("NAJNOVIJE " + JSON.stringify(pretrazeneKlinike));
-	//var listaPretrazenihKlinika = JSON.stringify(pretrazeneKlinike);
-	//pocetno veliko ostalo mala
-	/*for(let k of pretrazeneKlinike) {
-		var naziv1 = k.naziv.totoUpperCase();
-		if(naziv1.localeCompare(naziv2)){
-			filtriraneKlinike
-		}
-	}*/
-	//loadKlinikePretrazene(filtriraneKlinike);
-	/*$.ajax({
-		url: "api/klinike/filterNaziv/" + nazivKlinike + "/" + listaPretrazenihKlinika,
-		type: "GET",
-		contentType: "application/json",
-		dataType: "json",
-		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },
-		complete: function(data) {
-			klinike = JSON.parse(data.responseText);
-			console.log(klinike)
-			loadKlinikePretrazene(klinike);
-		}
-	});	*/
+	if(nazivKlinike != ""){
+		$.ajax({
+			url: "api/klinike/filterNaziv/" + nazivKlinike,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				klinike = JSON.parse(data.responseText);
+				console.log(klinike)
+				poredi(klinike);
+			}
+		});	
+	}
+}
+
+function filtrirajGradKlinike(){
+	var gradKlinike = document.getElementById("filterGrad").value;
+	//console.log("NAJNOVIJE " + JSON.stringify(pretrazeneKlinike));
+	if(gradKlinike != ""){
+		$.ajax({
+			url: "api/klinike/filterGrad/" + gradKlinike,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				klinike = JSON.parse(data.responseText);
+				console.log(klinike)
+				poredi(klinike);
+			}
+		});	
+	}
+}
+
+function filtrirajOcenuKlinike(){
+	var ocenaNajmanjaKlinike = document.getElementById("filterOcenaNajmanja").value;
+	var ocenaNajvecaKlinike = document.getElementById("filterOcenaNajveca").value;
+	//console.log("NAJNOVIJE " + JSON.stringify(pretrazeneKlinike));
+	if(ocenaNajmanjaKlinike != "" && ocenaNajvecaKlinike != ""){
+		$.ajax({
+			url: "api/klinike/filterOcena/obe/" + ocenaNajmanjaKlinike + "/" + ocenaNajvecaKlinike,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				klinike = JSON.parse(data.responseText);
+				console.log(klinike)
+				poredi(klinike);
+			}
+		});	
+	}else if(ocenaNajmanjaKlinike != "" && ocenaNajvecaKlinike == ""){//samo najmanja, nije uneta najveca
+		$.ajax({
+			url: "api/klinike/filterOcena/najmanja/" + ocenaNajmanjaKlinike,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				klinike = JSON.parse(data.responseText);
+				console.log(klinike)
+				poredi(klinike);
+			}
+		});	
+	}else if(ocenaNajmanjaKlinike == "" && ocenaNajvecaKlinike != ""){//samo najveca, nije uneta najmanja
+		$.ajax({
+			url: "api/klinike/filterOcena/najveca/" + ocenaNajvecaKlinike,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				klinike = JSON.parse(data.responseText);
+				console.log(klinike)
+				poredi(klinike);
+			}
+		});	
+	}
 }
 
 function izmenaProfilaPacijenta(){
@@ -2828,4 +2901,34 @@ function pretragaLekaraTipPregleda(){
 			}
 		});		
 	}
+}
+
+function poredi(klinike){
+	var filtriraneKl = [];
+	for(let kf of klinike){
+		console.log(kf.idKlinike)
+		for(let kp of pretrazeneKlinike){
+			console.log(kp.idKlinike)
+			if(kf.idKlinike == kp.idKlinike){
+				filtriraneKl.push(kf);
+			}
+		}
+	}
+	pretrazeneKlinike = filtriraneKl;
+	loadKlinikePretrazene(filtriraneKl);
+}
+
+function obrisiFilter(){
+	$("#filterNaziv").hide();
+	$("#filterKlinikaNaziv").hide();
+	$("#filterGrad").hide();
+	$("#filterKlinikaGrad").hide();
+	$("#filterOcenaNajmanja").hide();
+	$("#minus").hide();
+	$("#filterOcenaNajveca").hide();
+	$("#filterKlinikaOcena").hide();
+	$("#filterCenaNajmanja").hide();
+	$("#minusCena").hide();
+	$("#filterCenaNajveca").hide();
+	$("#filterKlinikaCena").hide();
 }
