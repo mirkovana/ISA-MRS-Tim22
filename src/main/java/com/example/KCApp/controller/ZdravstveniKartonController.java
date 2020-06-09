@@ -34,7 +34,7 @@ public class ZdravstveniKartonController {
 	private ZdravstveniKartonRepository repository;
 	
 	@GetMapping(value="/kartoni/svi/{id}")
-	@PreAuthorize("hasRole('PACIJENT') or hasRole('LEKAR')")
+	@PreAuthorize("hasRole('PACIJENT') or hasRole('LEKAR') or hasRole('MS')")
 	public ZdravstveniKarton getAllZdravstveniKartoni(Model model, @PathVariable Integer id) {
 		List<ZdravstveniKarton> listaZdravstveniKartoni = service.listAll();
 		for(ZdravstveniKarton zk : listaZdravstveniKartoni)
@@ -58,7 +58,7 @@ public class ZdravstveniKartonController {
 	
 	/*UPDATE ZDRAVSTVENOG KARTONA*/
 	@PutMapping(value="/kartoni/{idZdravstvenogKartona}", consumes = "application/json")
-	@PreAuthorize("hasRole('LEKAR')")
+	@PreAuthorize("hasRole('LEKAR') or hasRole('MS')")
 	public ZdravstveniKarton updateZdravstveniKarton(@PathVariable Integer idZdravstvenogKartona, @Valid @RequestBody ZdravstveniKartonDTO zdravstveniKartonUpdated) throws NotFoundException {
 		return repository.findById(idZdravstvenogKartona)
 				.map(zdravstveniKarton->{

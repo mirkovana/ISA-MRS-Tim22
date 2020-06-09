@@ -15,20 +15,23 @@
         </div>
         <form action="" id="formaFiltr">
         <table>
-              
-                 <tr>    
-               <td><input type="text" name="datumKraja" placeholder="datum kraj" id="datumKraja" ></td>
+               <tr>
+                <td><label>Datum pocetka: </label></td> 
+               <td><input type="text" name="datumPocetka"  id="datumPocetka" ></td>
                </tr>
-                <tr>
-               <td><input type="text" name="datumPocetka" placeholder="datum pocetak" id="datumPocetka" ></td>
+                 <tr>  
+                 <td><label>Datum kraja: </label></td>   
+               <td><input type="text" name="datumKraja" id="datumKraja" ></td>
                </tr>
+               
                 <tr>
-             <td> <input type="text" name="razlog" placeholder="razlog" id="razlog" ></td>
+                <td><label>Razlog </label></td> 
+             <td> <input type="text" name="razlog"  id="razlog" ></td>
              
                </tr>
              
                    <tr>
-             <td><button type="button" class="btn btn-secondary" onclick="dodavanjeZahtevaOdsustva()">Dodaj</button></td> 
+             <td colspan=2 align = "center"><button type="button" class="btn btn-secondary" onclick="dodavanjeZahtevaOdsustva()">Dodaj</button></td> 
                  </tr>
            
                <label id="uspesno" >Uspesno dodata klinika</label>
