@@ -202,4 +202,293 @@ public class LekarController {
 		}
 		return lekariKlinike1;
 	}
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - PREZIME,OCENA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/prezime/{prezime}/{ocena}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByPO(@PathVariable Integer idKlinike, @PathVariable String prezime, @PathVariable int ocena) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> lekariKlinike1 = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getPrezime().equals(prezime)) {
+				lekariKlinike.add(l);
+			}
+		}
+		
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		
+		for(Lekar l : lekariKlinike) {
+			if(ocena == 1) {
+				if(l.getOcena()>=1 && l.getOcena()<2) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 2) {
+				if(l.getOcena()>=2 && l.getOcena()<3) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 3) {
+				if(l.getOcena()>=3 && l.getOcena()<4) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 4) {
+				if(l.getOcena()>=4 && l.getOcena()<=5) {
+					lekariKlinike1.add(l);
+				}
+			}
+		}
+		return lekariKlinike1;
+	}
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - IME,OCENA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/ime/{ime}/{ocena}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByIO(@PathVariable Integer idKlinike, @PathVariable String ime, @PathVariable int ocena) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> lekariKlinike1 = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getIme().equals(ime)) {
+				lekariKlinike.add(l);
+			}
+		}
+		
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		
+		for(Lekar l : lekariKlinike) {
+			if(ocena == 1) {
+				if(l.getOcena()>=1 && l.getOcena()<2) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 2) {
+				if(l.getOcena()>=2 && l.getOcena()<3) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 3) {
+				if(l.getOcena()>=3 && l.getOcena()<4) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 4) {
+				if(l.getOcena()>=4 && l.getOcena()<=5) {
+					lekariKlinike1.add(l);
+				}
+			}
+		}
+		return lekariKlinike1;
+	}
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - OCENA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/ocena/{ocena}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByO(@PathVariable Integer idKlinike, @PathVariable int ocena) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> lekariKlinike1 = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k) {
+				lekariKlinike.add(l);
+			}
+		}
+		
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		
+		for(Lekar l : lekariKlinike) {
+			if(ocena == 1) {
+				if(l.getOcena()>=1 && l.getOcena()<2) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 2) {
+				if(l.getOcena()>=2 && l.getOcena()<3) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 3) {
+				if(l.getOcena()>=3 && l.getOcena()<4) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 4) {
+				if(l.getOcena()>=4 && l.getOcena()<=5) {
+					lekariKlinike1.add(l);
+				}
+			}
+		}
+		return lekariKlinike1;
+	}
+	
+	/*-----------------------------------------------+TIP PREGLEDA----------------------------------------------------*/
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - IME,PREZIME,OCENA,TIP PREGLEDA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/{ime}/{prezime}/{ocena}/{tipPregleda}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByIPOTP(@PathVariable Integer idKlinike, @PathVariable String ime, @PathVariable String prezime, @PathVariable int ocena, @PathVariable TipPregleda tipPregleda) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> lekariKlinike1 = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getIme().equals(ime) && l.getPrezime().equals(prezime) && l.getTipPregleda() == tipPregleda) {
+				lekariKlinike.add(l);
+			}
+		}
+		
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		
+		for(Lekar l : lekariKlinike) {
+			if(ocena == 1) {
+				if(l.getOcena()>=1 && l.getOcena()<2) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 2) {
+				if(l.getOcena()>=2 && l.getOcena()<3) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 3) {
+				if(l.getOcena()>=3 && l.getOcena()<4) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 4) {
+				if(l.getOcena()>=4 && l.getOcena()<=5) {
+					lekariKlinike1.add(l);
+				}
+			}
+		}
+		return lekariKlinike1;
+	}
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - PREZIME,OCENA,TIP PREGLEDA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/prezime/{prezime}/{ocena}/{tipPregleda}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByPOTP(@PathVariable Integer idKlinike, @PathVariable String prezime, @PathVariable int ocena, @PathVariable TipPregleda tipPregleda) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> lekariKlinike1 = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getPrezime().equals(prezime) && l.getTipPregleda() == tipPregleda) {
+				lekariKlinike.add(l);
+			}
+		}
+		
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		
+		for(Lekar l : lekariKlinike) {
+			if(ocena == 1) {
+				if(l.getOcena()>=1 && l.getOcena()<2) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 2) {
+				if(l.getOcena()>=2 && l.getOcena()<3) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 3) {
+				if(l.getOcena()>=3 && l.getOcena()<4) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 4) {
+				if(l.getOcena()>=4 && l.getOcena()<=5) {
+					lekariKlinike1.add(l);
+				}
+			}
+		}
+		return lekariKlinike1;
+	}
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - IME,OCENA,TIP PREGLEDA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/ime/{ime}/{ocena}/{tipPregleda}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByIOTP(@PathVariable Integer idKlinike, @PathVariable String ime, @PathVariable int ocena, @PathVariable TipPregleda tipPregleda) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> lekariKlinike1 = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getIme().equals(ime) && l.getTipPregleda() == tipPregleda) {
+				lekariKlinike.add(l);
+			}
+		}
+		
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		
+		for(Lekar l : lekariKlinike) {
+			if(ocena == 1) {
+				if(l.getOcena()>=1 && l.getOcena()<2) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 2) {
+				if(l.getOcena()>=2 && l.getOcena()<3) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 3) {
+				if(l.getOcena()>=3 && l.getOcena()<4) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 4) {
+				if(l.getOcena()>=4 && l.getOcena()<=5) {
+					lekariKlinike1.add(l);
+				}
+			}
+		}
+		return lekariKlinike1;
+	}
+	
+	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - OCENA,TIP PREGLEDA*/
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/ocena/{ocena}/{tipPregleda}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByOTP(@PathVariable Integer idKlinike, @PathVariable int ocena, @PathVariable TipPregleda tipPregleda) {
+		Klinika k = klinikaService.get(idKlinike);
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> lekariKlinike1 = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getTipPregleda() == tipPregleda) {
+				lekariKlinike.add(l);
+			}
+		}
+		
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		
+		for(Lekar l : lekariKlinike) {
+			if(ocena == 1) {
+				if(l.getOcena()>=1 && l.getOcena()<2) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 2) {
+				if(l.getOcena()>=2 && l.getOcena()<3) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 3) {
+				if(l.getOcena()>=3 && l.getOcena()<4) {
+					lekariKlinike1.add(l);
+				}
+			}else if(ocena == 4) {
+				if(l.getOcena()>=4 && l.getOcena()<=5) {
+					lekariKlinike1.add(l);
+				}
+			}
+		}
+		return lekariKlinike1;
+	}
 }
