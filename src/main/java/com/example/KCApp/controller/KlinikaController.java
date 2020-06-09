@@ -190,13 +190,70 @@ public class KlinikaController {
 
 	}
 
-	/* PRETRAGA KLINIKA PO KRITERIJUMU - NAZIV KLINIKE I PRETRAZENE KLINIKE*/
-	@GetMapping(value = "/klinike/filterNaziv/{nazivKlinike}/{pretrazeneKlinike}")
+	/* FILTER KLINIKA PO KRITERIJUMU - NAZIV KLINIKE*/
+	@GetMapping(value = "/klinike/filterNaziv/{nazivKlinike}")
 	@PreAuthorize("hasRole('PACIJENT')")
-	public List<Klinika> findKlinikaByNaziv(@PathVariable String nazivKlinike, @PathVariable List<Klinika> pretrazeneKlinike) {
+	public List<Klinika> findKlinikaByNaziv(@PathVariable String nazivKlinike) {
 		List<Klinika> filtriraneKlinike = new ArrayList<Klinika>();
-		for(Klinika k : pretrazeneKlinike) {
+		List<Klinika> sveKlinike = service.listAll();
+		for(Klinika k : sveKlinike) {
 			if(k.getNaziv().equalsIgnoreCase(nazivKlinike)) {
+				filtriraneKlinike.add(k);
+			}
+		}
+		return filtriraneKlinike;
+	}
+	
+	/* FILTER KLINIKA PO KRITERIJUMU - GRAD KLINIKE*/
+	@GetMapping(value = "/klinike/filterGrad/{gradKlinike}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Klinika> findKlinikaByGrad(@PathVariable String gradKlinike) {
+		List<Klinika> filtriraneKlinike = new ArrayList<Klinika>();
+		List<Klinika> sveKlinike = service.listAll();
+		for(Klinika k : sveKlinike) {
+			if(k.getGrad().equalsIgnoreCase(gradKlinike)) {
+				filtriraneKlinike.add(k);
+			}
+		}
+		return filtriraneKlinike;
+	}
+	
+	/* FILTER KLINIKA PO KRITERIJUMU - NAJMANJA I NAJVECA OCENA KLINIKE*/
+	@GetMapping(value = "/klinike/filterOcena/obe/{ocenaNajmanjaKlinike}/{ocenaNajvecaKlinike}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Klinika> findKlinikaByOcenaObe(@PathVariable double ocenaNajmanjaKlinike, @PathVariable double ocenaNajvecaKlinike) {
+		List<Klinika> filtriraneKlinike = new ArrayList<Klinika>();
+		List<Klinika> sveKlinike = service.listAll();
+		for(Klinika k : sveKlinike) {
+			if(k.getOcena()>=ocenaNajmanjaKlinike && k.getOcena()<=ocenaNajvecaKlinike) {
+				filtriraneKlinike.add(k);
+			}
+		}
+		return filtriraneKlinike;
+	}
+	
+	/* FILTER KLINIKA PO KRITERIJUMU - NAJMANJA OCENA KLINIKE*/
+	@GetMapping(value = "/klinike/filterOcena/najmanja/{ocenaNajmanjaKlinike}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Klinika> findKlinikaByOcenaNajmanja(@PathVariable double ocenaNajmanjaKlinike) {
+		List<Klinika> filtriraneKlinike = new ArrayList<Klinika>();
+		List<Klinika> sveKlinike = service.listAll();
+		for(Klinika k : sveKlinike) {
+			if(k.getOcena()>=ocenaNajmanjaKlinike) {
+				filtriraneKlinike.add(k);
+			}
+		}
+		return filtriraneKlinike;
+	}
+	
+	/* FILTER KLINIKA PO KRITERIJUMU - NAJVECA OCENA KLINIKE*/
+	@GetMapping(value = "/klinike/filterOcena/najveca/{ocenaNajvecaKlinike}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Klinika> findKlinikaByOcenaNajveca(@PathVariable double ocenaNajvecaKlinike) {
+		List<Klinika> filtriraneKlinike = new ArrayList<Klinika>();
+		List<Klinika> sveKlinike = service.listAll();
+		for(Klinika k : sveKlinike) {
+			if(k.getOcena()<=ocenaNajvecaKlinike) {
 				filtriraneKlinike.add(k);
 			}
 		}
