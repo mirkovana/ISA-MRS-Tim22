@@ -1,5 +1,6 @@
 var pretrazeneKlinike;
 var filtriraneKlinike;
+var pretrazeniLekari;
 var datum;
 var vremeG;
 var sifrarnikD;
@@ -1614,6 +1615,7 @@ function izmenaProfilaKlinike(klinika){
 //ispis termina za unapred definisane preglede 
 function prikazSlobodnihTerminaPregleda() {
 	obrisiPretragu();
+	obrisiFilter();
 	var obj = JSON.parse(localStorage.getItem('idKlinike'));
 	$.ajax({
 		url: "api/pregledi/klinika/" + obj,
@@ -1991,6 +1993,7 @@ function prikazSvihLekaraKlinike(){
 	$("#pretraziLekare").show();
 	$("#pretraziLekareTipPregleda").hide();
 	obrisiTabele();
+	obrisiFilter();
 	var obj = JSON.parse(localStorage.getItem('idKlinike'));
 	$.ajax({
 		url: "api/lekari/klinika/" + obj,
@@ -2016,6 +2019,7 @@ function prikazLekaraKlinike(){
 	$("#pretraziLekareTipPregleda").show();
 	$("#pretraziLekare").hide();
 	obrisiTabele();
+	obrisiFilter();
 	var obj = JSON.parse(localStorage.getItem('idKlinike'));
 	var tipPregleda = localStorage.getItem('tipPregleda');
 	$.ajax({
@@ -2139,6 +2143,8 @@ function makeTableRowLekariKlinikeTipPregleda(l) {
 }
 
 function pretragaLekara(){
+	$("#filterTipPregleda").show();
+	$("#filterLekarTipPregleda").show();
 	var idK = localStorage.getItem('idKlinike');
 	console.log(idK);
 	var imeLekara = document.getElementById("pretragaIme").value;
@@ -2160,6 +2166,7 @@ function pretragaLekara(){
 		complete: function(data) {
 			lekari = JSON.parse(data.responseText);
 			console.log(JSON.stringify(lekari));
+			pretrazeniLekari = lekari;
 			loadLekariKlinike(lekari);	
 		}
 	});	
@@ -2175,6 +2182,7 @@ function pretragaLekara(){
 			complete: function(data) {
 				lekari = JSON.parse(data.responseText);
 				console.log(JSON.stringify(lekari));
+				pretrazeniLekari = lekari;
 				loadLekariKlinike(lekari);	
 			}
 		});		
@@ -2190,6 +2198,7 @@ function pretragaLekara(){
 			complete: function(data) {
 				lekari = JSON.parse(data.responseText);
 				console.log(JSON.stringify(lekari));
+				pretrazeniLekari = lekari;
 				loadLekariKlinike(lekari);	
 			}
 		});		
@@ -2205,6 +2214,7 @@ function pretragaLekara(){
 			complete: function(data) {
 				lekari = JSON.parse(data.responseText);
 				console.log(JSON.stringify(lekari));
+				pretrazeniLekari = lekari;
 				loadLekariKlinike(lekari);	
 			}
 		});		
@@ -2347,6 +2357,7 @@ function prikazCenovnika(){
 function loadCenovnici(cenovnici){
 	obrisiTabele();
 	obrisiPretragu();
+	obrisiFilter();
 	$("#tabela_cenovnika tbody tr").remove(); 
 	$("#tabela_cenovnika thead ").remove();
 	var table = $("#tabela_cenovnika");
@@ -2931,4 +2942,41 @@ function obrisiFilter(){
 	$("#minusCena").hide();
 	$("#filterCenaNajveca").hide();
 	$("#filterKlinikaCena").hide();
+	$("#filterTipPregleda").hide();
+	$("#filterLekarTipPregleda").hide();
+}
+
+function filtrirajTipPregledaLekara(){
+	var idK = localStorage.getItem('idKlinike');
+	var tipPregledaLekara = document.getElementById("filterTipPregleda").value;
+	var velikimTPL = tipPregledaLekara.toUpperCase();
+	if(tipPregledaLekara != ""){
+		$.ajax({
+			url: "api/lekari/filter/tipPregleda/" + velikimTPL + "/" + idK,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				lekari = JSON.parse(data.responseText);
+				console.log(JSON.stringify(lekari));
+				porediLekareFilter(lekari);	
+			}
+		});	
+	}
+}
+
+function porediLekareFilter(lekari){
+	var filtriraniLekari = [];
+	for(let lf of lekari){
+		for(let lp of pretrazeniLekari){
+			if(lf.id == lp.id){
+				filtriraniLekari.push(lf);
+			}
+		}
+	}
+	pretrazeniLekari = filtriraniLekari;
+	loadLekariKlinike(filtriraniLekari);
 }

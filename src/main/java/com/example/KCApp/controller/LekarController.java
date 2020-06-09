@@ -491,4 +491,19 @@ public class LekarController {
 		}
 		return lekariKlinike1;
 	}
+	
+	/*FILTRIRANJE LEKARA PO KRITERIJUMU - TIP PREGLEDA*/
+	@GetMapping(value = "/lekari/filter/tipPregleda/{tipPregleda}/{idKlinike}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Lekar> findAllLekarByTipPregledaFilter(@PathVariable TipPregleda tipPregleda, @PathVariable Integer idKlinike) {
+		List<Lekar> lekari = service.findAllByTipPregleda(tipPregleda);
+		List<Lekar> filtriraniLekari = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+		   if(l.getKlinika().getIdKlinike() == idKlinike) {
+			   filtriraniLekari.add(l);
+		   }
+		}
+		return filtriraniLekari;
+	}
 }
