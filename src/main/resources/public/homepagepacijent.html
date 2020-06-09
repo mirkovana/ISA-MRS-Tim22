@@ -29,6 +29,8 @@
 				$("#minusCena").hide();
 				$("#filterCenaNajveca").hide();
 				$("#filterKlinikaCena").hide();
+				$("#sortLKP").hide();
+				$("#sortTPP").hide();
 				
 			});
 		</script>
@@ -47,6 +49,7 @@
             <a href="#zdravstvenikarton" onClick="setUpZK()">Zdravstveni karton</a>
             <a href="#" onclick="return logout(event)">Odjavite se</a>
         </div>
+        <button type="submit" class="btn btn-secondary" id="sortTPP" onClick="sortTableIstorijaPregledaZaPacijenta()">Sortiraj: A-Z</button>
         <table id="tabela_pregledi" class="table">
 		</table>
 		<table class="table table-striped" id="tabela_operacije">
@@ -117,6 +120,7 @@
 		  				<option value="2020">2020</option>
 		  	</select>
 		<button type="submit" class="btn btn-secondary" id="pretrazi" onClick="pretragaKlinika()">Pretrazi</button>
+		<button type="submit" class="btn btn-secondary" id="sortLKP" onClick="sortTableListaKlinikaZaPacijenta()">Sortiraj: A-Z</button>
 		<table class="table table-light" id="tabela_klinike">
 		</table>
 		<div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
