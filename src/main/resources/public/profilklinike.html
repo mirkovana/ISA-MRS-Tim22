@@ -18,6 +18,8 @@
 				$("#pretraziLekare").hide();
 				//$("#lekariTip").hide();
 				$("#pretraziLekareTipPregleda").hide();
+				$("#filterTipPregleda").hide();
+				$("#filterLekarTipPregleda").hide();
 				
 				
 			});
@@ -48,6 +50,8 @@
 			  </select>
 			  <button type="submit" class="btn btn-secondary" id="pretraziLekare" onClick="pretragaLekara()">Pretrazi</button>
 			  <button type="submit" class="btn btn-secondary" id="pretraziLekareTipPregleda" onClick="pretragaLekaraTipPregleda()">Pretrazi</button>
+			  <input type = "text" placeholder="Tip pregleda" id = "filterTipPregleda"/>
+		      <button type="submit" class="btn btn-secondary" id="filterLekarTipPregleda" onClick="filtrirajTipPregledaLekara()">></button>
 			  <table class="table" id="tabela_lekari">
 			  </table>
 			  <table class="table" id="tabela_lekari_tipPregleda">
