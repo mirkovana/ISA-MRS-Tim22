@@ -17,6 +17,8 @@
 				$("#ocena").hide();
 				$("#pretraziLekare").hide();
 				//$("#lekariTip").hide();
+				$("#pretraziLekareTipPregleda").hide();
+				
 				
 			});
 		</script>
@@ -33,6 +35,7 @@
 				<a href="#spisakLekara" onClick="prikazSvihLekaraKlinike()">Spisak svih lekara</a>
 				<a href="#spisakLekaraTipPregleda" id="lekariTip" onClick="prikazLekaraKlinike()">Spisak lekara po tipu pregleda</a>
 				<a href="#cenovnik" onClick="prikazCenovnika()">Cenovnik</a>
+				<a href="./homepagepacijent.html" >Povratak na profil pacijenta</a>
 			  </div>
 			  <input type = "text" placeholder="Ime" id = "pretragaIme"/>
 			  <input type = "text" placeholder="Prezime" id = "pretragaPrezime"/>
@@ -44,6 +47,7 @@
 		  		  <option value="4">4-5</option>
 			  </select>
 			  <button type="submit" class="btn btn-secondary" id="pretraziLekare" onClick="pretragaLekara()">Pretrazi</button>
+			  <button type="submit" class="btn btn-secondary" id="pretraziLekareTipPregleda" onClick="pretragaLekaraTipPregleda()">Pretrazi</button>
 			  <table class="table" id="tabela_lekari">
 			  </table>
 			  <table class="table" id="tabela_lekari_tipPregleda">
