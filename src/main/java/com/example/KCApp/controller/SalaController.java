@@ -1,6 +1,8 @@
 package com.example.KCApp.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -25,13 +27,17 @@ import com.example.KCApp.DTO.SalaDTO;
 import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
+import com.example.KCApp.beans.Operacija;
 import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.RadniKalendarL;
 import com.example.KCApp.beans.Sala;
 import com.example.KCApp.repository.PacijentRepository;
 import com.example.KCApp.repository.SalaRepository;
 import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.KlinikaService;
+import com.example.KCApp.service.OperacijaService;
+import com.example.KCApp.service.PregledService;
 import com.example.KCApp.service.SalaService;
 
 import javassist.NotFoundException;
@@ -45,6 +51,12 @@ public class SalaController {
 	
 	@Autowired
 	private KlinikaService klinikaService;
+	
+	@Autowired
+	private PregledService pregledService;
+	
+	@Autowired
+	private OperacijaService operacijaService;
 	
 	@Autowired
 	private SalaRepository repository;
@@ -62,22 +74,47 @@ public class SalaController {
 	}
 	
 	/*BRISANJE SALE SA ODREDJENIM ID*/
-	@DeleteMapping(value= "/sale/{idSale}")
+	@DeleteMapping(value= "/sale/brisanje/{idSale}")
 	@PreAuthorize("hasRole('ADMINK')")
-	public String deleteSala(@PathVariable Integer idSale) {
+	public List<Sala> deleteSala(@PathVariable Integer idSale) {
+		System.out.println("USLO U BRISANJE");
 		
 		Sala sala = service.get(idSale);
-	
-		if (sala != null && !sala.getKlinika().getOperacije().contains(sala)) {
+		List<Sala> sale = service.listAll();
+		List<Pregled> pregledi = pregledService.listAll();
+		List<Operacija> operacije = operacijaService.listAll();
+		List<Pregled> pomocna = new ArrayList<Pregled>();
+		List<Operacija> pomocna2 = new ArrayList<Operacija>();
+		Date date = new Date();
+		
+		/*for (Pregled p : pregledi) {
+			if (p.getSala() == sala && p.getPacijent() != null) {
+				if (p.getVreme().after(date)){
+					System.out.println("SALA ZA BRISANJE" + sala.getNazivSale());
+					sale.remove(sala);
+					service.delete(idSale);
+				}
+			}
+		}*/
+		
+		for (Pregled p : pregledi) {
+			if (p.getSala() == sala) {
+				pomocna.add(p);
+			}
+		}
+		
+		for (Operacija o : operacije) {
+			if (o.getSala() == sala) {
+				pomocna2.add(o);
+			}
+		}
+		if (pomocna.isEmpty() && pomocna2.isEmpty()) {
+			sale.remove(sala);
 			service.delete(idSale);
-			return "Uspesno obrisana sala sa id: " + idSale;
-		} 
-		else if (sala != null & sala.getKlinika().getOperacije().contains(sala)){ //kako proveravam da li je sala rez?
-			return "Sala sa id: " + idSale + "ne moze da se obrise jer je rezervisana."; 
 		}
-		else {
-			return "Sala sa id: " + idSale + " nije pronadjena"; //ne prikazuje poruku kad se stavi id koji ne postoji
-		}
+		
+		System.out.println("SALE" + sale);
+		return sale;
 	}
 	
 	/*ZA ADMINA - PRIKAZ SVIH SALA PO KRITERIJUMU - NAZIV,BROJ*/

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -20,10 +22,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.KCApp.DTO.AdministratorKlinikeDTO;
 import com.example.KCApp.DTO.LekarDTO;
 import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
+import com.example.KCApp.beans.Operacija;
+import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.RadniKalendarL;
 import com.example.KCApp.beans.TipPregleda;
 import com.example.KCApp.beans.User;
@@ -32,6 +37,8 @@ import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.AuthorityService;
 import com.example.KCApp.service.KlinikaService;
 import com.example.KCApp.service.LekarService;
+import com.example.KCApp.service.OperacijaService;
+import com.example.KCApp.service.PregledService;
 
 import javassist.NotFoundException;
 
@@ -41,6 +48,12 @@ public class LekarController {
 	
 	@Autowired
 	private LekarService service;
+	
+	@Autowired
+	private PregledService pregledService;
+	
+	@Autowired
+	private OperacijaService operacijaService;
 	
 	@Autowired
 	private KlinikaService klinikaService;
@@ -138,19 +151,35 @@ public class LekarController {
 		}
 	
 	/*BRISANJE LEKARA SA ODREDJENIM ID*/
-	@DeleteMapping(value= "/lekari/{id}")
+	@DeleteMapping(value= "/lekari/brisanje/{id}")
 	@PreAuthorize("hasRole('ADMINK')")
-	public String deleteLekar(@PathVariable Integer id) {
+	public List<Lekar> deleteLekar(@PathVariable Integer id) {
 		
 		Lekar lekar = service.get(id);
-	
-		if (lekar != null) {
-			service.delete(id);
-			return "Uspesno obrisana lekara sa id: " + id;
-		} 
-		else {
-			return "Lekar sa id: " + id + " nije pronadjen"; //ne prikazuje poruku kad se stavi id koji ne postoji
+		List<Lekar> lekari = service.listAll();
+		List<Pregled> pregledi = pregledService.listAll();
+		List<Operacija> operacije = operacijaService.listAll();
+		List<Pregled> pomocna = new ArrayList<Pregled>();
+		List<Operacija> pomocna2 = new ArrayList<Operacija>();
+		
+		for (Pregled p : pregledi) {
+			if (p.getLekar() == lekar) {
+				pomocna.add(p);
+			}
 		}
+		
+		for (Operacija o : operacije) {
+			if (o.getLekar() == lekar) {
+				pomocna2.add(o);
+			}
+		}
+		if (pomocna.isEmpty() && pomocna2.isEmpty()) {
+			lekari.remove(lekar);
+			service.delete(id);
+		}
+		
+		System.out.println("lekari" + lekari);
+		return lekari;
 	}
 	
 	/*PRIKAZ LEKARA PO KRITERIJUMU - ID KLINIKE KOJOJ LEKAR PRIPADA*/
@@ -606,5 +635,25 @@ public class LekarController {
 		   }
 		}
 		return filtriraniLekari;
+	}
+	
+	//IZMENA PROFILA
+	@PutMapping(value="/lekari/izmena/{id}", consumes = "application/json")
+	@PreAuthorize("hasRole('LEKAR')")
+	public User updateAK(@PathVariable Integer id, @Valid @RequestBody LekarDTO lUpdated) throws NotFoundException {
+		return repository.findById(id)
+				.map(l->{
+					//klinika.setIdKlinike(klinikaUpdated.getIdKlinike());
+					l.setIme(lUpdated.getIme());
+					l.setPrezime(lUpdated.getPrezime());
+					l.setPassword(passwordEncoder.encode(lUpdated.getPassword()));
+					l.setLastPasswordResetDate(lUpdated.getLastPasswordResetDate());
+					l.setAdresa(lUpdated.getAdresa());
+					l.setGrad(lUpdated.getGrad());
+					l.setDrzava(lUpdated.getDrzava());
+					l.setBrojTelefona(lUpdated.getBrojTelefona());
+					//user.setAuthorities(Arrays.asList(authorityService.findOne(1)));
+					return repository.save(l);
+				}).orElseThrow(() -> new NotFoundException("Lekar nije pronadjen sa id : " + id));
 	}
 }
