@@ -1,12 +1,15 @@
 package com.example.KCApp.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.DTO.LekarDTO;
+import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.RadniKalendarL;
 import com.example.KCApp.beans.TipPregleda;
 import com.example.KCApp.beans.User;
 import com.example.KCApp.repository.LekarRepository;
+import com.example.KCApp.service.AdministratorKlinikeService;
+import com.example.KCApp.service.AuthorityService;
 import com.example.KCApp.service.KlinikaService;
 import com.example.KCApp.service.LekarService;
 
@@ -40,7 +46,17 @@ public class LekarController {
 	private KlinikaService klinikaService;
 	
 	@Autowired
+	private AdministratorKlinikeService serviceAK;
+	
+	@Autowired
+	private AuthorityService authorityService;
+	
+	@Autowired
 	private LekarRepository repository;
+	
+	@Autowired
+	@Lazy
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	/*PRIKAZ SVIH LEKARA KLINIKE*/
 	@GetMapping(value="/lekari")
@@ -73,32 +89,39 @@ public class LekarController {
 		return klinike;
 	}
 	
+	
 	/*DODAVANJE LEKARA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
-	@PostMapping(value= "/lekari",consumes = "application/json")
+	@PostMapping(value = "/lekari/{idAdmina}")
 	@PreAuthorize("hasRole('ADMINK')")
-	public ResponseEntity<LekarDTO> saveLekar(@RequestBody LekarDTO lekarDTO) {
+	public ResponseEntity<?> saveLekar(@RequestBody LekarDTO lekarDTO, @PathVariable Integer idAdmina) {
 
 		Lekar lekar = new Lekar();
 		lekar.setIme(lekarDTO.getIme());
 		lekar.setPrezime(lekarDTO.getPrezime());
 		lekar.setEmail(lekarDTO.getEmail());
 		lekar.setUsername(lekarDTO.getUsername());
-		lekar.setPassword(lekarDTO.getPassword());
+		lekar.setPassword(passwordEncoder.encode(lekarDTO.getPassword()));
 		lekar.setAdresa(lekarDTO.getAdresa());
 		lekar.setGrad(lekarDTO.getGrad());
 		lekar.setDrzava(lekarDTO.getDrzava());
 		lekar.setBrojTelefona(lekarDTO.getBrojTelefona());
-		Integer idK = lekarDTO.getKlinika();
+		
 		lekar.setOcena(lekarDTO.getOcena());
 		lekar.setTipPregleda(lekarDTO.getTipPregleda());
 		RadniKalendarL radniKalendarL = new RadniKalendarL();
 		//radniKalendarL.setIdRadnogKalendara(lekarDTO.getRadniKalendarL().getIdRadnogKalendara());
 		lekar.setRadniKalendar(radniKalendarL);
-		Klinika k = klinikaService.get(idK);
-
+		
+		AdministratorKlinike ak = serviceAK.get(idAdmina);		
+		Klinika k = ak.getKlinika();
 		lekar.setKlinika(k);
+		
+		lekar.setLastPasswordResetDate(lekarDTO.getLastPasswordResetDate());
+		lekar.setAuthorities(Arrays.asList(authorityService.findOne(2)));
+
 		lekar = service.save(lekar);
-		return new ResponseEntity<>(new LekarDTO(lekar), HttpStatus.CREATED);
+		System.out.println("LEKARRRR"+lekar);
+		return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
 	}
 	
 	//IZMENA OCENE
@@ -140,6 +163,23 @@ public class LekarController {
 		for(Lekar l:lekari)
 		{
 			if(l.getKlinika() == k && l.getTipPregleda() == tipPregleda) {
+				lekariKlinike.add(l);
+			}
+		}
+		return lekariKlinike;
+	}
+	
+	/*PRIKAZ LEKARA KLINIKE ADMINA*/
+	@GetMapping(value = "/lekari/admink/{idAdmina}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Lekar> findAllLekarByIdKlinikeIzvestaj(@PathVariable Integer idAdmina) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika k = ak.getKlinika();
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		for(Lekar l:lekari)
+		{
+			if(l.getKlinika() == k) {
 				lekariKlinike.add(l);
 			}
 		}
@@ -201,6 +241,67 @@ public class LekarController {
 			}
 		}
 		return lekariKlinike1;
+	}
+	
+	/*ZA ADMINA - PRIKAZ SVIH LEKARA PO KRITERIJUMU - IME,PREZIME*/
+	@GetMapping(value = "/lekari/adminK/{idAdmina}/{ime}/{prezime}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Lekar> findAllLekarByIP(@PathVariable Integer idAdmina, @PathVariable String ime, @PathVariable String prezime) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);		
+		Klinika k = ak.getKlinika();
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getIme().equals(ime) && l.getPrezime().equals(prezime)) {
+				lekariKlinike.add(l);
+			}
+		}
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		System.out.println("LEKARIII KLINIKEEE"+lekariKlinike);
+		return lekariKlinike;
+	}
+	
+	/*ZA ADMINA - PRIKAZ SVIH LEKARA PO KRITERIJUMU - PREZIME*/
+	@GetMapping(value = "/lekari/adminK/{idAdmina}/prezime/{prezime}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Lekar> findAllLekarByP(@PathVariable Integer idAdmina, @PathVariable String prezime) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);		
+		Klinika k = ak.getKlinika();
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getPrezime().equals(prezime)) {
+				lekariKlinike.add(l);
+			}
+		}
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		return lekariKlinike;
+	}
+	
+	/*ZA ADMINA - PRIKAZ SVIH LEKARA PO KRITERIJUMU - IME*/
+	@GetMapping(value = "/lekari/adminK/{idAdmina}/ime/{ime}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Lekar> findAllLekarByI(@PathVariable Integer idAdmina, @PathVariable String ime) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);		
+		Klinika k = ak.getKlinika();
+		List<Lekar> lekari = service.listAll();
+		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		for(Lekar l : lekari)
+		{
+			if(l.getKlinika() == k && l.getIme().equals(ime)) {
+				lekariKlinike.add(l);
+			}
+		}
+		if(lekariKlinike.isEmpty()) {
+			return lekariKlinike;
+		}
+		return lekariKlinike;
 	}
 	
 	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - PREZIME,OCENA*/

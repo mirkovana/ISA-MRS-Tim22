@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Cenovnik;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.TipPregleda;
+import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.CenovnikService;
 import com.example.KCApp.service.KlinikaService;
 
@@ -26,6 +28,9 @@ public class CenovnikController {
 	
 	@Autowired
 	private KlinikaService serviceKlinika;
+	
+	@Autowired
+	private AdministratorKlinikeService serviceAK;
 	
 	@GetMapping(value = "/cenovnik/{idKlinike}/{tipPregleda}")
 	@PreAuthorize("hasRole('PACIJENT')")
@@ -47,6 +52,16 @@ public class CenovnikController {
 	public List<Cenovnik> prikazCenovnikaKlinike(@PathVariable Integer idKlinike) {
 		List<Cenovnik> cenovnici= new ArrayList<Cenovnik>();
 		Klinika k = serviceKlinika.get(idKlinike);
+		cenovnici = serviceCenovnik.findAllByKlinika(k);
+		return cenovnici;
+	}
+	
+	@GetMapping(value = "/cenovnik/adminK/{idAdmina}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Cenovnik> prikazCenovnikaKlinikeAdmina(@PathVariable Integer idAdmina) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika k = ak.getKlinika();
+		List<Cenovnik> cenovnici= new ArrayList<Cenovnik>();
 		cenovnici = serviceCenovnik.findAllByKlinika(k);
 		return cenovnici;
 	}

@@ -1,5 +1,6 @@
 package com.example.KCApp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.KCApp.DTO.LekarDTO;
 import com.example.KCApp.DTO.PacijentDTO;
 import com.example.KCApp.DTO.SalaDTO;
+import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Pacijent;
@@ -28,6 +30,7 @@ import com.example.KCApp.beans.RadniKalendarL;
 import com.example.KCApp.beans.Sala;
 import com.example.KCApp.repository.PacijentRepository;
 import com.example.KCApp.repository.SalaRepository;
+import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.KlinikaService;
 import com.example.KCApp.service.SalaService;
 
@@ -45,6 +48,9 @@ public class SalaController {
 	
 	@Autowired
 	private SalaRepository repository;
+	
+	@Autowired
+	private AdministratorKlinikeService serviceAK;
 	
 	/*ISPISIVANJE SALA*/
 	@GetMapping(value="/sale")
@@ -74,6 +80,66 @@ public class SalaController {
 		}
 	}
 	
+	/*ZA ADMINA - PRIKAZ SVIH SALA PO KRITERIJUMU - NAZIV,BROJ*/
+	@GetMapping(value = "/sale/adminK/{idAdmina}/{naziv}/{broj}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Sala> findAllSalaByNB(@PathVariable Integer idAdmina, @PathVariable String naziv, @PathVariable int broj) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);		
+		Klinika k = ak.getKlinika();
+		List<Sala> sale = service.listAll();
+		List<Sala> saleKlinike = new ArrayList<Sala>();
+		for(Sala s : sale)
+		{
+			if(s.getKlinika() == k && s.getNazivSale().equals(naziv) && s.getBrojSale() == broj) {
+				saleKlinike.add(s);
+			}
+		}
+		if(saleKlinike.isEmpty()) {
+			return saleKlinike;
+		}
+		return saleKlinike;
+	}
+	
+	/*ZA ADMINA - PRIKAZ SVIH SALA PO KRITERIJUMU - BROJ*/
+	@GetMapping(value = "/sale/adminK/{idAdmina}/broj/{broj}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Sala> findAllSalaByB(@PathVariable Integer idAdmina, @PathVariable int broj) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);		
+		Klinika k = ak.getKlinika();
+		List<Sala> sale = service.listAll();
+		List<Sala> saleKlinike = new ArrayList<Sala>();
+		for(Sala s : sale)
+		{
+			if(s.getKlinika() == k &&  s.getBrojSale() == broj) {
+				saleKlinike.add(s);
+			}
+		}
+		if(saleKlinike.isEmpty()) {
+			return saleKlinike;
+		}
+		return saleKlinike;
+	}
+	
+	/*ZA ADMINA - PRIKAZ SVIH SALA PO KRITERIJUMU - NAZIV*/
+	@GetMapping(value = "/sale/adminK/{idAdmina}/naziv/{naziv}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Sala> findAllSalaByN(@PathVariable Integer idAdmina, @PathVariable String naziv) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);		
+		Klinika k = ak.getKlinika();
+		List<Sala> sale = service.listAll();
+		List<Sala> saleKlinike = new ArrayList<Sala>();
+		for(Sala s : sale)
+		{
+			if(s.getKlinika() == k && s.getNazivSale().equals(naziv)) {
+				saleKlinike.add(s);
+			}
+		}
+		if(saleKlinike.isEmpty()) {
+			return saleKlinike;
+		}
+		return saleKlinike;
+	}
+	
 	/*PRETRAGA SALE PO KRITERIJUMU - BROJ SALE*/
 	@GetMapping(value = "/sale/brojSale/{brojSale}")
 	@PreAuthorize("hasRole('ADMINK')")
@@ -82,27 +148,48 @@ public class SalaController {
 		return sala;
 	}
 	
+	/*PRETRAGA SALE PO KRITERIJUMU - ID SALE*/
+	@GetMapping(value = "/sale/idSale/{idSale}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public Sala findSalaById(@PathVariable int idSale) { //da li treba i po nazivu?
+		Sala sala = service.get(idSale);
+		return sala;
+	}
 	
+	//prikaz sala klinike admina
+	@GetMapping(value = "/sale/admink/{idAdmina}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Sala> findAllSalaByIdKlinikeIzvestaj(@PathVariable Integer idAdmina) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika k = ak.getKlinika();
+		List<Sala> sale = service.listAll();
+		List<Sala> saleKlinike = new ArrayList<Sala>();
+		for(Sala s:sale)
+		{
+			if(s.getKlinika() == k) {
+				saleKlinike.add(s);
+			}
+		}
+		return saleKlinike;
+	}
 	
 	/*DODAVANJE SALA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
-	@PostMapping(value= "/sale",consumes = "application/json")
+	@PostMapping(value= "/sale/{idAdmina}",consumes = "application/json")
 	@PreAuthorize("hasRole('ADMINK')")
-	public ResponseEntity<SalaDTO> saveSala(@RequestBody SalaDTO salaDTO) {
+	public ResponseEntity<SalaDTO> saveSala(@RequestBody SalaDTO salaDTO, @PathVariable Integer idAdmina) {
 
 		Sala sala = new Sala();
 		sala.setBrojSale(salaDTO.getBrojSale());
 		sala.setNazivSale(salaDTO.getNazivSale());
-		Integer idK = salaDTO.getKlinika();
-		
-		Klinika k = klinikaService.get(idK);
-
+		AdministratorKlinike ak = serviceAK.get(idAdmina);		
+		Klinika k = ak.getKlinika();
 		sala.setKlinika(k);
 		sala = service.save(sala);
 		return new ResponseEntity<>(new SalaDTO(sala), HttpStatus.CREATED);
 	}
 	
 	/*UPDATE SALE*/
-	@PutMapping(value="/sale/{idSale}", consumes = "application/json")
+	@PutMapping(value="/sale/izmena/{idSale}", consumes = "application/json")
 	@PreAuthorize("hasRole('ADMINK')")
 	public Sala updateSala(@PathVariable Integer idSale, @Valid @RequestBody SalaDTO salaUpdated) throws NotFoundException {
 		return repository.findById(idSale)

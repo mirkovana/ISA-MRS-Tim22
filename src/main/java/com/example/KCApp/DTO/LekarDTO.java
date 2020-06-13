@@ -1,5 +1,6 @@
 package com.example.KCApp.DTO;
 
+import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Authority;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Ocena;
@@ -15,8 +16,12 @@ public class LekarDTO extends UserDTO{
 	
 	public LekarDTO(Lekar lekar) {
 	}
+	
+	public LekarDTO() {
+		
+	}
 
-	public LekarDTO(Lekar lekar, UserTokenState token) {
+	/*public LekarDTO(Lekar lekar, UserTokenState token) {
 		super(lekar.getIme(), lekar.getPrezime(), lekar.getEmail(), lekar.getUsername(), lekar.getPassword(), lekar.getAdresa(), lekar.getGrad(), lekar.getDrzava(), lekar.getBrojTelefona(), lekar.getLastPasswordResetDate(), lekar.getId(), token);
         ocena = lekar.getOcena();
         tipPregleda = lekar.getTipPregleda();
@@ -24,7 +29,18 @@ public class LekarDTO extends UserDTO{
         klinika = lekar.getKlinika().getIdKlinike();
         for(Object au : lekar.getAuthorities()) {
 			this.setRole(((Authority) au).getName());}
-	}
+	}*/
+	
+	public LekarDTO(Lekar l, UserTokenState token) {
+    	super(l.getIme(), l.getPrezime(), l.getEmail(), l.getUsername(), l.getPassword(), l.getAdresa(), l.getGrad(), l.getDrzava(), l.getBrojTelefona(), l.getLastPasswordResetDate(), l.getId(), token);
+    	for(Object au : l.getAuthorities()) {
+			this.setRole(((Authority) au).getName());}
+    	klinika = l.getKlinika().getIdKlinike();
+    	ocena = l.getOcena();
+    	tipPregleda = l.getTipPregleda();
+        radniKalendarL = new RadniKalendarLDTO(l.getRadniKalendar());
+
+    }
 
 	public Integer getKlinika() {
 		return klinika;

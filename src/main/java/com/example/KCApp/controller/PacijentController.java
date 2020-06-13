@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.DTO.PacijentDTO;
 import com.example.KCApp.DTO.UserDTO;
+import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.MedicinskaSestra;
@@ -27,6 +28,7 @@ import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.User;
 import com.example.KCApp.repository.PacijentRepository;
+import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.MedicinskaSestraService;
 import com.example.KCApp.service.PacijentService;
@@ -55,6 +57,9 @@ public class PacijentController {
 	
 	@Autowired
 	private PacijentRepository repository;
+	
+	@Autowired
+	private AdministratorKlinikeService serviceAK;
 	
 	/*PRIKAZ PACIJENTA PO ID-u*/
 	@GetMapping(value = "/pacijenti/{id}")
@@ -106,6 +111,24 @@ public class PacijentController {
 		List<Pacijent> listaPacijenata = new ArrayList<Pacijent>();
 		//ovde ide sada provera 
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaMS);
+		for(Pregled pre:preglediKlinike) {
+			listaPacijenata.add(pre.getPacijent());
+			model.addAttribute("listaPacijenata", listaPacijenata);
+			return listaPacijenata;
+		}
+		//model.addAttribute("listaPacijenata", listaPacijenata);
+		return listaPacijenata;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA KLINIKE ZA ADMINA KLINIKE*/
+	@GetMapping(value="/pacijenti/admink/{id}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Pacijent> getAllPacijentiKlinikeAK(Model model, @PathVariable Integer id) {
+		AdministratorKlinike ak = serviceAK.get(id);
+		Klinika klinikaAK = ak.getKlinika();
+		List<Pacijent> listaPacijenata = new ArrayList<Pacijent>();
+		//ovde ide sada provera 
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaAK);
 		for(Pregled pre:preglediKlinike) {
 			listaPacijenata.add(pre.getPacijent());
 			model.addAttribute("listaPacijenata", listaPacijenata);

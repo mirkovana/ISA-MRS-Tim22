@@ -91,6 +91,25 @@ public class PregledController {
 		List<Pregled> prazna = new ArrayList<Pregled>();
 		return prazna;
 	}
+	
+	/* ISPISIVANJE PREGLEDA NA OSNOVU ID-A ADMINA */
+	@GetMapping(value = "/pregledi/adminK/{idAdmina}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Pregled> getPreglediZaKlinikuAdmina(Model model, @PathVariable Integer idAdmina) {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika k = ak.getKlinika();
+		List<Pregled> listaPregled = service.listAll();
+		List<Pregled> slobodniPregledi = new ArrayList<Pregled>();
+		for (Pregled p : listaPregled) {
+			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike()) && p.getPacijent() == null) {
+				model.addAttribute("listaPregled", listaPregled);
+				slobodniPregledi.add(p);
+				return slobodniPregledi;
+			}
+		}
+		List<Pregled> prazna = new ArrayList<Pregled>();
+		return prazna;
+	}
 
 	/* DODAVANJE SLOBODNIH TERMINA PREGLEDA */ // prilikom dodavanja ispise lepo sve informacije, a prilikom
 												// izlistavanja nakon dodavanja za zdravstveni karton stavi da je null

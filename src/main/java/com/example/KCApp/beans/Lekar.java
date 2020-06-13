@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "lekar")
-@SequenceGenerator(name = "lekarIdSeq", sequenceName = "lekarIdGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "lekarIdSeq", sequenceName = "lekarIdGen", initialValue = 10, allocationSize = 1)
 public class Lekar extends User {
 
 	private static final long serialVersionUID = -3774628095290548261L;
@@ -62,6 +62,7 @@ public class Lekar extends User {
 		this.radniKalendarL = radniKalendarL;
 		this.ocena = ocena;
 		this.tipPregleda = tipPregleda;
+		this.klinika = klinika;
 	}
 
 	public Lekar() {

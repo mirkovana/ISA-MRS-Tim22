@@ -80,6 +80,25 @@ function setUpUserPage() {
 	});
 }
 
+function prikazPacijenata() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pacijenti/admink/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			pacijenti = JSON.parse(data.responseText);
+			console.log(pacijenti)
+			loadPacijenti(pacijenti);
+			
+		}
+	});
+}
+
 //pozivacemo poacijenti
 function setUpUserPageLekar() {
 	var obj = JSON.parse(localStorage.getItem('user'));
@@ -156,6 +175,45 @@ function setUpUserPageAK() {
 	});
 }
 
+function prikazSala() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/sale/admink/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			sale = JSON.parse(data.responseText);
+			console.log(sale)
+			loadSale(sale);
+		}
+	});
+}
+
+function izmenaSala() {
+	$("#pretragaNaziv").show();
+	$("#pretragaBroj").show();
+	$("#pretraziSale").show();
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/sale/admink/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			sale = JSON.parse(data.responseText);
+			console.log(sale)
+			loadSaleIzmena(sale);
+		}
+	});
+}
+
 function setUpUserPageAKL() {
 	$.ajax({
 		url: "api/lekari",
@@ -169,7 +227,46 @@ function setUpUserPageAKL() {
 			lekari = JSON.parse(data.responseText);
 			console.log(lekari)
 			loadLekari(lekari);
-			
+		}
+	});
+}
+
+function prikazLekara() {
+	$("#pretragaIme").show();
+	$("#pretragaPrezime").show();
+	$("#pretraziLekare").show();
+	obrisiTabele();
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/lekari/admink/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			lekari = JSON.parse(data.responseText);
+			console.log(lekari)
+			loadLekariAdmin(lekari);
+		}
+	});
+}
+
+function lekariZaIzvestaj() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/lekari/admink/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			lekari = JSON.parse(data.responseText);
+			console.log(lekari)
+			loadLekariZaIzvestaj(lekari);
 		}
 	});
 }
@@ -283,6 +380,7 @@ function setUpZK() {
 	});
 }
 
+//menjanje profila klinike kod AK
 function setUpKlinikeAK() {
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
@@ -297,6 +395,24 @@ function setUpKlinikeAK() {
 			klinika = JSON.parse(data.responseText);
 			console.log(klinika)
 			pregledModKlinikeAK(klinika);
+		}
+	});
+}
+
+function setUpIzvestaji() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/klinike/admink/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			klinika = JSON.parse(data.responseText);
+			console.log(klinika)
+			prikazIzvestajaMod(klinika);
 		}
 	});
 }
@@ -328,6 +444,17 @@ function loadSale(sale) {
 	table.append(makeTableHeaderSale());	
 	for(let s of sale) {
 		table.append(makeTableRowSale(s));
+	}
+}
+
+function loadSaleIzmena(sale) {
+	obrisiTabele();
+	$("#tabela_sale tbody tr").remove(); 
+	$("#tabela_sale thead ").remove();
+	var table = $("#tabela_sale");
+	table.append(makeTableHeaderSaleIzmena());	
+	for(let s of sale) {
+		table.append(makeTableRowSaleIzmena(s));
 	}
 }
 
@@ -397,6 +524,28 @@ function loadLekari(lekari) {
 	table.append(makeTableHeaderLekari());	
 	for(let l of lekari) {
 		table.append(makeTableRowLekari(l));
+	}
+}
+
+function loadLekariAdmin(lekari) {
+	obrisiTabele();
+	$("#tabela_lekari tbody tr").remove(); 
+	$("#tabela_lekari thead ").remove();
+	var table = $("#tabela_lekari");
+	table.append(makeTableHeaderLekariAdmin());	
+	for(let l of lekari) {
+		table.append(makeTableRowLekariAdmin(l));
+	}
+}
+
+function loadLekariZaIzvestaj(lekari) {
+	obrisiTabele();
+	$("#tabela_lekari_izvestaj tbody tr").remove(); 
+	$("#tabela_lekari_izvestaj thead ").remove();
+	var table = $("#tabela_lekari_izvestaj");
+	table.append(makeTableHeaderLekariZaIzvestaj());	
+	for(let l of lekari) {
+		table.append(makeTableRowLekariZaIzvestaj(l));
 	}
 }
 
@@ -496,6 +645,22 @@ function makeTableHeaderSale(){
 		
 		return row;
 }
+
+function makeTableHeaderSaleIzmena(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Naziv</th>
+						<th>Broj</th>
+						<th>Izmena</th>
+						<th>Brisanje</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
 function makeTableHeaderKlinike(){
 	
 	var row="";
@@ -583,6 +748,41 @@ function makeTableHeaderLekari(){
 		return row;
 }
 
+function makeTableHeaderLekariAdmin(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Ime</th>
+						<th>Prezime</th>
+						<th>Email</th>
+						<th>Adresa</th>
+						<th>Grad</th>
+						<th>Drzava</th>
+						<th>Broj telefona</th>
+						<th>Ocena</th>
+						<th>Brisanje</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableHeaderLekariZaIzvestaj(){
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Ime</th>
+						<th>Prezime</th>
+						<th>Prosecna ocena</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
 
 //zaglavlje tabele pregleda za pacijente
 function makeTableHeaderPP(){
@@ -656,6 +856,47 @@ function makeTableRowSale(s) {
 	
 	return row;
 }
+
+function makeTableRowSaleIzmena(sal) {
+	console.log("SAL" + sal);
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${sal.nazivSale}'>${sal.nazivSale}</td>
+			<td class="izgledTabele" id='${sal.brojSale}'>${sal.brojSale}</td>
+			<td class="izgledTabele"><input type="button" id="prikazSale" value="Izmeni" onClick="prebaciNaIzmenuSale(${sal.idSale})"/></td>
+			<td class="izgledTabele"><input type="button" id="brisanjeSale" value="Obrisi" onClick="brisanjeSale(${sal.idSale})"/></td>
+		</tr>`;
+	
+	return row;
+}
+
+function prebaciNaIzmenuSale(idSale){
+	console.log("uslo u prebaciNaIzmenuSale");
+	window.location.replace("#izmenajednesale");
+	localStorage.setItem('idSale', idSale);
+	prebacivanjeNaIzmenuSale(idSale);
+}
+
+function prebacivanjeNaIzmenuSale(idSale) {
+	console.log("uslo u prebacivanjenaizmenusale");
+	$.ajax({
+		url: "api/sale/idSale/" + idSale,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			sala = JSON.parse(data.responseText);
+			console.log(sala)
+			modIzmenaSale(sala);
+		}
+	});
+}
+
 //row za SL
 function makeTableRowSL(s) {
 	var row = "";
@@ -852,6 +1093,38 @@ function makeTableRowLekari(l) {
 			<td class="izgledTabele">${l.grad}</td>
 			<td class="izgledTabele">${l.drzava}</td>
 			<td class="izgledTabele">${l.brojTelefona}</td>
+			<td class="izgledTabele">${l.ocena}</td>
+		</tr>`;
+	
+	return row;
+}
+
+function makeTableRowLekariAdmin(l) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele">${l.ime}</td>
+			<td class="izgledTabele">${l.prezime}</td>
+			<td class="izgledTabele">${l.email}</td>
+			<td class="izgledTabele">${l.adresa}</td>
+			<td class="izgledTabele">${l.grad}</td>
+			<td class="izgledTabele">${l.drzava}</td>
+			<td class="izgledTabele">${l.brojTelefona}</td>
+			<td class="izgledTabele">${l.ocena}</td>
+			<td class="izgledTabele"><input type="button" id="brisanjeLekara" value="Obrisi" onClick="brisanjeLekara(${l.id})"/></td>
+		</tr>`;
+	
+	return row;
+}
+
+function makeTableRowLekariZaIzvestaj(l) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele">${l.ime}</td>
+			<td class="izgledTabele">${l.prezime}</td>
 			<td class="izgledTabele">${l.ocena}</td>
 		</tr>`;
 	
@@ -1109,17 +1382,30 @@ function dodavanjeAK(){
 function dodavanjeSala(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
+	var obj = JSON.parse(localStorage.getItem('user'));
 	
 	var org = JSON.stringify(data);
 	$.ajax({
-		url: "api/sale",
+		url: "api/sale/" + obj.id,
 		type: "POST",
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    }
+	    },
+	    complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				window.location.replace("./homepageadministratorklinike.html");
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
 	});
 }
 
@@ -1127,19 +1413,33 @@ function dodavanjeSala(){
 function dodavanjeLekara(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
+	var obj = JSON.parse(localStorage.getItem('user'));
+	console.log(data)
 	
 	var org = JSON.stringify(data);
 	$.ajax({
-		url: "api/lekari",
+		url: "api/lekari/" + obj.id,
 		type: "POST",
 		data: org,
 		contentType: "application/json",
 		dataType: "json",
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    }
+	    },
+	    complete : function (data) {
+	    	console.log(data)
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				window.location.replace("./homepageadministratorklinike.html");
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
 	});
-	
 }
 
 function pregledModZKPacijenta(kartoni) {
@@ -1295,6 +1595,7 @@ function pregledModAKC(){
 }
 
 function pregledModKlinikeAK(klinika){
+	$("#modalnaForma div").remove();
 	var modal=$("#modalnaForma");
 	var m = "";
 	m = `<div class="imgcontainer">
@@ -1312,12 +1613,44 @@ function pregledModKlinikeAK(klinika){
 					<tr>
 					<td  class='align-middle'><label for="adresa">Adresa</label></td>
 					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${klinika.adresa}" name="adresa" id="adresaKlinike" ></td>
-					</tr>s
+					</tr>
 					<tr>
 					<td  class='align-middle'><label for="opis">Opis</label></td>
 					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${klinika.opis}" name="opis" id="opisKlinike" ></td>
 					</tr>
 					<tr><td  class='align-middle' ><button type="button" onclick="izmenaProfilaKlinike(klinika)">Sacuvaj izmene</button></td></tr>				
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+}
+
+function modIzmenaSale(sala){
+	console.log("USAOOOOOO");
+	$("#modalnaForma div").remove();
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Izmena sale</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="nazivSale">Naziv</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${sala.nazivSale}" name="nazivSale" id="nazivSale" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="brojSale">Broj</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${sala.brojSale}" name="brojSale" id="brojSale" ></td>
+					</tr>
+					<tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="izmenaSale()">Sacuvaj izmene</button></td></tr>				
 				</tbody>
 			</table>
 			</form>
@@ -1360,6 +1693,29 @@ $("#modalnaForma div").remove();
 					<td  class='align-middle'><label for="ocena">Ocena</label></td>
 					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${klinika.ocena}" name="ocena" id="ocena" readonly></td>
 					</tr>			
+				</tbody>
+			</table>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+}
+
+function prikazIzvestajaMod(klinika){
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Prikaz izvestaja klinike</h1></div>
+			<div class="container">
+			<br>
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="ocena">Prosecna ocena klinike</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${klinika.ocena}" name="ocena" id="ocena" readonly></td>
+					</tr>
 				</tbody>
 			</table>
 			<fieldset id="log_war"></fieldset>
@@ -1501,11 +1857,11 @@ function pregledModAK(){
 				<tbody>
 					<tr>
 					<td  class='align-middle'><label for="ime">Ime</label></td>
-					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="msIme" disabled></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="ime"></td>					
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="msPrezime">Prezime</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="msPrezime" id="msPrezime" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="prezime" id="prezime"></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="email">Email</label></td>
@@ -1517,20 +1873,21 @@ function pregledModAK(){
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="adresa">Adresa</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa"></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="grad">Grad</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad"></td>
 					</tr>					
 					<tr>
 					<td  class='align-middle'><label for="drzava">Drzava</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" disabled></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava"></td>
 					</tr>					
 					<tr>
 					<td  class='align-middle'><label for="brojTelefona">Broj telefona</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" disabled></td>
-					</tr>				
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona"></td>
+					</tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="izmenaProfilaAK()">Sacuvaj izmene</button></td></tr>				
 				</tbody>
 			</table>
 			<fieldset id="log_war"></fieldset>
@@ -1538,6 +1895,56 @@ function pregledModAK(){
 			modal.append(m);
 		$("#modal-wrapper").show();
 	
+}
+
+function profilAK(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$("#modalnaForma div").remove();
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Profil administratora klinike</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="ime">Ime</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="ime" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="prezime">Prezime</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="prezime" id="prezime" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="email">Email</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" ></td>
+					</tr>
+					<td  class='align-middle'><label for="password">Lozinka</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.password}" name="password" id="password" ></td>
+					</tr>
+					<td  class='align-middle'><label for="adresa">Adresa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" ></td>
+					</tr>
+					<td  class='align-middle'><label for="grad">Grad</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" ></td>
+					</tr>
+					<td  class='align-middle'><label for="drzava">Drzava</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" ></td>
+					</tr>
+					<td  class='align-middle'><label for="brojTelefona">Broj telefona</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" ></td>
+					</tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="izmenaProfilaAK()">Sacuvaj izmene</button></td></tr>				
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
 }
 
 function izmenaProfilaAKC(){
@@ -1578,13 +1985,15 @@ function izmenaProfilaAKC(){
 	
 }
 
-function izmenaProfilaKlinike(klinika){
-
+function izmenaProfilaAK(){
+	var tok=JSON.parse(localStorage.getItem('user')).token;
+	var aut= JSON.parse(localStorage.getItem('user')).role;
 	var dat = getFormData($("#formaIzmena"));
 	
 	var org = JSON.stringify(dat);
+	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
-		url: "api/klinike/" + klinika.id,
+		url: "api/adminiKlinike/izmena/" + obj.id,
 		type: "PUT",
 		data: org,
 		contentType:"application/json",
@@ -1593,25 +2002,54 @@ function izmenaProfilaKlinike(klinika){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			//localStorage.setItem('user',trenutni);
-			//d = JSON.parse(data.responseText);
-			//console.log(org);
-			//console.log("OVO JE DATA " + JSON.stringify(data).responseJSON);
-//			console.log("OVO JE DATA druga varijanta" + JSON.stringify(data.responseJSON));
-//			data.responseJSON.token=tok;
-//			data.responseJSON.role=aut;
-//			localStorage.setItem('user',JSON.stringify(data.responseJSON));
-//			//localStorage.setItem('user.token',tok);
-//			console.log("ovo je user novi???????" + localStorage.getItem('user') );
-			
-		} 
-	 /*   success: function(result){
-			 console.log(result);
-			 localStorage.setItem('user',JSON.stringify(result));
-			 localStorage.setItem(setItem('user')).token.accessToken, tok);
-			 }*/
+		}
 	});
 	
+}
+
+function izmenaProfilaKlinike(klinika){
+	var dat = getFormData($("#formaIzmena"));
+	var org = JSON.stringify(dat);
+	var obj = JSON.parse(localStorage.getItem('user'));
+	console.log(dat)
+	$.ajax({
+		url: "api/klinike/izmena/" + obj.id,
+		type: "PUT",
+		data: org,
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			
+			
+		} 
+	 
+	});
+}
+
+function izmenaSale(){
+	console.log("usao u izmenaSale");
+	var dat = getFormData($("#formaIzmena"));
+	var org = JSON.stringify(dat);
+	var obj = JSON.parse(localStorage.getItem('idSale'));
+	console.log(obj)
+	$.ajax({
+		url: "api/sale/izmena/" + obj,
+		type: "PUT",
+		data: org,
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			
+			
+		} 
+	 
+	});
 }
 
 //ispis termina za unapred definisane preglede 
@@ -1635,6 +2073,26 @@ function prikazSlobodnihTerminaPregleda() {
 	});
 }
 
+function prikazSlobodnihTerminaPregledaAdmina() {
+	obrisiPretragu();
+	obrisiFilter();
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pregledi/adminK/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			pregledi = JSON.parse(data.responseText);
+			loadDefinisaniPreglediAdmina(pregledi);
+			
+		}
+	});
+}
+
 function loadDefinisaniPregledi(pregledi) {
 	obrisiTabele();
 	$("#tabela_definisaniPregledi tbody tr").remove(); 
@@ -1643,6 +2101,17 @@ function loadDefinisaniPregledi(pregledi) {
 	table.append(makeTableHeaderDefinisaniPregledi());	
 	for(let p of pregledi) {
 		table.append(makeTableRowDefinisaniPregledi(p));
+	}
+}
+
+function loadDefinisaniPreglediAdmina(pregledi) {
+	obrisiTabele();
+	$("#tabela_definisaniPregledi_admina tbody tr").remove(); 
+	$("#tabela_definisaniPregledi_admina thead ").remove();
+	var table = $("#tabela_definisaniPregledi_admina");
+	table.append(makeTableHeaderDefinisaniPreglediAdmina());	
+	for(let p of pregledi) {
+		table.append(makeTableRowDefinisaniPreglediAdmina(p));
 	}
 }
 
@@ -1664,6 +2133,23 @@ function makeTableHeaderDefinisaniPregledi(){
 		return row;
 }
 
+function makeTableHeaderDefinisaniPreglediAdmina(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Datum</th>
+						<th>Vreme</th>
+						<th>Trajanje</th>
+						<th>Sala</th>
+						<th>Tip</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
 function makeTableRowDefinisaniPregledi(p) {
 	var row = "";
 	var deli = p.vreme.split("T");
@@ -1679,6 +2165,24 @@ function makeTableRowDefinisaniPregledi(p) {
 			<td class="izgledTabele" id='${p.sala}'>${p.sala.nazivSale}</td>
 			<td class="izgledTabele" id='${p.tipPregleda}'>${p.tipPregleda}</td>
 			<td class="izgledTabele" id='dugmeZakazi'><input type="button" id="showTxt1" value="Zakazi" onClick="zakaziPregled(${p.idPregleda})"/></td>
+		</tr>`;
+	return row;
+}
+
+function makeTableRowDefinisaniPreglediAdmina(p) {
+	var row = "";
+	var deli = p.vreme.split("T");
+	var datum = deli[0];
+	var deli1 = deli[1].split(".");
+	var vreme = deli1[0];
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${p.vreme}'>${datum}</td>
+			<td class="izgledTabele" id='${p.vreme}'>${vreme}</td>
+			<td class="izgledTabele" id='${p.trajanje}'>${p.trajanje}</td>
+			<td class="izgledTabele" id='${p.sala}'>${p.sala.nazivSale}</td>
+			<td class="izgledTabele" id='${p.tipPregleda}'>${p.tipPregleda}</td>
 		</tr>`;
 	return row;
 }
@@ -1835,12 +2339,18 @@ function obrisiTabele(){
 	$("#tabela_recepti thead ").remove();
 	$("#tabela_lekari tbody tr").remove(); 
 	$("#tabela_lekari thead ").remove();
+	$("#tabela_lekari_izvestaj tbody tr").remove(); 
+	$("#tabela_lekari_izvestaj thead ").remove();
 	$("#tabela_lekari_tipPregleda tbody tr").remove(); 
 	$("#tabela_lekari_tipPregleda thead ").remove();
 	$("#tabela_definisaniPregledi tbody tr").remove(); 
 	$("#tabela_definisaniPregledi thead ").remove();
+	$("#tabela_definisaniPregledi_admina tbody tr").remove(); 
+	$("#tabela_definisaniPregledi_admina thead ").remove();
 	$("#tabela_cenovnika tbody tr").remove(); 
 	$("#tabela_cenovnika thead ").remove();	
+	$("#tabela_cenovnika_admina tbody tr").remove(); 
+	$("#tabela_cenovnika_admina thead ").remove();	
 	$("#tabela_klinikeAKC tbody tr").remove(); 
 	$("#tabela_klinikeAKC thead ").remove();
 	$("#tabela_sl tbody tr").remove(); 
@@ -2014,6 +2524,8 @@ function prikazSvihLekaraKlinike(){
 		}
 	});
 }
+
+
 
 function prikazLekaraKlinike(){
 	$("#pretragaIme").show();
@@ -2225,6 +2737,119 @@ function pretragaLekara(){
 	}
 }
 
+function pretragaLekaraAdmin(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	var imeLekara = document.getElementById("pretragaIme").value;
+	var maloIme = imeLekara.toLowerCase();
+	var ime = maloIme.charAt(0).toUpperCase() + maloIme.slice(1);
+	var prezimeLekara = document.getElementById("pretragaPrezime").value;
+	var maloPrezime = prezimeLekara.toLowerCase();
+	var prezime = maloPrezime.charAt(0).toUpperCase() + maloPrezime.slice(1);
+	if(ime != "" && prezime != ""){ //po imenu i prezimenu
+	$.ajax({
+		url: "api/lekari/adminK/" + obj.id + "/" + ime + "/" + prezime,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			console.log("USLO OVDE");
+			lekari = JSON.parse(data.responseText);
+			pretrazeniLekari = lekari;
+			loadLekariAdmin(lekari);	
+		}
+	});	
+	}else if(ime == "" && prezime != ""){//pretraga po prezimenu
+		$.ajax({
+			url: "api/lekari/adminK/" + obj.id + "/" +"prezime/" + prezime,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				lekari = JSON.parse(data.responseText);
+				console.log(JSON.stringify(lekari));
+				pretrazeniLekari = lekari;
+				loadLekariAdmin(lekari);	
+			}
+		});		
+	}else if(ime != "" && prezime == ""){//pretraga po imenu
+		$.ajax({
+			url: "api/lekari/adminK/" + obj.id + "/" +"ime/"+ ime,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				lekari = JSON.parse(data.responseText);
+				console.log(JSON.stringify(lekari));
+				pretrazeniLekari = lekari;
+				loadLekariAdmin(lekari);	
+			}
+		});	
+	}	
+}
+
+function pretragaSalaAdmin(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	var nazivSale = document.getElementById("pretragaNaziv").value;
+	var maliNaziv = nazivSale.toLowerCase();
+	var naziv = maliNaziv.charAt(0).toUpperCase() + maliNaziv.slice(1);
+	var brojSale = document.getElementById("pretragaBroj").value;
+	var maliBroj = brojSale.toLowerCase();
+	var broj = maliBroj.charAt(0).toUpperCase() + maliBroj.slice(1);
+	if(naziv != "" && broj != ""){ //po nazivu i broju
+	$.ajax({
+		url: "api/sale/adminK/" + obj.id + "/" + naziv + "/" + broj,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			console.log("USLO OVDE");
+			sale = JSON.parse(data.responseText);
+			loadSaleIzmena(sale);	
+		}
+	});	
+	}else if(naziv == "" && broj != ""){//pretraga po broju
+		$.ajax({
+			url: "api/sale/adminK/" + obj.id + "/" +"broj/" + broj,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				sale = JSON.parse(data.responseText);
+				loadSaleIzmena(sale);	
+			}
+		});		
+	}else if(naziv != "" && broj == ""){//pretraga po nazivu
+		$.ajax({
+			url: "api/sale/adminK/" + obj.id + "/" +"naziv/"+ naziv,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				sale = JSON.parse(data.responseText);
+				loadSaleIzmena(sale);	
+			}
+		});	
+	}	
+}
+
 function filtrirajNaziKlinike(){
 	var nazivKlinike = document.getElementById("filterNaziv").value;
 	console.log("NAJNOVIJE " + JSON.stringify(pretrazeneKlinike));
@@ -2358,6 +2983,24 @@ function prikazCenovnika(){
 	});	
 }
 
+function prikazCenovnikaAdmin(){
+	var obj = JSON.parse(localStorage.getItem('user')); 
+	$.ajax({
+		url: "api/cenovnik/adminK/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			cenovnici = JSON.parse(data.responseText);
+			console.log(cenovnici);
+			loadCenovniciAdmin(cenovnici);
+		} 
+	});	
+}
+
 function loadCenovnici(cenovnici){
 	obrisiTabele();
 	obrisiPretragu();
@@ -2371,7 +3014,20 @@ function loadCenovnici(cenovnici){
 	}
 }
 
+function loadCenovniciAdmin(cenovnici){
+	console.log("uslo u loadcenovnici");
+	console.log(cenovnici);
+	$("#tabela_cenovnika_admina tbody tr").remove(); 
+	$("#tabela_cenovnika_admina thead ").remove();
+	var table = $("#tabela_cenovnika_admina");
+	table.append(makeTableHeaderCenovnici());	
+	for(let c of cenovnici) {
+		table.append(makeTableRowCenovnici(c));
+	}
+}
+
 function makeTableHeaderCenovnici(){
+	console.log("uslo u header");
 	var row="";
 	row =
 		`<thead class="thead-light" bgcolor="white">
@@ -2384,6 +3040,7 @@ function makeTableHeaderCenovnici(){
 }
 
 function makeTableRowCenovnici(c) {
+	console.log("uslo u row");
 	var row = "";
 	  row =
 		`<tr>

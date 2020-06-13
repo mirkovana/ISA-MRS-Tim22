@@ -9,7 +9,16 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
-		
+		<script>
+			$(document).ready( function() {
+				$("#pretragaIme").hide();
+				$("#pretragaPrezime").hide();
+				$("#pretraziLekare").hide();
+				$("#pretragaNaziv").hide();
+				$("#pretragaBroj").hide();
+				$("#pretraziSale").hide();
+			});
+		</script>
 	</head>
 	<body>
 		<div>	
@@ -17,23 +26,40 @@
 		</div>
 			<div class="navbar" id="myForm">
 				<a href="#home" data-target="#myModal">Pocetna stranica</a>
-				<a href="#profil" onclick="pregledModAK()">Profil</a>
+				<a href="#profil" onclick="profilAK()">Profil</a>
 				<a href="#profilKlinike" onclick="setUpKlinikeAK()">Profil klinike</a>
+				<a href="#cenovnikKlinike" onClick="prikazCenovnikaAdmin()">Cenovnici klinike</a>
 				<a href="./definisanjeSlobodnihTerminaPregleda.html">Definisanje slobodnih termina pregleda</a>
-				<a href="#listapacijenata" onClick="setUpUserPage()">Lista pacijenata</a>
-				<a href="#listalekara" OnClick="setUpUserPageAKL()">Lista lekara</a>
-				<a href="#spisaksala" onClick="setUpUserPageAK()">Spisak sala</a>
+				<a href="#slobodniTerminiPregledaKlinike" onClick="prikazSlobodnihTerminaPregledaAdmina()">Slobodni termini pregleda</a>
+				<a href="#izvestajocenaklinike" onclick="setUpIzvestaji()">Izvestaj: prosecna ocena klinike</a>
+				<a href="#izvestajocenalekara" onClick="lekariZaIzvestaj()">Izvestaj: prosecna ocena lekara</a>
+				<a href="#listapacijenata" onClick="prikazPacijenata()">Spisak pacijenata</a>
+				<a href="./dodavanjeLekara.html" >Dodavanje lekara</a>
+				<a href="#listalekara" onClick="prikazLekara()">Lekari</a>
 				<a href="./dodavanjeSala.html" >Dodavanje sala</a>
-				<a href="#odmor">Zahtev za odmor/odsustvo</a>
+				<a href="#izmenasala" onClick="izmenaSala()">Sale</a>
+				<a href="#odmor">Prihvatanje/odbijanje zahteva za odmor/odsustvo</a>
 				<a href="#zakazivanjepio">Zakazivanje pregleda i operacija</a>
 				<a href="#" onclick="return logout(event)">Odjavite se</a>
 			  </div>
+			  <input type = "text" placeholder="Ime" id = "pretragaIme"/>
+			  <input type = "text" placeholder="Prezime" id = "pretragaPrezime"/>
+			  <button type="submit" class="btn btn-secondary" id="pretraziLekare" onClick="pretragaLekaraAdmin()">Pretrazi</button>
+			  <input type = "text" placeholder="Naziv" id = "pretragaNaziv"/>
+			  <input type = "text" placeholder="Broj" id = "pretragaBroj"/>
+			  <button type="submit" class="btn btn-secondary" id="pretraziSale" onClick="pretragaSalaAdmin()">Pretrazi</button>
 			  <table class="table" id="tabela_sale" >
 			  </table>
-			    <table class="table" id="tabela_lekari" >
+			  <table class="table" id="tabela_lekari" >
+			  </table>
+			  <table class="table" id="tabela_lekari_izvestaj" >
 			  </table>
               <table class="table" id="tabela_pacijenti">
               </table>
+              <table class="table table-light" id="tabela_cenovnika_admina">
+		      </table>
+		      <table class="table table-light" id="tabela_definisaniPregledi_admina">
+		      </table>
               <div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
 				<form class="modal-content animate" action="" id="modalnaF"
 					onsubmit="">
