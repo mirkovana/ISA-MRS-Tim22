@@ -465,6 +465,7 @@ function loadSaleIzmena(sale) {
 function loadKlinike(klinike) {
 	obrisiTabele();
 	obrisiFilter();
+	$("#sortTPP").hide();
 	$("#tabela_klinike tbody tr").remove(); 
 	$("#tabela_klinike thead ").remove();
 	var table = $("#tabela_klinike");
@@ -2438,6 +2439,7 @@ function loadKlinikePretrazene(klinike) {
 	$("#mesec").hide();
 	$("#godina").hide();
 	$("#pretrazi").hide()
+	$("#sortLKP").hide()
 	$("#tabela_klinike_pretrazene tbody tr").remove(); 
 	$("#tabela_klinike_pretrazene thead ").remove();
 	var table = $("#tabela_klinike_pretrazene");
