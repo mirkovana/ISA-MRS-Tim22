@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
 import com.example.KCApp.DTO.KlinikaDTO;
+import com.example.KCApp.DTO.UserDTO;
 import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Cenovnik;
 import com.example.KCApp.beans.KlinickiCentar;
@@ -153,6 +154,23 @@ public class KlinikaController {
 		}).orElseThrow(() -> new NotFoundException("Klinika not found with id " + idKlinike));
 
 	}
+	
+	//IZMENA PROFILA
+		@PutMapping(value="/klinike/izmena/{id}", consumes = "application/json")
+		@PreAuthorize("hasRole('ADMINK')")
+		public Klinika updateKlinika2(@PathVariable Integer id, @Valid @RequestBody KlinikaDTO klinikaUpdated) throws NotFoundException {
+			AdministratorKlinike ak = serviceAK.get(id);
+			Klinika klinikaAK = ak.getKlinika();
+			return repository.findById(klinikaAK.getIdKlinike())
+					.map(klinika->{
+						klinika.setAdresa(klinikaUpdated.getAdresa());
+						//klinika.setGrad(klinikaUpdated.getGrad());
+						klinika.setNaziv(klinikaUpdated.getNaziv());
+						klinika.setOpis(klinikaUpdated.getOpis());
+						return repository.save(klinika);
+					}).orElseThrow(() -> new NotFoundException("Klinika nije pronadjen sa id : " + id));
+			
+		}
 
 	/* PRETRAGA KLINIKA PO KRITERIJUMU - OCENA */
 	@GetMapping(value = "/klinike/ocena/{ocena}")
