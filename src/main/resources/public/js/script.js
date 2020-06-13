@@ -484,6 +484,7 @@ function loadKlinikeAKC(klinike) {
 
 function loadPacijenti(pacijenti) {
 	obrisiTabele();
+	$("#sortP").show();
 	$("#tabela_pacijenti tbody tr").remove(); 
 	$("#tabela_pacijenti thead ").remove();
 	var table = $("#tabela_pacijenti");
@@ -872,6 +873,25 @@ function makeTableRowSaleIzmena(sal) {
 	return row;
 }
 
+function brisanjeSale(idSale){
+	$.ajax({
+		url: "api/sale/brisanje/" + idSale,
+		type: "DELETE",
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			console.log("zavrsio");
+			//sale = JSON.parse(data.responseText);
+			//console.log(sale);
+			//loadSaleIzmena(sale);
+			izmenaSala();
+		}
+	});
+}
+
 function prebaciNaIzmenuSale(idSale){
 	console.log("uslo u prebaciNaIzmenuSale");
 	window.location.replace("#izmenajednesale");
@@ -1116,6 +1136,25 @@ function makeTableRowLekariAdmin(l) {
 		</tr>`;
 	
 	return row;
+}
+
+function brisanjeLekara(idLekara){
+	$.ajax({
+		url: "api/lekari/brisanje/" + idLekara,
+		type: "DELETE",
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			console.log("zavrsio");
+			//sale = JSON.parse(data.responseText);
+			//console.log(sale);
+			//loadSaleIzmena(sale);
+			prikazLekara();
+		}
+	});
 }
 
 function makeTableRowLekariZaIzvestaj(l) {
@@ -1503,11 +1542,11 @@ function pregledModMS(){
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="email">Email</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" readonly></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" ></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="password">Lozinka</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" readonly></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" ></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="adresa">Adresa</label></td>
@@ -1841,6 +1880,56 @@ function pregledModLekar(){
 	
 }
 
+function profilLekara(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$("#modalnaForma div").remove();
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Profil lekara</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="ime">Ime</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${obj.ime}" name="ime" id="ime" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="prezime">Prezime</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.prezime}" name="prezime" id="prezime" ></td>
+					</tr>
+					<tr>
+					<td  class='align-middle'><label for="email">Email</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" ></td>
+					</tr>
+					<td  class='align-middle'><label for="password">Lozinka</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.password}" name="password" id="password" ></td>
+					</tr>
+					<td  class='align-middle'><label for="adresa">Adresa</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" ></td>
+					</tr>
+					<td  class='align-middle'><label for="grad">Grad</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.grad}" name="grad" id="grad" ></td>
+					</tr>
+					<td  class='align-middle'><label for="drzava">Drzava</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.drzava}" name="drzava" id="drzava" ></td>
+					</tr>
+					<td  class='align-middle'><label for="brojTelefona">Broj telefona</label></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.brojTelefona}" name="brojTelefona" id="brojTelefona" ></td>
+					</tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="izmenaProfilaLekara()">Sacuvaj izmene</button></td></tr>				
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+}
+
 function pregledModAK(){
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$("#modalnaForma div").remove(); 
@@ -1994,6 +2083,28 @@ function izmenaProfilaAK(){
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/adminiKlinike/izmena/" + obj.id,
+		type: "PUT",
+		data: org,
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+		}
+	});
+	
+}
+
+function izmenaProfilaLekara(){
+	var tok=JSON.parse(localStorage.getItem('user')).token;
+	var aut= JSON.parse(localStorage.getItem('user')).role;
+	var dat = getFormData($("#formaIzmena"));
+	
+	var org = JSON.stringify(dat);
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/lekari/izmena/" + obj.id,
 		type: "PUT",
 		data: org,
 		contentType:"application/json",
@@ -3680,6 +3791,41 @@ function sortTableListaKlinikaZaPacijenta() {
 function sortTableIstorijaPregledaZaPacijenta() {
 	  var table, rows, switching, i, x, y, shouldSwitch;
 	  table = document.getElementById("tabela_pregledi");
+	  switching = true;
+	  /*Make a loop that will continue until
+	  no switching has been done:*/
+	  while (switching) {
+	    //start by saying: no switching is done:
+	    switching = false;
+	    rows = table.rows;
+	    /*Loop through all table rows (except the
+	    first, which contains table headers):*/
+	    for (i = 1; i < (rows.length - 1); i++) {
+	      //start by saying there should be no switching:
+	      shouldSwitch = false;
+	      /*Get the two elements you want to compare,
+	      one from current row and one from the next:*/
+	      x = rows[i].getElementsByTagName("TD")[4];
+	      y = rows[i + 1].getElementsByTagName("TD")[4];
+	      //check if the two rows should switch place:
+	      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+	        //if so, mark as a switch and break the loop:
+	        shouldSwitch = true;
+	        break;
+	      }
+	    }
+	    if (shouldSwitch) {
+	      /*If a switch has been marked, make the switch
+	      and mark that a switch has been done:*/
+	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+	      switching = true;
+	    }
+	  }
+}
+
+function sortPacijenata() {
+	  var table, rows, switching, i, x, y, shouldSwitch;
+	  table = document.getElementById("tabela_pacijenti");
 	  switching = true;
 	  /*Make a loop that will continue until
 	  no switching has been done:*/

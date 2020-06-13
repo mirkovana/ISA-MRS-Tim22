@@ -122,6 +122,7 @@ public class AdministratorKlinikeController {
 					//klinika.setIdKlinike(klinikaUpdated.getIdKlinike());
 					ak.setIme(akUpdated.getIme());
 					ak.setPrezime(akUpdated.getPrezime());
+					ak.setEmail(akUpdated.getEmail());
 					ak.setPassword(passwordEncoder.encode(akUpdated.getPassword()));
 					ak.setLastPasswordResetDate(akUpdated.getLastPasswordResetDate());
 					ak.setAdresa(akUpdated.getAdresa());

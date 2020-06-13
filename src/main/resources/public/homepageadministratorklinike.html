@@ -17,6 +17,7 @@
 				$("#pretragaNaziv").hide();
 				$("#pretragaBroj").hide();
 				$("#pretraziSale").hide();
+				$("zauzeto").hide();
 			});
 		</script>
 	</head>
@@ -48,6 +49,7 @@
 			  <input type = "text" placeholder="Naziv" id = "pretragaNaziv"/>
 			  <input type = "text" placeholder="Broj" id = "pretragaBroj"/>
 			  <button type="submit" class="btn btn-secondary" id="pretraziSale" onClick="pretragaSalaAdmin()">Pretrazi</button>
+			  <p id="zauzeto">Rezervisana sala ne moze da se obrise</p>
 			  <table class="table" id="tabela_sale" >
 			  </table>
 			  <table class="table" id="tabela_lekari" >
