@@ -113,8 +113,8 @@ function setUpUserPageLekar() {
 		complete: function(data) {
 			pacijenti = JSON.parse(data.responseText);
 			console.log(pacijenti)
-			loadPacijenti(pacijenti);
-			
+			//loadPacijenti(pacijenti);
+			loadPacijentiLekar(pacijenti);
 		}
 	});
 }
@@ -493,6 +493,19 @@ function loadPacijenti(pacijenti) {
 		table.append(makeTableRowP(p));
 	}
 }
+
+function loadPacijentiLekar(pacijenti) {
+	obrisiTabele();
+	$("#sortP").show();
+	$("#tabela_pacijenti_lekar tbody tr").remove(); 
+	$("#tabela_pacijenti_lekar thead ").remove();
+	var table = $("#tabela_pacijenti_lekar");
+	table.append(makeTableHeaderPL());	
+	for(let p of pacijenti) {
+		table.append(makeTableRowPL(p));
+	}
+}
+
 //sifrarnik lekova
 function loadSifrarnikLekova(sl) {
 	obrisiTabele();
@@ -578,6 +591,8 @@ function loadPregledi(pregledi) {
 		}    
 	}
 }
+
+
 
 function oceniLekara(prikaz, idL) {
 	$.ajax({
@@ -846,6 +861,22 @@ function makeTableHeaderP(){
 		return row;
 }
 
+function makeTableHeaderPL(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Id</th>
+						<th>Ime</th>
+						<th>Prezime</th>
+						<th>Profil pacijenta</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
 function makeTableRowSale(s) {
 	var row = "";
 	
@@ -1095,6 +1126,21 @@ function makeTableRowP(p) {
 			<td class="izgledTabele">${p.drzava}</td>
 			<td class="izgledTabele">${p.brojTelefona}</td>
 			<td class="izgledTabele">${p.brojOsiguranika}</td>
+			<td class="izgledTabele"><input type="button" id="profilPacijenta" value="Prikazi" onClick="prebaciNaPacijenta(${p.id})"/></td>
+		</tr>`;
+	
+	return row;
+}
+
+function makeTableRowPL(p) {
+	
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${p.id}'>${p.id}</td>
+			<td class="izgledTabele" id='${p.ime}'>${p.ime}</td>
+			<td class="izgledTabele" id='${p.prezime}'>${p.prezime}</td>
 			<td class="izgledTabele"><input type="button" id="profilPacijenta" value="Prikazi" onClick="prebaciNaPacijenta(${p.id})"/></td>
 		</tr>`;
 	
@@ -2446,6 +2492,8 @@ function obrisiTabele(){
 	$("#tabela_pregledi thead ").remove();
 	$("#tabela_pacijenti tbody tr").remove(); 
 	$("#tabela_pacijenti thead ").remove();
+	$("#tabela_pacijenti_lekar tbody tr").remove(); 
+	$("#tabela_pacijenti_lekar thead ").remove();
 	$("#tabela_recepti tbody tr").remove(); 
 	$("#tabela_recepti thead ").remove();
 	$("#tabela_lekari tbody tr").remove(); 
