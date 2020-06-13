@@ -10,7 +10,13 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
-		
+		<script>
+			$(document).ready( function() {
+				$("#sortP").hide();
+				
+				
+			});
+		</script>
 		</head>
 		<body>
 			<div>	
@@ -26,6 +32,8 @@
 				<a href="#" onclick="return logout(event)">Odjavite se</a>
 			  </div>
 
+	 <button type="submit" class="btn btn-secondary" id="sortP" onClick="sortPacijenata()">Sortiraj: A-Z</button>
+		
 		<table class="table" id="tabela_pacijenti">
 				
 			</table>

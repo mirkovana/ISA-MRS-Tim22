@@ -62,6 +62,7 @@ function getAdminUrlSlug(user) {
 
 //pozivacemo poacijenti
 function setUpUserPage() {
+	$("#sortP").show();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/pacijenti/ms/" +obj.id,
@@ -121,6 +122,7 @@ function setUpUserPageLekar() {
 
 //pozivacemo sifrarbik lekova
 function setUpUserPageAKCSL() {
+obrisiPretragu();
 	console.log("USAO SAM KOD LEKOVA I OVO JE USER " + localStorage.getItem('user') );
 	$.ajax({
 		url: "api/sifrarnikLekova",
@@ -141,6 +143,7 @@ function setUpUserPageAKCSL() {
 
 //pozivacemo sifrarnik dijagnoza
 function setUpUserPageAKCSD() {
+	obrisiPretragu();
 	$.ajax({
 		url: "api/sifrarnikDijagnoza",
 		type: "GET",
@@ -304,7 +307,7 @@ function setUpUserPageAKC() {
 
 //lista klinika za akc
 function setUpUserPageKAKC() {
-	
+	$("#sortKAKC").show();
 	$.ajax({
 		url: "api/klinike",
 		type: "GET",
@@ -473,6 +476,7 @@ function loadKlinike(klinike) {
 
 function loadKlinikeAKC(klinike) {
 	obrisiTabele();
+	
 	$("#tabela_klinikeAKC tbody tr").remove(); 
 	$("#tabela_klinikeAKC thead ").remove();
 	var table = $("#tabela_klinikeAKC");
@@ -484,6 +488,7 @@ function loadKlinikeAKC(klinike) {
 
 function loadPacijenti(pacijenti) {
 	obrisiTabele();
+	obrisiPretragu();
 	$("#sortP").show();
 	$("#tabela_pacijenti tbody tr").remove(); 
 	$("#tabela_pacijenti thead ").remove();
@@ -2544,6 +2549,8 @@ function obrisiPretragu(){
 	$("#pretraziLekareTipPregleda").hide();
 	$("#sortLKP").hide();
 	$("#sortTPP").hide();
+	$("#sortKAKC").hide();
+	$("#sortP").hide();
 }
 
 function cenaPregleda(idK, tipP){
@@ -3432,6 +3439,10 @@ function sacuvajIzmeneZK(idZdravstvenogKartona) {
 
 
 function listaPregledaPac(){
+	$("#tabela_pregledi tbody tr").remove(); 
+	$("#tabela_pregledi thead ").remove();
+	$("#tabela_pregledi").show();
+	
 	var pac = JSON.parse(localStorage.getItem('idPacijenta'));
 	var lek = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
@@ -3888,8 +3899,8 @@ function sortPacijenata() {
 	      shouldSwitch = false;
 	      /*Get the two elements you want to compare,
 	      one from current row and one from the next:*/
-	      x = rows[i].getElementsByTagName("TD")[4];
-	      y = rows[i + 1].getElementsByTagName("TD")[4];
+	      x = rows[i].getElementsByTagName("TD")[0];
+	      y = rows[i + 1].getElementsByTagName("TD")[0];
 	      //check if the two rows should switch place:
 	      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
 	        //if so, mark as a switch and break the loop:
@@ -3905,3 +3916,39 @@ function sortPacijenata() {
 	    }
 	  }
 }
+
+function sortTableKlinikaAKC() {
+	  var table, rows, switching, i, x, y, shouldSwitch;
+	  table = document.getElementById("tabela_klinikeAKC");
+	  switching = true;
+	  /*Make a loop that will continue until
+	  no switching has been done:*/
+	  while (switching) {
+	    //start by saying: no switching is done:
+	    switching = false;
+	    rows = table.rows;
+	    /*Loop through all table rows (except the
+	    first, which contains table headers):*/
+	    for (i = 1; i < (rows.length - 1); i++) {
+	      //start by saying there should be no switching:
+	      shouldSwitch = false;
+	      /*Get the two elements you want to compare,
+	      one from current row and one from the next:*/
+	      x = rows[i].getElementsByTagName("TD")[0];
+	      y = rows[i + 1].getElementsByTagName("TD")[0];
+	      //check if the two rows should switch place:
+	      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+	        //if so, mark as a switch and break the loop:
+	        shouldSwitch = true;
+	        break;
+	      }
+	    }
+	    if (shouldSwitch) {
+	      /*If a switch has been marked, make the switch
+	      and mark that a switch has been done:*/
+	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+	      switching = true;
+	    }
+	  }
+}
+

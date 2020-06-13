@@ -9,7 +9,13 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
-		
+		<script>
+			$(document).ready( function() {
+				$("#sortKAKC").hide();
+				
+				
+			});
+		</script>
 	</head>
 	<body>
 		<div>	
@@ -31,6 +37,7 @@
 				<a href="./registracijaAKC.html">Registracija administratora klinickog centra</a>
 				<a href="#" onclick="return logout(event)">Odjavite se</a>
 			  </div>
+			  <button type="submit" class="btn btn-secondary" id="sortKAKC" onClick="sortTableKlinikaAKC()">Sortiraj: A-Z</button>
 			<table class="table" id="tabela_klinikeAKC">
 			  </table>
 			  <table class="table" id="tabela_sl">
