@@ -57,7 +57,7 @@ public class Lekar extends User {
 	}
 
 	public Lekar(String ime, String prezime, String email, String username, String password, String adresa, String grad, String drzava,
-			String brojTelefona, RadniKalendarL radniKalendarL, double ocena, TipPregleda tipPregleda) {
+			String brojTelefona, RadniKalendarL radniKalendarL, double ocena, TipPregleda tipPregleda, Klinika klinika) {
 		super(ime, prezime, email, username, password, adresa, grad, drzava, brojTelefona);
 		this.radniKalendarL = radniKalendarL;
 		this.ocena = ocena;

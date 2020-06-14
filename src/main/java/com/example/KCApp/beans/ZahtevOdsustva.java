@@ -34,6 +34,8 @@ public class ZahtevOdsustva {
 	@Column(name = "datumKraja", unique = false, nullable = false)
 	private Date datumKraja;
 	
+	private boolean zavrseno;
+	
 //	@ManyToOne
 //	@JoinColumn(name = "idLekara", referencedColumnName = "id", nullable = false)
 //	private Lekar lekar;
@@ -46,7 +48,7 @@ public class ZahtevOdsustva {
 //	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 //	private Integer klinika;
 
-	public ZahtevOdsustva(String razlog,boolean odobren, Integer idZahtevaOdsustva, Date datumPocetka, Date datumKraja, User user
+	public ZahtevOdsustva(String razlog,boolean odobren, Integer idZahtevaOdsustva, Date datumPocetka, Date datumKraja, User user, boolean zavrseno
 			) {
 		this.razlog = razlog;
 		this.odobren=odobren;
@@ -54,6 +56,7 @@ public class ZahtevOdsustva {
 		this.datumPocetka = datumPocetka;
 		this.datumKraja = datumKraja;
 		this.user = user;
+		this.zavrseno = zavrseno;
 		//this.medicinskaSestra = medicinskaSestra;
 		//this.klinika = klinika;
 	}
@@ -107,6 +110,16 @@ public class ZahtevOdsustva {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public boolean isZavrseno() {
+		return zavrseno;
+	}
+
+	public void setZavrseno(boolean zavrseno) {
+		this.zavrseno = zavrseno;
+	}
+	
+	
 
 //	public Integer getKlinika() {
 //		return klinika;
