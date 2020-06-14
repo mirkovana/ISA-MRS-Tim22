@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "zdravstveniKarton")
-@SequenceGenerator(name = "zdravstveniKartonSDSeq", sequenceName = "zdravstveniKartonSDGen", initialValue = 2, allocationSize = 1)
+@SequenceGenerator(name = "zdravstveniKartonSDSeq", sequenceName = "zdravstveniKartonSDGen", initialValue = 3, allocationSize = 1)
 public class ZdravstveniKarton {
 	
 	@Id

@@ -1525,13 +1525,11 @@ function dodavanjeSL(){
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
+				
 				
 			}else{
 				window.location.replace("./homepageadminkc.html");
-				$("#neuspesno").show();
-				$("#uspesno").hide();
+				
 			}
 		} 
 
@@ -1555,13 +1553,11 @@ function dodavanjeSD(){
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
+				
 				
 			}else{
 				window.location.replace("./homepageadminkc.html");
-				$("#neuspesno").show();
-				$("#uspesno").hide();
+			
 			}
 		} 
 
@@ -1789,11 +1785,11 @@ function pregledModMS(){
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="email">Email</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" ></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" readonly ></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="password">Lozinka</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" ></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" readonly></td>
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="adresa">Adresa</label></td>
@@ -2150,10 +2146,10 @@ function profilLekara(){
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="email">Email</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" ></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" readonly></td>
 					</tr>
 					<td  class='align-middle'><label for="password">Lozinka</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.password}" name="password" id="password" ></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="password" placeholder="Enter" value="${obj.password}" name="password" id="password" readonly></td>
 					</tr>
 					<td  class='align-middle'><label for="adresa">Adresa</label></td>
 					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" ></td>
@@ -2256,10 +2252,10 @@ function profilAK(){
 					</tr>
 					<tr>
 					<td  class='align-middle'><label for="email">Email</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" ></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.email}" name="email" id="email" readonly></td>
 					</tr>
 					<td  class='align-middle'><label for="password">Lozinka</label></td>
-					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.password}" name="password" id="password" ></td>
+					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.password}" name="password" id="password" readonly></td>
 					</tr>
 					<td  class='align-middle'><label for="adresa">Adresa</label></td>
 					<td  class='align-middle'><span style = "color:black;"><input type="text" placeholder="Enter" value="${obj.adresa}" name="adresa" id="adresa" ></td>
@@ -4254,8 +4250,8 @@ function sortPacijenata() {
 	      shouldSwitch = false;
 	      /*Get the two elements you want to compare,
 	      one from current row and one from the next:*/
-	      x = rows[i].getElementsByTagName("TD")[0];
-	      y = rows[i + 1].getElementsByTagName("TD")[0];
+	      x = rows[i].getElementsByTagName("TD")[1];
+	      y = rows[i + 1].getElementsByTagName("TD")[1];
 	      //check if the two rows should switch place:
 	      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
 	        //if so, mark as a switch and break the loop:

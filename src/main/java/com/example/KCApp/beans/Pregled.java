@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "pregled")
-@SequenceGenerator(name = "pregledIdSeq", sequenceName = "pregledIdGen", initialValue = 2, allocationSize = 1)
+@SequenceGenerator(name = "pregledIdSeq", sequenceName = "pregledIdGen", initialValue = 4, allocationSize = 1)
 public class Pregled {
 
 	@Id

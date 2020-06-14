@@ -646,8 +646,7 @@ public class LekarController {
 					//klinika.setIdKlinike(klinikaUpdated.getIdKlinike());
 					l.setIme(lUpdated.getIme());
 					l.setPrezime(lUpdated.getPrezime());
-					l.setPassword(passwordEncoder.encode(lUpdated.getPassword()));
-					l.setLastPasswordResetDate(lUpdated.getLastPasswordResetDate());
+					
 					l.setAdresa(lUpdated.getAdresa());
 					l.setGrad(lUpdated.getGrad());
 					l.setDrzava(lUpdated.getDrzava());
