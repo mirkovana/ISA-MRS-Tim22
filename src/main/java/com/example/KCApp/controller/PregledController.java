@@ -104,11 +104,11 @@ public class PregledController {
 			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike()) && p.getPacijent() == null) {
 				model.addAttribute("listaPregled", listaPregled);
 				slobodniPregledi.add(p);
-				return slobodniPregledi;
+				
 			}
 		}
-		List<Pregled> prazna = new ArrayList<Pregled>();
-		return prazna;
+	//	List<Pregled> prazna = new ArrayList<Pregled>();
+		return slobodniPregledi;
 	}
 
 	/* DODAVANJE SLOBODNIH TERMINA PREGLEDA */ // prilikom dodavanja ispise lepo sve informacije, a prilikom

@@ -110,11 +110,13 @@ public class PacijentController {
 		Klinika klinikaMS = ms.getKlinika();
 		List<Pacijent> listaPacijenata = new ArrayList<Pacijent>();
 		//ovde ide sada provera 
-		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaMS);
+		List<Pregled> preglediKlinike = servicePregled.listAll();
 		for(Pregled pre:preglediKlinike) {
+			if(pre.getKlinika()==klinikaMS) {
 			listaPacijenata.add(pre.getPacijent());
 			model.addAttribute("listaPacijenata", listaPacijenata);
-			return listaPacijenata;
+			
+			}
 		}
 		//model.addAttribute("listaPacijenata", listaPacijenata);
 		return listaPacijenata;
@@ -150,7 +152,7 @@ public class PacijentController {
 		for(Pregled pre:preglediKlinike) {
 			listaPacijenata.add(pre.getPacijent());
 			model.addAttribute("listaPacijenata", listaPacijenata);
-			return listaPacijenata;
+			
 		}
 		//model.addAttribute("listaPacijenata", listaPacijenata);
 		return listaPacijenata;
