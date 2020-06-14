@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "zahtevZaPregled")
 @SequenceGenerator(name = "zahtevZaPregledIdSeq", sequenceName = "zahtevZaPregledIdGen", initialValue = 1, allocationSize = 1)

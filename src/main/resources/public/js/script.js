@@ -526,6 +526,17 @@ function loadZahteviOdsustva(zahtevi) {
 	}
 }
 
+function loadZahteviZaP(zahtevi) {
+	console.log("usao u load zahtevi za p");
+	$("#tabela_zahtevi_p tbody tr").remove(); 
+	$("#tabela_zahtevi_p thead ").remove();
+	var table = $("#tabela_zahtevi_p");
+	table.append(makeTableHeaderZahteviP());	//ovde sam stala, napravi header i row
+	for(let z of zahtevi) {
+		table.append(makeTableRowZahteviP(z));
+	}
+}
+
 //sifrarnik lekova
 function loadSifrarnikLekova(sl) {
 	obrisiTabele();
@@ -914,6 +925,23 @@ function makeTableHeaderZahteviO(){
 		return row;
 }
 
+function makeTableHeaderZahteviP(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Lekar</th>
+						<th>Pacijent</th>
+						<th>Vreme</th>
+						<th>Tip Pregleda</th>
+						<th>Cena</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
 function makeTableRowSale(s) {
 	var row = "";
 	
@@ -1200,6 +1228,22 @@ function makeTableRowZahteviO(z) {
 	return row;
 }
 
+function makeTableRowZahteviP(z) {
+	
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${z.lekar.ime}'>${z.lekar.ime}</td>
+			<td class="izgledTabele" id='${z.pacijent.ime}'>${z.pacijent.ime}</td>
+			<td class="izgledTabele" id='${z.vreme}'>${z.vreme}</td>
+			<td class="izgledTabele" id='${z.tipPregleda}'>${z.tipPregleda}</td>
+			<td class="izgledTabele" id='${z.cena}'>${z.cena}</td>
+		</tr>`;
+	
+	return row;
+}
+
 function prihvatiZO(idZahteva){
 	$.ajax({
 		url: "api/zahteviOdsustva/prihvati/" + idZahteva,
@@ -1407,6 +1451,28 @@ function zahteviAdmin() {
 			zahtevi = JSON.parse(data.responseText);
 			console.log(zahtevi);
 			loadZahteviOdsustva(zahtevi);
+		}
+	});
+}
+
+function zahteviZaPAdmin() {
+	console.log("usao u zahtevi za p admin");
+	var obj = JSON.parse(localStorage.getItem('user'));
+	console.log(obj.id);
+	$.ajax({
+		url: "api/zahteviZaPregled/adminK/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			//console.log(data);
+			//console.log(data.responseText);
+			zahtevi = JSON.parse(data.responseText);
+			console.log(zahtevi);
+			loadZahteviZaP(zahtevi);
 		}
 	});
 }
@@ -2654,6 +2720,8 @@ function obrisiTabele(){
 	$("#tabela_sd thead ").remove();
 	$("#tabela_zahtevi_o tbody tr").remove(); 
 	$("#tabela_zahtevi_o thead ").remove();
+	$("#tabela_zahtevi_p tbody tr").remove(); 
+	$("#tabela_zahtevi_p thead ").remove();
 }
 
 function obrisiPretragu(){

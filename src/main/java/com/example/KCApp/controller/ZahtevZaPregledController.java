@@ -1,5 +1,6 @@
 package com.example.KCApp.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.DTO.ZahtevZaPregledDTO;
+import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Cenovnik;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
+import com.example.KCApp.beans.MedicinskaSestra;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.TipPregleda;
+import com.example.KCApp.beans.User;
+import com.example.KCApp.beans.ZahtevOdsustva;
 import com.example.KCApp.beans.ZahtevZaPregled;
+import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.CenovnikService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.PacijentService;
@@ -38,6 +46,9 @@ public class ZahtevZaPregledController {
 	
 	@Autowired
 	private PacijentService pacijentService;
+	
+	@Autowired
+	private AdministratorKlinikeService serviceAK;
 	
 	@Autowired
 	private LekarService lekarService;	
@@ -115,5 +126,27 @@ public class ZahtevZaPregledController {
 		System.out.println("id " + zahtev.getIdZahtevaZaPregled() + ", lekar " + zahtev.getLekar() + ", pac " + zahtev.getPacijent() + ", dv " + zahtev.getVreme() + ", cena " + zahtev.getCena() + ", klinika " + zahtev.getKlinika() + ", tp " + zahtev.getTipPregleda());
 		return new ResponseEntity<>(new ZahtevZaPregledDTO(zahtev), HttpStatus.CREATED);
 		
+	}
+	
+	/*PRIKAZ SVIH ZAHTEVA KLINIKE ZA ADMINA KLINIKE*/
+	@GetMapping(value="/zahteviZaPregled/adminK/{id}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<ZahtevZaPregled> getAllZahteviZaPKlinikeAK(Model model, @PathVariable Integer id) {
+		System.out.println("USAO U ZAHTEV ZA P");
+		
+		AdministratorKlinike ak = serviceAK.get(id);
+		Klinika k = ak.getKlinika();
+		List<ZahtevZaPregled> sviZahtevi = service.listAll();
+		List<ZahtevZaPregled> zahteviAK = new ArrayList<ZahtevZaPregled>();
+		
+		for (ZahtevZaPregled z : sviZahtevi) {
+			if (z.getKlinika() == k) {
+				zahteviAK.add(z);
+			}
+		}
+		
+		System.out.println(zahteviAK);
+
+		return zahteviAK;
 	}
 }
