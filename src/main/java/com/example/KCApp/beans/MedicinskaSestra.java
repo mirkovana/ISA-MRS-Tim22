@@ -14,6 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "medicinskaSestra")
 @SequenceGenerator(name = "medicinskaSestraIdSeq", sequenceName = "medicinskaSestraIdGen", initialValue = 1, allocationSize = 1)
@@ -30,6 +32,7 @@ public class MedicinskaSestra extends User {
 	private Klinika klinika;
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "medicinskaSestra")
+	@JsonBackReference
 	private Set<Recept> recepti = new HashSet<Recept>();
 	
 	public void add(Recept item) {

@@ -39,7 +39,7 @@
 				<a href="#listalekara" onClick="prikazLekara()">Lekari</a>
 				<a href="./dodavanjeSala.html" >Dodavanje sala</a>
 				<a href="#izmenasala" onClick="izmenaSala()">Sale</a>
-				<a href="#odmor">Prihvatanje/odbijanje zahteva za odmor/odsustvo</a>
+				<a href="#odmor" onClick="zahteviAdmin()">Prihvatanje/odbijanje zahteva za odmor/odsustvo</a>
 				<a href="#zakazivanjepio">Zakazivanje pregleda i operacija</a>
 				<a href="#" onclick="return logout(event)">Odjavite se</a>
 			  </div>
@@ -61,6 +61,8 @@
               <table class="table table-light" id="tabela_cenovnika_admina">
 		      </table>
 		      <table class="table table-light" id="tabela_definisaniPregledi_admina">
+		      </table>
+		      <table class="table table-light" id="tabela_zahtevi_o">
 		      </table>
               <div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
 				<form class="modal-content animate" action="" id="modalnaF"

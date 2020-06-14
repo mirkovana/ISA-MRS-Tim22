@@ -516,6 +516,16 @@ function loadPacijentiLekar(pacijenti) {
 	}
 }
 
+function loadZahteviOdsustva(zahtevi) {
+	$("#tabela_zahtevi_o tbody tr").remove(); 
+	$("#tabela_zahtevi_o thead ").remove();
+	var table = $("#tabela_zahtevi_o");
+	table.append(makeTableHeaderZahteviO());	
+	for(let z of zahtevi) {
+		table.append(makeTableRowZahteviO(z));
+	}
+}
+
 //sifrarnik lekova
 function loadSifrarnikLekova(sl) {
 	obrisiTabele();
@@ -887,6 +897,23 @@ function makeTableHeaderPL(){
 		return row;
 }
 
+function makeTableHeaderZahteviO(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Datum pocetka</th>
+						<th>Datum kraja</th>
+						<th>Razlog</th>
+						<th>Prihvatanje</th>
+						<th>Odbijanje</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
 function makeTableRowSale(s) {
 	var row = "";
 	
@@ -1157,6 +1184,54 @@ function makeTableRowPL(p) {
 	return row;
 }
 
+function makeTableRowZahteviO(z) {
+	
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${z.datumPocetka}'>${z.datumPocetka}</td>
+			<td class="izgledTabele" id='${z.datumKraja}'>${z.datumKraja}</td>
+			<td class="izgledTabele" id='${z.razlog}'>${z.razlog}</td>
+			<td class="izgledTabele"><input type="button" id="prihvatanje" value="Prihvati" onClick="prihvatiZO(${z.idZahtevaOdsustva})"/></td>
+			<td class="izgledTabele"><input type="button" id="odbijanje" value="Odbij" onClick="odbijZO(${z.idZahtevaOdsustva})"/></td>
+		</tr>`;
+	
+	return row;
+}
+
+function prihvatiZO(idZahteva){
+	$.ajax({
+		url: "api/zahteviOdsustva/prihvati/" + idZahteva,
+		type: "PUT",
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			console.log("zavrsio");
+			zahteviAdmin();
+		}
+	});
+}
+
+function odbijZO(idZahteva){
+	$.ajax({
+		url: "api/zahteviOdsustva/odbij/" + idZahteva,
+		type: "PUT",
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			console.log("zavrsio");
+			zahteviAdmin();
+		}
+	});
+}
+
 function makeTableRowLekari(l) {
 	var row = "";
 	
@@ -1257,9 +1332,11 @@ function dodavanjePacijenta(){
 }
 
 function dodavanjeZahtevaOdsustva(){
+	console.log("uslo u dodavanje zo");
 	var obj = JSON.parse(localStorage.getItem('user'));
 	var data = getFormData($("#formaFiltr"));
-	
+	console.log(data);
+	console.log(obj);
 	var org = JSON.stringify(data);
 	$.ajax({
 		url: "api/zahteviOdsustva/" + obj.id,
@@ -1273,13 +1350,12 @@ function dodavanjeZahtevaOdsustva(){
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
-				
+				$("#uspesno").hide();
+				$("#neuspesno").show();		
 			}else{
 				window.location.replace("./homepagems.html");
-				$("#neuspesno").show();
-				$("#uspesno").hide();
+				$("#neuspesno").hide();
+				$("#uspesno").show();
 			}
 		} 
 	});
@@ -1302,15 +1378,36 @@ function dodavanjeZahtevaOdsustvaL(){
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
-				
+				$("#uspesno").hide();
+				$("#neuspesno").show();		
 			}else{
 				window.location.replace("./homepagelekar.html");
-				$("#neuspesno").show();
-				$("#uspesno").hide();
+				$("#neuspesno").hide();
+				$("#uspesno").show();
 			}
 		} 
+	});
+}
+
+function zahteviAdmin() {
+	console.log("usao u zahtevi admin");
+	var obj = JSON.parse(localStorage.getItem('user'));
+	console.log(obj);
+	$.ajax({
+		url: "api/zahteviOdsustva/adminK/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			console.log(data);
+			console.log(data.responseText);
+			zahtevi = JSON.parse(data.responseText);
+			console.log(zahtevi);
+			loadZahteviOdsustva(zahtevi);
+		}
 	});
 }
 
@@ -2555,6 +2652,8 @@ function obrisiTabele(){
 	$("#tabela_sl thead ").remove();
 	$("#tabela_sd tbody tr").remove(); 
 	$("#tabela_sd thead ").remove();
+	$("#tabela_zahtevi_o tbody tr").remove(); 
+	$("#tabela_zahtevi_o thead ").remove();
 }
 
 function obrisiPretragu(){
