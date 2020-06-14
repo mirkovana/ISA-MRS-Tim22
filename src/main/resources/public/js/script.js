@@ -102,6 +102,10 @@ function prikazPacijenata() {
 
 //pozivacemo poacijenti
 function setUpUserPageLekar() {
+	$("#pretragaIme").show();
+	$("#pretragaPrezime").show();
+	$("#pretragaBrOsiguranika").show();
+	$("#pretraziPacijente").show();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/pacijenti/lekar/" +obj.id,
@@ -873,7 +877,7 @@ function makeTableHeaderPL(){
 	 row =
 			`<thead class="thead-light" bgcolor="white">
 					<tr>
-						<th>Id</th>
+						<th>Broj osiguranika</th>
 						<th>Ime</th>
 						<th>Prezime</th>
 						<th>Profil pacijenta</th>
@@ -1144,7 +1148,7 @@ function makeTableRowPL(p) {
 	
 	  row =
 		`<tr>
-			<td class="izgledTabele" id='${p.id}'>${p.id}</td>
+			<td class="izgledTabele" id='${p.id}'>${p.brojOsiguranika}</td>
 			<td class="izgledTabele" id='${p.ime}'>${p.ime}</td>
 			<td class="izgledTabele" id='${p.prezime}'>${p.prezime}</td>
 			<td class="izgledTabele"><input type="button" id="profilPacijenta" value="Prikazi" onClick="prebaciNaPacijenta(${p.id})"/></td>
@@ -1278,10 +1282,38 @@ function dodavanjeZahtevaOdsustva(){
 				$("#uspesno").hide();
 			}
 		} 
-
 	});
-	
 }
+
+function dodavanjeZahtevaOdsustvaL(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	var data = getFormData($("#formaFiltr"));
+	
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/zahteviOdsustva/" + obj.id,
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				window.location.replace("./homepagelekar.html");
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
+	});
+}
+
 function dodavanjeAKC(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
@@ -2856,7 +2888,7 @@ function pretragaLekara(){
 	});	
 	}else if(ime == "" && prezime != ""){//pretraga po prezimenu
 		$.ajax({
-			url: "api/lekari/klinika/" + idK + "/" +"prezime/" + prezime + "/" + ocena,
+			url: "api/lekari/klinika/" + idK + "/prezime/" + prezime + "/" + ocena,
 			type: "GET",
 			contentType: "application/json",
 			dataType: "json",
@@ -2872,7 +2904,7 @@ function pretragaLekara(){
 		});		
 	}else if(ime != "" && prezime == ""){//pretraga po imenu
 		$.ajax({
-			url: "api/lekari/klinika/" + idK + "/" +"ime/"+ ime + "/" + ocena,
+			url: "api/lekari/klinika/" + idK + "/ime/" + ime + "/" + ocena,
 			type: "GET",
 			contentType: "application/json",
 			dataType: "json",
@@ -2959,6 +2991,123 @@ function pretragaLekaraAdmin(){
 				console.log(JSON.stringify(lekari));
 				pretrazeniLekari = lekari;
 				loadLekariAdmin(lekari);	
+			}
+		});	
+	}	
+}
+
+function pretragaPacijenata(){
+	console.log("usao u pretragu pac");
+	var obj = JSON.parse(localStorage.getItem('user'));
+	var imePacijenta = document.getElementById("pretragaIme").value;
+	var maloIme = imePacijenta.toLowerCase();
+	var ime = maloIme.charAt(0).toUpperCase() + maloIme.slice(1);
+	var prezimePacijenta = document.getElementById("pretragaPrezime").value;
+	var maloPrezime = prezimePacijenta.toLowerCase();
+	var prezime = maloPrezime.charAt(0).toUpperCase() + maloPrezime.slice(1);
+	var brO = document.getElementById("pretragaBrOsiguranika").value;
+	if(ime != "" && prezime != "" && brO == ""){ //po imenu i prezimenu
+		console.log("usao u pretragu ip");
+		$.ajax({
+			url: "api/pacijenti/lekar/" + obj.id + "/" + ime + "/" + prezime,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				console.log("USLO OVDE zavrsena pretraga i p ");
+				pacijenti = JSON.parse(data.responseText);
+				loadPacijentiLekar(pacijenti);	
+			}
+		});	
+	}else if(ime == "" && prezime != "" && brO == ""){//pretraga po prezimenu
+		console.log("usao u pretragu p");
+		$.ajax({
+			url: "api/pacijenti/lekar/" + obj.id + "/prezime/" + prezime,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				pacijenti = JSON.parse(data.responseText);
+				loadPacijentiLekar(pacijenti);	
+			}
+		});		
+	}else if(ime != "" && prezime == "" && brO == ""){//pretraga po imenu
+		console.log("usao u pretragu i");
+		$.ajax({
+			url: "api/pacijenti/lekar/" + obj.id + "/" +"ime/"+ ime,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				console.log("usao u kraj p po i");
+				pacijenti = JSON.parse(data.responseText);
+				console.log(pacijenti);
+				loadPacijentiLekar(pacijenti);	
+			}
+		});	
+	}else if(ime == "" && prezime == "" && brO != ""){//pretraga po br os
+		$.ajax({
+			url: "api/pacijenti/lekar/" + obj.id + "/" +"brO/"+ brO,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				pacijenti = JSON.parse(data.responseText);
+				loadPacijentiLekar(pacijenti);	
+			}
+		});	
+	}else if(ime != "" && prezime == "" && brO != ""){//pretraga po imenu i br os
+		$.ajax({
+			url: "api/pacijenti/lekar/" + obj.id + "/" +"ime/"+ ime + "/brO/" + brO,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				pacijenti = JSON.parse(data.responseText);
+				loadPacijentiLekar(pacijenti);	
+			}
+		});	
+	}else if(ime == "" && prezime != "" && brO != ""){//pretraga po prezimenu i br os
+		$.ajax({
+			url: "api/pacijenti/lekar/" + obj.id + "/" +"prezime/"+ prezime + "/brO/" + brO,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				pacijenti = JSON.parse(data.responseText);
+				loadPacijentiLekar(pacijenti);	
+			}
+		});		
+	}else if(ime != "" && prezime != "" && brO != ""){//pretraga po imenu i prezimenu i br os
+		$.ajax({
+			url: "api/pacijenti/lekar/" + obj.id + "/" +"ime/"+ ime + "/prezime/" + prezime + "/brO/" + brO,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				pacijenti = JSON.parse(data.responseText);
+				loadPacijentiLekar(pacijenti);	
 			}
 		});	
 	}	

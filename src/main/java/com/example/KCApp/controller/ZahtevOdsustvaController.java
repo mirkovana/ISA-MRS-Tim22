@@ -28,7 +28,7 @@ public class ZahtevOdsustvaController {
 	
 	
 	@PostMapping(value= "/zahteviOdsustva/{id}",consumes = "application/json")
-	@PreAuthorize("hasRole('MS')")
+	@PreAuthorize("hasRole('MS') or hasRole('LEKAR')")
 	public ResponseEntity<ZahtevOdsustvaDTO> saveKlinika(@RequestBody ZahtevOdsustvaDTO zahtevOdsustvaDTO, @PathVariable Integer id) {
 
 		

@@ -12,7 +12,10 @@
 		<script>
 			$(document).ready( function() {
 				$("#sortP").hide();
-				
+				$("#pretragaIme").hide();
+				$("#pretragaPrezime").hide();
+				$("#pretragaBrOsiguranika").hide();
+				$("#pretraziPacijente").hide();
 			});
 		</script>
 	</head>
@@ -25,11 +28,15 @@
 				<a href="#profil" onclick="profilLekara()">Profil</a>
 				<a href="#listapacijenata" onClick="setUpUserPageLekar()">Lista pacijenata</a>
 				<a href="#rkalendar">Radni kalendar</a>
-				<a href="#odmor">Zahtev za odmor/odsustvo</a>
+				<a href="./zahtevOdsustvaL.html">Zahtev za odmor/odsustvo</a>
 				<a href="#zakazivanjepio">Zakazivanje pregleda i operacija</a>
 				<a href="#" onclick="return logout(event)">Odjavite se</a>
 			  </div>
 			  <button type="submit" class="btn btn-secondary" id="sortP" onClick="sortPacijenata()">Sortiraj: A-Z</button>
+			  <input type = "text" placeholder="Ime" id = "pretragaIme"/>
+			  <input type = "text" placeholder="Prezime" id = "pretragaPrezime"/>
+			  <input type = "text" placeholder="Broj osiguranika" id = "pretragaBrOsiguranika"/>
+			  <button type="submit" class="btn btn-secondary" id="pretraziPacijente" onClick="pretragaPacijenata()">Pretrazi</button>
 			  <table class="table" id="tabela_pacijenti">
               </table>
               <table class="table" id="tabela_pacijenti_lekar">

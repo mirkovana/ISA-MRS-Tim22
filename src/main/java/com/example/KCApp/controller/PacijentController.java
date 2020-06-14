@@ -221,4 +221,204 @@ public class PacijentController {
 				}).orElseThrow(() -> new NotFoundException("Pacijent nije pronadjen sa id : " + id));
 		
 	}
+	
+	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - IME,PREZIME*/
+	@GetMapping(value = "/pacijenti/lekar/{idLekara}/{ime}/{prezime}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pacijent> findAllPacijentByIP(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable String prezime) {
+		//dobavim pacijente klinike kojoj lekar pripada
+		Lekar l = serviceL.get(idLekara);
+		Klinika klinikaL = l.getKlinika();
+		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
+		for(Pregled pre : preglediKlinike) {
+			if (pre.getPacijent() != null) {
+				pacijentiKlinike.add(pre.getPacijent());
+			}
+		}
+		//pretrazujem po imenu i prezimenu iz nje
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		for(Pacijent p : pacijentiKlinike)
+		{
+			if(p.getIme().equals(ime) && p.getPrezime().equals(prezime)) {
+				pacijenti.add(p);
+			}
+		}
+		if(pacijenti.isEmpty()) {
+			return pacijenti;
+		}
+		return pacijenti;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - PREZIME*/
+	@GetMapping(value = "/pacijenti/lekar/{idLekara}/prezime/{prezime}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pacijent> findAllPacijentByP(@PathVariable Integer idLekara, @PathVariable String prezime) {
+		//dobavim pacijente klinike kojoj lekar pripada
+		Lekar l = serviceL.get(idLekara);
+		Klinika klinikaL = l.getKlinika();
+		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
+		for(Pregled pre : preglediKlinike) {
+			if (pre.getPacijent() != null) {
+				pacijentiKlinike.add(pre.getPacijent());
+			}
+		}
+		//pretrazujem po imenu i prezimenu iz nje
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		for(Pacijent p : pacijentiKlinike)
+		{
+			if(p.getPrezime().equals(prezime)) {
+				pacijenti.add(p);
+			}
+		}
+		if(pacijenti.isEmpty()) {
+			return pacijenti;
+		}
+		return pacijenti;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - IME*/
+	@GetMapping(value = "/pacijenti/lekar/{idLekara}/ime/{ime}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pacijent> findAllPacijentByI(@PathVariable Integer idLekara, @PathVariable String ime) {
+		System.out.println("USAO U PRETRAGU PO IMENU");
+		//dobavim pacijente klinike kojoj lekar pripada
+		Lekar l = serviceL.get(idLekara);
+		Klinika klinikaL = l.getKlinika();
+		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
+		for(Pregled pre : preglediKlinike) {
+			if (pre.getPacijent() != null) {
+				pacijentiKlinike.add(pre.getPacijent());
+			}
+		}
+		System.out.println("PACIJENTI KLINIKE" + pacijentiKlinike);
+		
+		//pretrazujem po imenu i prezimenu iz nje
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		for(Pacijent p : pacijentiKlinike)
+		{
+			if(p.getIme().equals(ime)) {
+				pacijenti.add(p);
+			}
+		}
+		System.out.println("NADJENI PACIJENTI" + pacijenti);
+		if(pacijenti.isEmpty()) {
+			return pacijenti;
+		}
+		return pacijenti;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - BR OS*/
+	@GetMapping(value = "/pacijenti/lekar/{idLekara}/brO/{brO}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pacijent> findAllPacijentByBrO(@PathVariable Integer idLekara, @PathVariable int brO) {
+		//dobavim pacijente klinike kojoj lekar pripada
+		Lekar l = serviceL.get(idLekara);
+		Klinika klinikaL = l.getKlinika();
+		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
+		for(Pregled pre : preglediKlinike) {
+			if (pre.getPacijent() != null) {
+				pacijentiKlinike.add(pre.getPacijent());
+			}
+		}
+		//pretrazujem po imenu i prezimenu iz nje
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		for(Pacijent p : pacijentiKlinike)
+		{
+			if(p.getBrojOsiguranika() == brO) {
+				pacijenti.add(p);
+			}
+		}
+		if(pacijenti.isEmpty()) {
+			return pacijenti;
+		}
+		return pacijenti;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - IME, BR OS*/
+	@GetMapping(value = "/pacijenti/lekar/{idLekara}/ime/{ime}/brO/{brO}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pacijent> findAllPacijentByIbrO(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable int brO) {
+		//dobavim pacijente klinike kojoj lekar pripada
+		Lekar l = serviceL.get(idLekara);
+		Klinika klinikaL = l.getKlinika();
+		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
+		for(Pregled pre : preglediKlinike) {
+			if (pre.getPacijent() != null) {
+				pacijentiKlinike.add(pre.getPacijent());
+			}
+		}
+		//pretrazujem po imenu i prezimenu iz nje
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		for(Pacijent p : pacijentiKlinike)
+		{
+			if(p.getIme().equals(ime) && p.getBrojOsiguranika() == brO) {
+				pacijenti.add(p);
+			}
+		}
+		if(pacijenti.isEmpty()) {
+			return pacijenti;
+		}
+		return pacijenti;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - PREZIME, BR OS*/
+	@GetMapping(value = "/pacijenti/lekar/{idLekara}/prezime/{prezime}/brO/{brO}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pacijent> findAllPacijentByPbrO(@PathVariable Integer idLekara, @PathVariable String prezime, @PathVariable int brO) {
+		//dobavim pacijente klinike kojoj lekar pripada
+		Lekar l = serviceL.get(idLekara);
+		Klinika klinikaL = l.getKlinika();
+		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
+		for(Pregled pre : preglediKlinike) {
+			if (pre.getPacijent() != null) {
+				pacijentiKlinike.add(pre.getPacijent());
+			}
+		}
+		//pretrazujem po imenu i prezimenu iz nje
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		for(Pacijent p : pacijentiKlinike)
+		{
+			if(p.getPrezime().equals(prezime) && p.getBrojOsiguranika() == brO) {
+				pacijenti.add(p);
+			}
+		}
+		if(pacijenti.isEmpty()) {
+			return pacijenti;
+		}
+		return pacijenti;
+	}
+	
+	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - IME, PREZIME, BR OS*/
+	@GetMapping(value = "/pacijenti/lekar/{idLekara}/ime/{ime}/prezime/{prezime}/brO/{brO}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pacijent> findAllPacijentByIbrO(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable String prezime, @PathVariable int brO) {
+		//dobavim pacijente klinike kojoj lekar pripada
+		Lekar l = serviceL.get(idLekara);
+		Klinika klinikaL = l.getKlinika();
+		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
+		for(Pregled pre : preglediKlinike) {
+			if (pre.getPacijent() != null) {
+				pacijentiKlinike.add(pre.getPacijent());
+			}
+		}
+		//pretrazujem po imenu i prezimenu iz nje
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		for(Pacijent p : pacijentiKlinike)
+		{
+			if(p.getIme().equals(ime) && p.getBrojOsiguranika() == brO && p.getPrezime().equals(prezime)) {
+				pacijenti.add(p);
+			}
+		}
+		if(pacijenti.isEmpty()) {
+			return pacijenti;
+		}
+		return pacijenti;
+	}
 }
