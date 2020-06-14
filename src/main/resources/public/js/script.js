@@ -3839,6 +3839,13 @@ function zapocniPregled(idPregleda){
 		  			
 		  			<tr><td><input type="button" id="iop" value="Zavrsi pregled" onClick="sacuvajIzvestajOPregledu(\'${idPregleda}\')"/></td>
 		  			<td><input type="button" id="rec" value="Kreiraj recept" onClick="kreirajRecept(\'${idPregleda}\')"/></td></tr>
+		  			
+		  			<tr>
+                		<td align="right">Datum i vreme novog pregleda</td>
+                		<td><input type="text" name="datumVreme" id="datumVreme" ></td>
+            		</tr>
+            		<tr><td  class='align-middle' ><button type="button" onclick="posaljiZahtevZaPregled(\'${idPregleda}\')">Posalji zahtev za pregled</button></td></tr>				
+            </tr>
 						
 			</tbody>
 			</table>
@@ -3852,6 +3859,36 @@ function zapocniPregled(idPregleda){
 		$("#modal-wrapper").show(); 
 		
 }
+
+function posaljiZahtevZaPregled(idPregleda){
+	var data = getFormData($("#formaIzmena"));
+	console.log("usao u posalji zahtev");
+	console.log(data.datumVreme);
+	console.log(idPregleda);
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/zahteviZaPregled/datumVreme/" + data.datumVreme + "/" + idPregleda,
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+			}else{
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
+	});	
+}
+
+
 ///izvestajOPregleduDTO/{idPregleda}
 
 function sacuvajIzvestajOPregledu(idPregleda){
