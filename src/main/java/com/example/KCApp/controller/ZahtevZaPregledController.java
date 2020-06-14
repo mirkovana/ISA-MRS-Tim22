@@ -1,5 +1,6 @@
 package com.example.KCApp.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ import com.example.KCApp.beans.Cenovnik;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.TipPregleda;
 import com.example.KCApp.beans.ZahtevZaPregled;
 import com.example.KCApp.service.CenovnikService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.PacijentService;
+import com.example.KCApp.service.PregledService;
 import com.example.KCApp.service.ZahtevZaPregledService;
 
 @RestController
@@ -29,6 +32,9 @@ import com.example.KCApp.service.ZahtevZaPregledService;
 public class ZahtevZaPregledController {
 	@Autowired
 	private ZahtevZaPregledService service;
+	
+	@Autowired
+	private PregledService pregledService;
 	
 	@Autowired
 	private PacijentService pacijentService;
@@ -62,5 +68,52 @@ public class ZahtevZaPregledController {
 		zahtev.setCena(cen.getCena());
 		zahtev=service.save(zahtev);
 		return new ResponseEntity<>(new ZahtevZaPregledDTO(zahtev), HttpStatus.CREATED);
+	}
+	
+	//dodavanje zahteva za pregled kad lekar unese datum
+	@PostMapping(value= "/zahteviZaPregled/datumVreme/{datumVreme}/{idPregleda}",consumes = "application/json")
+	@PreAuthorize("hasRole('LEKAR')")
+	public ResponseEntity<ZahtevZaPregledDTO> saveZZPL(@RequestBody ZahtevZaPregledDTO zahtevZaPregledDTO, @PathVariable String datumVreme, @PathVariable Integer idPregleda) {
+		System.out.println("USAO U ZAHTEV ZA PREGLEDE LEKAR");
+		
+		ZahtevZaPregled zahtev = new ZahtevZaPregled();
+		
+		Pregled p = pregledService.get(idPregleda);
+		System.out.println("PREGLED" + p.getIdPregleda());
+		
+		Lekar l = lekarService.get(p.getLekar().getId());
+		System.out.println("LEKAR" + l.getId());
+
+		Pacijent pac = pacijentService.get(p.getPacijent().getId());
+		System.out.println("PAC" + pac.getId());
+
+		TipPregleda tp = l.getTipPregleda();
+		System.out.println("TP" + tp);
+
+		Klinika k = l.getKlinika();
+		System.out.println("KLINIKA" + k.getIdKlinike());
+
+		zahtev.setVreme(datumVreme);
+		System.out.println("DV" + datumVreme);
+
+		zahtev.setLekar(l);
+		zahtev.setPacijent(pac);
+		zahtev.setTipPregleda(tp);
+		zahtev.setKlinika(k);
+		Cenovnik cen = new Cenovnik();
+		List<Cenovnik> cenovnici = cenovnikService.findAllByKlinika(k);
+		for(Cenovnik c:cenovnici) {
+			if(c.getTipPregledaCenovnik() == tp) {
+				cen = c;
+			}
+		}
+		System.out.println("CENA" + cen.getCena());
+
+		zahtev.setCena(cen.getCena());
+		zahtev=service.save(zahtev);
+		System.out.println("ZAHTEV" + zahtev);
+		System.out.println("id " + zahtev.getIdZahtevaZaPregled() + ", lekar " + zahtev.getLekar() + ", pac " + zahtev.getPacijent() + ", dv " + zahtev.getVreme() + ", cena " + zahtev.getCena() + ", klinika " + zahtev.getKlinika() + ", tp " + zahtev.getTipPregleda());
+		return new ResponseEntity<>(new ZahtevZaPregledDTO(zahtev), HttpStatus.CREATED);
+		
 	}
 }
