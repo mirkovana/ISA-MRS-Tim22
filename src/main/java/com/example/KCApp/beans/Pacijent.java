@@ -56,6 +56,7 @@ public class Pacijent extends User{
 
 	
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "pacijent")
+	@JsonBackReference
 	private Set<ZahtevZaPregled> zahteviZP = new HashSet<ZahtevZaPregled>();
 	
 	public void add(ZahtevZaPregled item) {

@@ -34,13 +34,12 @@
 				<a href="#slobodniTerminiPregledaKlinike" onClick="prikazSlobodnihTerminaPregledaAdmina()">Slobodni termini pregleda</a>
 				<a href="#izvestajocenaklinike" onclick="setUpIzvestaji()">Izvestaj: prosecna ocena klinike</a>
 				<a href="#izvestajocenalekara" onClick="lekariZaIzvestaj()">Izvestaj: prosecna ocena lekara</a>
-				<a href="#listapacijenata" onClick="prikazPacijenata()">Spisak pacijenata</a>
 				<a href="./dodavanjeLekara.html" >Dodavanje lekara</a>
 				<a href="#listalekara" onClick="prikazLekara()">Lekari</a>
 				<a href="./dodavanjeSala.html" >Dodavanje sala</a>
 				<a href="#izmenasala" onClick="izmenaSala()">Sale</a>
 				<a href="#odmor" onClick="zahteviAdmin()">Prihvatanje/odbijanje zahteva za odmor/odsustvo</a>
-				<a href="#zakazivanjepio">Zakazivanje pregleda i operacija</a>
+				<a href="#zakazivanjepio" onClick="zahteviZaPAdmin()">Zakazivanje pregleda i operacija</a>
 				<a href="#" onclick="return logout(event)">Odjavite se</a>
 			  </div>
 			  <input type = "text" placeholder="Ime" id = "pretragaIme"/>
@@ -63,6 +62,8 @@
 		      <table class="table table-light" id="tabela_definisaniPregledi_admina">
 		      </table>
 		      <table class="table table-light" id="tabela_zahtevi_o">
+		      </table>
+		      <table class="table table-light" id="tabela_zahtevi_p">
 		      </table>
               <div id="modal-wrapper" class="modal" id="modalc" style="overflow-y:scroll">
 				<form class="modal-content animate" action="" id="modalnaF"
