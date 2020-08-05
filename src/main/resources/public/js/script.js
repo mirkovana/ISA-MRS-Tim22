@@ -1397,6 +1397,8 @@ function dodavanjeZahtevaOdsustva(){
 				$("#uspesno").hide();
 				$("#neuspesno").show();		
 			}else{
+				let isBoss = confirm("Uspesno kreiran zahtev!");
+
 				window.location.replace("./homepagems.html");
 				$("#neuspesno").hide();
 				$("#uspesno").show();
@@ -1425,6 +1427,8 @@ function dodavanjeZahtevaOdsustvaL(){
 				$("#uspesno").hide();
 				$("#neuspesno").show();		
 			}else{
+				let isBoss = confirm("Uspesno kreiran zahtev!");
+
 				window.location.replace("./homepagelekar.html");
 				$("#neuspesno").hide();
 				$("#uspesno").show();
@@ -1498,6 +1502,8 @@ function dodavanjeAKC(){
 				$("#neuspesno").hide();
 				
 			}else{
+				let isBoss = confirm("Uspesno dodat administrator klinickog centra!");
+
 				window.location.replace("./homepageadminkc.html");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
@@ -1528,6 +1534,8 @@ function dodavanjeSL(){
 				
 				
 			}else{
+				let isBoss = confirm("Uspesno dodavanje!");
+
 				window.location.replace("./homepageadminkc.html");
 				
 			}
@@ -1556,6 +1564,8 @@ function dodavanjeSD(){
 				
 				
 			}else{
+				let isBoss = confirm("Uspesno dodavanje!");
+
 				window.location.replace("./homepageadminkc.html");
 			
 			}
@@ -1619,6 +1629,8 @@ function dodavanjeKlinike(){
 				$("#neuspesno").hide();
 				
 			}else{
+				let isBoss = confirm("Uspesno dodata klinika!");
+
 				window.location.replace("./homepageadminkc.html");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
@@ -1646,11 +1658,13 @@ function dodavanjeAK(){
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
+				let isBoss = confirm("Doslo je do greske!");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
 				
 				
 			}else{
+				let isBoss = confirm("Uspesno dodat administrator klinike!");
 				window.location.replace("./homepageadminkc.html");
 				$("#uspesno").show();
 				$("#neuspesno").hide();
@@ -1683,6 +1697,7 @@ function dodavanjeSala(){
 				$("#neuspesno").hide();
 				
 			}else{
+				let isBoss = confirm("Uspesno dodata sala!");
 				window.location.replace("./homepageadministratorklinike.html");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
@@ -1716,6 +1731,7 @@ function dodavanjeLekara(){
 				$("#neuspesno").hide();
 				
 			}else{
+				let isBoss = confirm("Uspesno dodat lekar!");
 				window.location.replace("./homepageadministratorklinike.html");
 				$("#neuspesno").show();
 				$("#uspesno").hide();
