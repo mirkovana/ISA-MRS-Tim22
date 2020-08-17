@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.KCApp.DTO.AdministratorKlinickogCentraDTO;
 import com.example.KCApp.DTO.AdministratorKlinikeDTO;
@@ -41,7 +39,7 @@ import com.example.KCApp.beans.MedicinskaSestra;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.User;
 import com.example.KCApp.beans.UserTokenState;
-import com.example.KCApp.exception.ResourceConflictException;
+import com.example.KCApp.beans.ZahtevZaRegistraciju;
 import com.example.KCApp.security.TokenUtils;
 import com.example.KCApp.security.auth.JwtAuthenticationRequest;
 import com.example.KCApp.service.AdministratorKlinickogCentraService;
@@ -51,6 +49,7 @@ import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.MedicinskaSestraService;
 import com.example.KCApp.service.PacijentService;
 import com.example.KCApp.service.UserService;
+import com.example.KCApp.service.ZahtevZaRegistracijuService;
 import com.example.KCApp.service.impl.CustomUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -100,6 +99,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private AuthorityService authorityService;
+	
+	@Autowired
+	private ZahtevZaRegistracijuService zzrs;
 
 	// Prvi endpoint koji pogadja korisnik kada se loguje.
 	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -159,7 +161,7 @@ public class AuthenticationController {
 	// Endpoint za registraciju novog korisnika
 	@PostMapping("/signup")
 	public ResponseEntity<?> addUser(@RequestBody PacijentDTO userData) {
-		 	Pacijent user = new Pacijent();
+		 	ZahtevZaRegistraciju user = new ZahtevZaRegistraciju();
 		 	user.setPassword(passwordEncoder.encode(userData.getPassword()));
 		 	user.setUsername(userData.getUsername());
 		 	user.setGrad(userData.getGrad());
@@ -169,10 +171,11 @@ public class AuthenticationController {
 		 	user.setPrezime(userData.getPrezime());
 		 	user.setEmail(userData.getUsername());
 		 	user.setAdresa(userData.getAdresa());
-		 	user.setLastPasswordResetDate(userData.getLastPasswordResetDate());
-		 	user.setAuthorities(Arrays.asList(authorityService.findOne(5)));
+		 	//user.setLastPasswordResetDate(userData.getLastPasswordResetDate());
+		 	//user.setAuthorities(Arrays.asList(authorityService.findOne(5)));
 		 	user.setBrojOsiguranika(userData.getBrojOsiguranika());
-		 	userService.save(user);
+		 	zzrs.save(user);
+		 	//userService.save(user);
 		 	return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 

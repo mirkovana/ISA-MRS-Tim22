@@ -48,18 +48,7 @@ public class KlinickiCentar {
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
 	@JsonBackReference
 	private Set<SifrarnikDijagnoza> sifrarnikDijagnoza=new HashSet<SifrarnikDijagnoza>();
-	
-	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
-	@JsonBackReference
-	private Set<ZahtevZaRegistraciju> zahteviZaRegistraciju = new HashSet<ZahtevZaRegistraciju>();
-	
-	public void add(ZahtevZaRegistraciju item) {
-	    if (item.getKlinickiCentar() != null)
-	      item.getKlinickiCentar().getZahteviZaRegistraciju().remove(item);
-	    item.setKlinickiCentar(this);
-	    getZahteviZaRegistraciju().add(item);
-	  }
-	
+		
 	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinickiCentar")
 	@JsonBackReference
 	private Set<Klinika> klinike = new HashSet<Klinika>();
@@ -77,13 +66,12 @@ public class KlinickiCentar {
 	
 	public KlinickiCentar(Integer idKlinickogCentra, Set<AdministratorKlinickogCentra> administratoriKC,
 			Set<SifrarnikLekova> sifrarnikLekova, Set<SifrarnikDijagnoza> sifrarnikDijagnoza, 
-			Set<ZahtevZaRegistraciju> zahteviZaRegistraciju, Set<Klinika> klinike) {
+			Set<Klinika> klinike) {
 		super();
 		this.idKlinickogCentra = idKlinickogCentra;
 		this.administratoriKC = administratoriKC;
 		this.sifrarnikLekova = sifrarnikLekova;
 		this.sifrarnikDijagnoza = sifrarnikDijagnoza;
-		this.zahteviZaRegistraciju = zahteviZaRegistraciju;
 		this.klinike = klinike;
 	}
 
@@ -119,14 +107,6 @@ public class KlinickiCentar {
 
 	public void setSifrarnikDijagnoza(Set<SifrarnikDijagnoza> sifrarnikDijagnoza) {
 		this.sifrarnikDijagnoza = sifrarnikDijagnoza;
-	}
-
-	public Set<ZahtevZaRegistraciju> getZahteviZaRegistraciju() {
-		return zahteviZaRegistraciju;
-	}
-
-	public void setZahteviZaRegistraciju(Set<ZahtevZaRegistraciju> zahteviZaRegistraciju) {
-		this.zahteviZaRegistraciju = zahteviZaRegistraciju;
 	}
 
 	public Set<Klinika> getKlinike() {
