@@ -4366,6 +4366,8 @@ function makeTableHeaderZR(){
 						<th>Prezime</th>
 						<th>Email</th>
 						<th>Broj telefona</th>
+						<th></th>
+						<th></th>
 				     </tr>
 				</thead>`;
 		
@@ -4381,7 +4383,29 @@ function makeTableRowZR(s) {
 			<td class="izgledTabele" >${s.prezime}</td>
 			<td class="izgledTabele" >${s.email}</td>
 			<td class="izgledTabele" >${s.brojTelefona}</td>
+			<td class="izgledTabele" ><input type="button" id="pr" value="Prihvati zahtev" onClick="prihvatiZahtev(${s.idZahtevaZaRegistraciju})"/></td>
+		   <td class="izgledTabele" ><input type="button" id="od" value="Odbij zahtev" onClick="odbijZahtev(${s.idZahtevaZaRegistraciju})"/></td>
 		</tr>`;
 	
 	return row;
+}
+
+function prihvatiZahtev(idZahtevaReg){
+	
+	console.log(idZahtevaReg);
+}
+
+
+function odbijZahtev(idZahtevaReg){
+	
+	$.ajax({
+		url: "api/odbijenZahtev/" +idZahtevaReg,
+		type: "POST",
+		
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    }
+	});
 }
