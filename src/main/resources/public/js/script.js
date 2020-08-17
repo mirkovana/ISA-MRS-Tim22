@@ -2734,6 +2734,9 @@ function obrisiTabele(){
 	$("#tabela_zahtevi_o thead ").remove();
 	$("#tabela_zahtevi_p tbody tr").remove(); 
 	$("#tabela_zahtevi_p thead ").remove();
+	$("#tabela_zahtevizr thead").remove();
+	$("#tabela_zahtevizr tbody tr").remove();
+	
 }
 
 function obrisiPretragu(){
@@ -4319,3 +4322,66 @@ function sortTableKlinikaAKC() {
 	  }
 }
 
+//prikaz zahteva za registraciju
+function setUpUserPageAKCZZR() {
+obrisiPretragu();
+	$.ajax({
+		url: "api/zahtevizr",
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			z = JSON.parse(data.responseText);
+			console.log(z)
+			//loadSifrarnikLekova(sl);
+			loadZahteviZaRegistraciju(z);
+			
+		}
+	});
+}
+
+//sifrarnik lekova
+function loadZahteviZaRegistraciju(z) {
+	obrisiTabele();
+	$("#tabela_sl tbody tr").remove(); 
+	$("#tabela_sl thead ").remove();
+	var table = $("#tabela_zahtevizr");
+	table.append(makeTableHeaderZR());	
+	for(let s of z) {
+		table.append(makeTableRowZR(s));
+	}
+}
+
+//header za tabelu zahteva za registraciju
+function makeTableHeaderZR(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Ime</th>
+						<th>Prezime</th>
+						<th>Email</th>
+						<th>Broj telefona</th>
+				     </tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowZR(s) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" >${s.ime}</td>
+			<td class="izgledTabele" >${s.prezime}</td>
+			<td class="izgledTabele" >${s.email}</td>
+			<td class="izgledTabele" >${s.brojTelefona}</td>
+		</tr>`;
+	
+	return row;
+}
