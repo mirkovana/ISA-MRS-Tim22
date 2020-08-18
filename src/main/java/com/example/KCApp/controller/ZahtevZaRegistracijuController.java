@@ -1,11 +1,19 @@
 package com.example.KCApp.controller;
 
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,21 +21,40 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.beans.VerificationToken;
 import com.example.KCApp.beans.ZahtevZaRegistraciju;
+import com.example.KCApp.beans.ZdravstveniKarton;
+import com.example.KCApp.service.AuthorityService;
 import com.example.KCApp.service.EmailService;
+import com.example.KCApp.service.PacijentService;
+import com.example.KCApp.service.VerificationTokenService;
 import com.example.KCApp.service.ZahtevZaRegistracijuService;
+import com.example.KCApp.verifikacijaEmaila.OnRegistrationCompleteEvent;
+
+
 
 @RestController
 @RequestMapping(value="/api")
 public class ZahtevZaRegistracijuController {
 
 	@Autowired
-	private ZahtevZaRegistracijuService service;
-	
+	private PacijentService pacijentService;
 	
 	@Autowired
+	private ZahtevZaRegistracijuService service;
+	@Autowired
+	@Lazy
+	private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private AuthorityService authorityService;
+	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
 	
+	@Autowired
+	private VerificationTokenService verificationService;
 	/* ISPISIVANJE ZAHTEVA ZA REGISTRACIJU */
 	@GetMapping(value = "/zahtevizr")
 	@PreAuthorize("hasRole('ADMINKC')")
@@ -38,13 +65,13 @@ public class ZahtevZaRegistracijuController {
 	
 	
 	
-	@PostMapping(value= "/odbijenZahtev/{idZahteva}",  consumes="application/json")
+	@PostMapping(value= "/odbijenZahtev/{idZahteva}/{razlog}",  consumes="application/json")
 	@PreAuthorize("hasRole('ADMINKC')")
-   	public ResponseEntity deniedRegAsync(@PathVariable Integer idZahteva){
+   	public ResponseEntity deniedRegAsync(@PathVariable Integer idZahteva, @PathVariable String razlog){
 		ZahtevZaRegistraciju user = service.get(idZahteva);
 
 	
-		String opis = "zato sto probavamo ";
+		String opis = razlog;
 		try {
 			service.delete(idZahteva); 
 			emailService.sendNotificaitionDeniedAsync(user, opis);
@@ -53,5 +80,104 @@ public class ZahtevZaRegistracijuController {
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@Transactional
+	@PostMapping(value= "/prihvaceno/{idZahteva}")
+	@PreAuthorize("hasRole('ADMINKC')")
+	public ResponseEntity acceptedRegAsync(@PathVariable Integer idZahteva, HttpServletRequest request){
+
+//		Pacijent pacijent = pacijentService.findByEmail(zahtev.getEmail());
+//		 if(pacijent != null) {
+//			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+//	     }
+//
+//		AdminKC akc = AdminKCService.findByEmail(zahtev.getEmail());
+//		if(akc != null) {
+//			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+//		}
+//		 AdminKlinike l = AdminKlinikeService.findByEmail(zahtev.getEmail());
+//		if(l != null) {
+//			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+//		}
+//		Lekar ms = LekarService.findByEmail(zahtev.getEmail());
+//		if(ms != null) {
+//			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+//		}
+//		MedSestra mss = MedSestraService.findByEmail(zahtev.getEmail());
+//		if(mss != null) {
+//			return new ResponseEntity<>(new ZahtevRegDTO(),HttpStatus.BAD_REQUEST);
+//		}
+		 
+		ZahtevZaRegistraciju zahtev = service.get(idZahteva);
+		
+		Pacijent registrovaniPacijent = new Pacijent();
+		registrovaniPacijent.setAdresa(zahtev.getAdresa());
+		registrovaniPacijent.setIme(zahtev.getIme());
+		registrovaniPacijent.setPrezime(zahtev.getPrezime());
+		registrovaniPacijent.setUsername(zahtev.getEmail());
+		registrovaniPacijent.setEmail(zahtev.getEmail());
+		registrovaniPacijent.setBrojTelefona(zahtev.getBrojTelefona());
+		registrovaniPacijent.setGrad(zahtev.getGrad());
+		registrovaniPacijent.setPassword(zahtev.getPassword());
+		registrovaniPacijent.setDrzava(zahtev.getDrzava());
+		registrovaniPacijent.setBrojOsiguranika(zahtev.getBrojOsiguranika());
+		//registrovaniPacijent.setLastPasswordResetDate((zahtev.getLastPasswordResetDate()));
+	    registrovaniPacijent.setAktivan(false); 
+		registrovaniPacijent.setAuthorities(Arrays.asList(authorityService.findOne(5)));
+		registrovaniPacijent.setZdravstveniKarton(new ZdravstveniKarton());
+		
+		
+		System.out.println("STIIIIIIIIIIIIIIIIIIGAAAAAAAAAAAAAAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+		
+		ZahtevZaRegistraciju user = new ZahtevZaRegistraciju();
+		user.setAdresa(zahtev.getAdresa());
+		user.setIme(zahtev.getIme());
+		user.setPrezime(zahtev.getPrezime());
+		user.setEmail(zahtev.getEmail());
+		user.setBrojTelefona(zahtev.getBrojTelefona());
+		user.setGrad(zahtev.getGrad());
+		user.setPassword(zahtev.getPassword());
+		user.setDrzava(zahtev.getDrzava());
+		user.setBrojOsiguranika(zahtev.getBrojOsiguranika());
+		
+		System.out.println("EVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+
+		try {
+			ZahtevZaRegistraciju brisi = service.findByEmail(user.getEmail());
+			service.delete(brisi.getIdZahtevaZaRegistraciju());// zasto ne obrise
+			registrovaniPacijent = pacijentService.save(registrovaniPacijent);
+			eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registrovaniPacijent,
+					request.getLocale(), request.getContextPath()));
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+		}catch( Exception e ){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	
+	}
+	
+	
+	
+	@GetMapping("/potvrdiRegistraciju/{token}")
+	public String confirmRegistration(@PathVariable String token,HttpServletRequest request) {
+      
+		System.out.println("USAO SAM OVDE");
+		VerificationToken verificationToken = verificationService.findByToken(token);
+		if(verificationToken == null)
+		{
+			return "redirec: access denied";
+		}
+		Pacijent pacijent = verificationToken.getPacijent();
+		Calendar calendar = Calendar.getInstance();
+		if((verificationToken.getDatumUnistavanja().getTime()-calendar.getTime().getTime())<=0) {
+			return "redirec: access denied";
+		}
+		System.out.println("SAD CU DA GA SACUVAM");
+		pacijent.setAktivan(true);
+		pacijentService.save(pacijent);
+		System.out.println("SACUVAO SAM");
+		return null;
 	}
 }

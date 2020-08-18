@@ -17,11 +17,11 @@ INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, dr
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (7, 'kor7@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Marija', 'Jovanovic', 'kor7@nesto.com', 'Perina 10', 'Beograd', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (8, 'kor8@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Darko', 'Djokovic', 'kor8@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (9, 'kor9@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Milos', 'Tipsarevic', 'kor9@nesto.com', 'Perina 10', 'Nis', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
-INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (10, 'kor10@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Zarko', 'Raznatovic', 'kor10@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
+INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (10,'kor10@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Zarko', 'Raznatovic', 'kor10@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 
 
-insert into pacijenti(id,broj_osiguranika) values (5 ,123);
-insert into pacijenti(id,broj_osiguranika) values (10 ,111);
+insert into pacijenti(id, enabled, broj_osiguranika) values (5,true ,123);
+insert into pacijenti(id, enabled ,broj_osiguranika) values (10 ,true, 111);
 --insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id_korisnika) values (1, 1.05, 'A+', 55.5, 170.00, 5);
 
 insert into klinicki_centar(id_klinickog_centra) values(1);

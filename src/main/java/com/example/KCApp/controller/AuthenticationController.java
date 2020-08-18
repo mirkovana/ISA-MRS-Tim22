@@ -141,6 +141,7 @@ public class AuthenticationController {
 				return ResponseEntity.ok(new MedicinskaSestraDTO((MedicinskaSestra)user, new UserTokenState(jwt, expiresIn)));
 			}else if(auth.getName().equals("ROLE_PACIJENT")) {
 				user = pacijentService.get(userId);
+				
 				return ResponseEntity.ok(new PacijentDTO((Pacijent)user, new UserTokenState(jwt, expiresIn)));
 			}else {
 				return ResponseEntity.ok(new UserDTO(user, new UserTokenState(jwt, expiresIn)));

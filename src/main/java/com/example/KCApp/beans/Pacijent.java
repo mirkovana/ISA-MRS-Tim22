@@ -31,11 +31,24 @@ public class Pacijent extends User{
 
 	public static final String TABLE_NAME= "PACIJENTI";
 	
-
+	@Column(name="enabled")
+	private boolean aktivan;
+	
 	@OneToOne(cascade = ALL, fetch = EAGER, mappedBy="pacijent")
 	@JoinColumn(name = "idZdravstvenogKartona")
 	private ZdravstveniKarton zdravstveniKarton;
 	
+	
+	
+	public boolean isAktivan() {
+		return aktivan;
+	}
+
+	public void setAktivan(boolean aktivan) {
+		this.aktivan = aktivan;
+	}
+
+
 	@Column(name="brojOsiguranika", unique=true, nullable=false)
 	private int brojOsiguranika;
 	

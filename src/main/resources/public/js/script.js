@@ -4384,22 +4384,61 @@ function makeTableRowZR(s) {
 			<td class="izgledTabele" >${s.email}</td>
 			<td class="izgledTabele" >${s.brojTelefona}</td>
 			<td class="izgledTabele" ><input type="button" id="pr" value="Prihvati zahtev" onClick="prihvatiZahtev(${s.idZahtevaZaRegistraciju})"/></td>
-		   <td class="izgledTabele" ><input type="button" id="od" value="Odbij zahtev" onClick="odbijZahtev(${s.idZahtevaZaRegistraciju})"/></td>
+		   <td class="izgledTabele" ><input type="button" id="od" value="Odbij zahtev" onClick="odbijZahtevMod(${s.idZahtevaZaRegistraciju})"/></td>
 		</tr>`;
 	
 	return row;
 }
 
-function prihvatiZahtev(idZahtevaReg){
+
+
+function odbijZahtevMod(idZahtevaReg){
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Razlog odbijanja zahteva za regsitraciju</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+						  <td colspan = 2><textarea name="razlog"  id = "razlog"></textarea></td>
+				    </tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="odbijZahtev(${idZahtevaReg})">Potvrdi</button></td></tr>							
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
 	
-	console.log(idZahtevaReg);
 }
 
 
 function odbijZahtev(idZahtevaReg){
+	var razlog = document.getElementById("razlog").value;
+	console.log(razlog);
+	$.ajax({
+		url: "api/odbijenZahtev/" +idZahtevaReg + "/" + razlog,
+		type: "POST",
+		consumes : "application/json" , 
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    }
+	});
+	let isBoss = confirm("Mail poslat!");
+}
+
+function prihvatiZahtev(idZahtevaReg){
 	
 	$.ajax({
-		url: "api/odbijenZahtev/" +idZahtevaReg,
+		url: "api/prihvaceno/" +idZahtevaReg,
 		type: "POST",
 		
 		contentType: "application/json",
@@ -4408,4 +4447,23 @@ function odbijZahtev(idZahtevaReg){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    }
 	});
+}
+
+function aktivirajNalog(){
+	console.log(document.URL)
+	var x = document.URL.split("/")
+	console.log(x[5]);
+	$.ajax({
+		url: "api/potvrdiRegistraciju/"+ x[5],
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    }
+	});
+	
+	
+	
+	
 }
