@@ -45,4 +45,25 @@ public class EmailService {
 		
 		
 	}
+	
+	@Async
+	public void sendNotificaitionAsync(String url, String recipient, String subject) {
+		System.out.println("Slanje emaila...");
+
+		try {
+			 
+	        SimpleMailMessage email = new SimpleMailMessage();
+	        email.setText("Potvrdite vas email za aktivaciju profila");
+	        email.setTo(recipient);
+	        email.setSubject(subject);
+	        email.setText("http://localhost:8080/#" + url);
+	        System.out.println(url);
+	        javaMailSender.send(email);	
+			System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println("Doslo je do greske...");
+		}
+		
+	}
 }

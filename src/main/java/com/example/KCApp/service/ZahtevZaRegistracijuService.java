@@ -32,5 +32,8 @@ public class ZahtevZaRegistracijuService {
 	public void delete(Integer id) {
 		repo.deleteById(id);
 	}
+	public ZahtevZaRegistraciju findByEmail(String email) {
+		return repo.findByEmail(email);
+	}
 
 }
