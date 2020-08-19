@@ -165,6 +165,13 @@ public class Pregled {
 		this.recept = recept;
 	}
 
+	@Override
+	public String toString() {
+		return "Pregled [idPregleda=" + idPregleda + ", vreme=" + vreme + ", trajanje=" + trajanje + ", cena=" + cena
+				+ ", tipPregleda=" + tipPregleda + ", sala=" + sala + ", klinika=" + klinika + ", lekar=" + lekar
+				+ ", recept=" + recept + ", pacijent=" + pacijent + "]";
+	}
+
 
 	
 	

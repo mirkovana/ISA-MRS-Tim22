@@ -29,7 +29,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 		try {
 
 			Pacijent user = event.getUser();
-			System.out.println("EEEEE" + user.getEmail());
+			
 			String token = UUID.randomUUID().toString();
 
 			VerificationToken newUserToken = new VerificationToken(token, user);
@@ -43,7 +43,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 			emailService.sendNotificaitionAsync(url, recipient, subject);
 
 		} catch (Exception e) {
-			System.out.println("USO OVDE i napravio gresku ");
+			System.out.println("Doslo je do greske!");
 		}
 
 	}

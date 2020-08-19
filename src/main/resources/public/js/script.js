@@ -936,6 +936,7 @@ function makeTableHeaderZahteviP(){
 						<th>Vreme</th>
 						<th>Tip Pregleda</th>
 						<th>Cena</th>
+						<th>Sala</th>
 					</tr>
 				</thead>`;
 		
@@ -1239,6 +1240,8 @@ function makeTableRowZahteviP(z) {
 			<td class="izgledTabele" id='${z.vreme}'>${z.vreme}</td>
 			<td class="izgledTabele" id='${z.tipPregleda}'>${z.tipPregleda}</td>
 			<td class="izgledTabele" id='${z.cena}'>${z.cena}</td>
+			<td class="izgledTabele"><input type="button" id="odaberi" value="Odaberi salu" onClick="odaberiSaluMod(${z.idZahtevaZaPregled})"/></td>
+		
 		</tr>`;
 	
 	return row;
@@ -4444,8 +4447,15 @@ function prihvatiZahtev(idZahtevaReg){
 		contentType: "application/json",
 		dataType: "json",
 		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    }
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken}
+	//,
+//	    success: function(){
+//	    	let isBoss = confirm("Uspesno!");
+//	  },
+//	    error: function(e) {
+//	    	let isBoss = confirm("Nije moguce prihvatiti zahtev jer postoji korisnik sa tom Email adresom!");
+//	      }
+		 
 	});
 }
 
@@ -4460,10 +4470,87 @@ function aktivirajNalog(){
 		dataType: "json",
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    }
+		}
+	   
+
+	    
+	});
+	 let isBoss = confirm("Nalog uspesno aktiviran!");
+	 window.location.replace("./login.html");
+}
+	
+function odaberiSaluMod(z){
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Odaberite salu</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr><td>
+					<select name="slobodneSale" id="slobodneSale">
+		  				
+		  			</select>
+		  			</td></tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="potvrdiSalu(${z})">Potvrdi</button></td></tr>							
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+			dobaviSlobodneSale(z);
+		$("#modal-wrapper").show();
+}
+function dobaviSlobodneSale(zahtev){
+	//var povratna;
+	$.ajax({
+		url: "api/slobodneSale/"+zahtev,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function(data) {
+			ss = JSON.parse(data.responseText);
+			napuniSlobodneSale(ss);
+			
+		}
 	});
 	
+}
+function napuniSlobodneSale(ss){
+	console.log(ss);
+	var m = "";	
+	var modal=$("#slobodneSale");	
+	for(let s of ss){
+		
+		m = `<option id="slobodneSale" value=${s}>${s}</option>`;
+		modal.append(m);
+	}
+}
+
+function potvrdiSalu(idZahteva){
 	
+	console.log(idZahteva)
+	var data = getFormData($("#formaIzmena"));
 	
+	console.log(data.slobodneSale);
+	
+	$.ajax({
+		url: "api/potvrdiSalu/" + idZahteva + "/" + data.slobodneSale,
+		type: "POST",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    }
+
+	});
 	
 }
