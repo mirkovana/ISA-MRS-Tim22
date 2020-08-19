@@ -11,7 +11,23 @@
 <link rel="stylesheet" type="text/css" href="./styleRegistracija.css">
 
 <script src="bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
     <script>
+    
+    $(document).ready(function(){
+    	$('.loginForm').validate({
+    		rules:{
+    			username:{
+    				required: true,
+    				email : true
+    			},
+    			password:{
+    				required:true
+    			}
+    		}
+    	})
+    });
+    
     
     var loginLink = "/auth/login";
     $(document).ready(function(){
@@ -52,11 +68,11 @@
           <table>
               <tr>
 	                <td align="right">Email</td>
-	                <td><input id="username" type="email" placeholder="Username"/></td>
+	                <td><input id="username" name="username" type="email" placeholder="Username"/></td>
 	            </tr>
 	            <tr>
 	                <td align="right">Lozinka</td>
-	                <td><input id="password" type="password" placeholder="Password"/></td>
+	                <td><input id="password" name="password" type="password" placeholder="Password"/></td>
 	            </tr>
 	            <tr>
 	                <td colspan=2 align="center"><button type="submit" class="btn btn-secondary">Prijavi se</button></td>
