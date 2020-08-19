@@ -21,13 +21,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.KCApp.DTO.UserDTO;
 import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.beans.User;
 import com.example.KCApp.beans.VerificationToken;
 import com.example.KCApp.beans.ZahtevZaRegistraciju;
 import com.example.KCApp.beans.ZdravstveniKarton;
 import com.example.KCApp.service.AuthorityService;
 import com.example.KCApp.service.EmailService;
 import com.example.KCApp.service.PacijentService;
+import com.example.KCApp.service.UserService;
 import com.example.KCApp.service.VerificationTokenService;
 import com.example.KCApp.service.ZahtevZaRegistracijuService;
 import com.example.KCApp.verifikacijaEmaila.OnRegistrationCompleteEvent;
@@ -52,6 +55,9 @@ public class ZahtevZaRegistracijuController {
 	private EmailService emailService;
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private VerificationTokenService verificationService;
@@ -86,30 +92,15 @@ public class ZahtevZaRegistracijuController {
 	@PostMapping(value= "/prihvaceno/{idZahteva}")
 	@PreAuthorize("hasRole('ADMINKC')")
 	public ResponseEntity acceptedRegAsync(@PathVariable Integer idZahteva, HttpServletRequest request){
-
-//		Pacijent pacijent = pacijentService.findByEmail(zahtev.getEmail());
-//		 if(pacijent != null) {
-//			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
-//	     }
-//
-//		AdminKC akc = AdminKCService.findByEmail(zahtev.getEmail());
-//		if(akc != null) {
-//			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
-//		}
-//		 AdminKlinike l = AdminKlinikeService.findByEmail(zahtev.getEmail());
-//		if(l != null) {
-//			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
-//		}
-//		Lekar ms = LekarService.findByEmail(zahtev.getEmail());
-//		if(ms != null) {
-//			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
-//		}
-//		MedSestra mss = MedSestraService.findByEmail(zahtev.getEmail());
-//		if(mss != null) {
-//			return new ResponseEntity<>(new ZahtevRegDTO(),HttpStatus.BAD_REQUEST);
-//		}
-		 
 		ZahtevZaRegistraciju zahtev = service.get(idZahteva);
+
+		 User us = userService.findByUsername(zahtev.getEmail());
+		 if(us != null) {
+			return new ResponseEntity<>(new UserDTO(),HttpStatus.BAD_REQUEST);
+	     }
+
+		
+		 
 		
 		Pacijent registrovaniPacijent = new Pacijent();
 		registrovaniPacijent.setAdresa(zahtev.getAdresa());
@@ -128,7 +119,6 @@ public class ZahtevZaRegistracijuController {
 		registrovaniPacijent.setZdravstveniKarton(new ZdravstveniKarton());
 		
 		
-		System.out.println("STIIIIIIIIIIIIIIIIIIGAAAAAAAAAAAAAAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		
 		ZahtevZaRegistraciju user = new ZahtevZaRegistraciju();
 		user.setAdresa(zahtev.getAdresa());
@@ -141,11 +131,10 @@ public class ZahtevZaRegistracijuController {
 		user.setDrzava(zahtev.getDrzava());
 		user.setBrojOsiguranika(zahtev.getBrojOsiguranika());
 		
-		System.out.println("EVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
 		try {
 			ZahtevZaRegistraciju brisi = service.findByEmail(user.getEmail());
-			service.delete(brisi.getIdZahtevaZaRegistraciju());// zasto ne obrise
+			service.delete(brisi.getIdZahtevaZaRegistraciju());
 			registrovaniPacijent = pacijentService.save(registrovaniPacijent);
 			eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registrovaniPacijent,
 					request.getLocale(), request.getContextPath()));
@@ -163,7 +152,6 @@ public class ZahtevZaRegistracijuController {
 	@GetMapping("/potvrdiRegistraciju/{token}")
 	public String confirmRegistration(@PathVariable String token,HttpServletRequest request) {
       
-		System.out.println("USAO SAM OVDE");
 		VerificationToken verificationToken = verificationService.findByToken(token);
 		if(verificationToken == null)
 		{
@@ -174,10 +162,10 @@ public class ZahtevZaRegistracijuController {
 		if((verificationToken.getDatumUnistavanja().getTime()-calendar.getTime().getTime())<=0) {
 			return "redirec: access denied";
 		}
-		System.out.println("SAD CU DA GA SACUVAM");
+	
 		pacijent.setAktivan(true);
 		pacijentService.save(pacijent);
-		System.out.println("SACUVAO SAM");
+		
 		return null;
 	}
 }

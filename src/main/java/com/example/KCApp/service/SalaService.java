@@ -37,4 +37,7 @@ public class SalaService {
 	public Sala findByBrojSale(int brojSale) {
 		return repo.findByBrojSale(brojSale);
 	}
+	public Sala findByNazivSale(String nazivSale) {
+		return repo.findByNazivSale(nazivSale);
+	}
 }

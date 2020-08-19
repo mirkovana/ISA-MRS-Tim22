@@ -48,7 +48,10 @@ insert into lekar(id, ocena, id_klinike, tip_pregleda)values(9,3.9,1 ,'GINEKOLOG
 
 --insert into radni_kalendarms(id_radnog_kalendara, id)values(1,4);
 
-insert into radni_kalendarl(id_radnog_kalendara, id)values(1,3);
+insert into radni_kalendarl(id_radnog_kalendara, id, datum_od, datum_do)values(1,3,'2020.08.22', '2020.08.29');
+insert into radni_kalendarl(id_radnog_kalendara, id, datum_od, datum_do)values(2,7,'2020.08.22', '2020.08.29');
+insert into radni_kalendarl(id_radnog_kalendara, id, datum_od, datum_do)values(3,8,'2020.08.22', '2020.08.29');
+insert into radni_kalendarl(id_radnog_kalendara, id, datum_od, datum_do)values(4,9,'2020.08.22', '2020.08.29');
 
 
 insert into administrator_klinickog_centra(id, id_klinickog_centra)values(1,1);
