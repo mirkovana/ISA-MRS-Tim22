@@ -13,7 +13,7 @@
 <script src="bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
     <script>
-    
+    $(function() {
     $(document).ready(function(){
     	$('.loginForm').validate({
     		rules:{
@@ -27,7 +27,7 @@
     		}
     	})
     });
-    
+    });
     
     var loginLink = "/auth/login";
     $(document).ready(function(){
