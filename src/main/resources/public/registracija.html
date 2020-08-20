@@ -8,12 +8,77 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
+		<script>
+		$(function() {
+		$(document).ready(function(){
+	    	$('.formaFiltr').validate({
+	    		rules:{
+	    			ime:{
+	    				required: true,
+	    			},
+	    			prezime:{
+	    				required:true
+	    			},
+	    			username:{
+	    				required:true,
+	    				email : true
+	    			},
+	    			adresa:{
+	    				required:true
+	    			},
+	    			grad:{
+	    				required:true
+	    			},
+	    			drzava:{
+	    				required:true
+	    			},
+	    			brojTelefona:{
+	    				required:true,
+	    				number : true
+	    			},
+	    			brojOsiguranika:{
+	    				required:true, 
+	    				number:true
+	    			},
+	    			password:{
+	    				required:true
+	    			}
+	    		}
+	    	})
+	    });
+		});
+		 $(document).ready(function(){
+		$(".formaFiltr").on('submit',function(e){
+   			e.preventDefault();
+			var data = getFormData($(".formaFiltr"));
+			console.log(data);
+			var org = JSON.stringify(data);
+			//localStorage.setItem('user',JSON.stringify(data));
+			$.ajax({
+				url: "auth/signup",
+				method: "POST",
+				data: org,
+				contentType: "application/json",
+				dataType: "json",
+				/*headers: {
+			        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+			    },*/
+				complete : function (data) {
+					
+				} 
+
+			});
+			
+		})
+		})
+		</script>
     </head>
     <body>
         <div>	
             <h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
         </div>
-        <form action="" id="formaFiltr">
+        <form class="formaFiltr">
 	        <table>
 	            <tr>
 	                <td align="right">Ime</td>
@@ -56,7 +121,7 @@
 	                <td><input type="text" name="potvrdaLozinke" id="potvrdaLozinke"></input></td>
 	            </tr>-->
 	            <tr>
-	                <td colspan=2 align="center"><button type="button" class="btn btn-secondary" onclick="dodavanjePacijenta()">Zahtev za registraciju</button></td>
+	                <td colspan=2 align="center"><button type="submit" id="submitButton" class="btn btn-secondary">Zahtev za registraciju</button></td>
 	            </tr>
 	        </table>
             <label id="uspesno" >Uspesno dodat administrator klinike</label>

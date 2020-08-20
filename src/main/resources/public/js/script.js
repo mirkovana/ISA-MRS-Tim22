@@ -1348,7 +1348,7 @@ function makeTableRowLekariZaIzvestaj(l) {
 	return row;
 }
 
-function dodavanjePacijenta(){
+/*function dodavanjePacijenta(){
 	var data = getFormData($("#formaFiltr"));
 	console.log(data);
 	var org = JSON.stringify(data);
@@ -1361,7 +1361,7 @@ function dodavanjePacijenta(){
 		dataType: "json",
 		/*headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },*/
+	    },//ovde je bilo 
 		complete : function (data) {
 			d = JSON.parse(data.responseText);
 			if(d.added) {
@@ -1376,7 +1376,7 @@ function dodavanjePacijenta(){
 
 	});
 	
-}
+}*/
 
 function dodavanjeZahtevaOdsustva(){
 	console.log("uslo u dodavanje zo");
