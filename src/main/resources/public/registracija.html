@@ -10,9 +10,8 @@
 		<script src="js/script.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
 		<script>
-		$(function() {
 		$(document).ready(function(){
-	    	$('.formaFiltr').validate({
+	    	$("form[name='registration']").validate({
 	    		rules:{
 	    			ime:{
 	    				required: true,
@@ -44,31 +43,81 @@
 	    			password:{
 	    				required:true
 	    			}
+	    		},
+	    		 messages: {
+	    			 ime: "Niste uneli ime!",
+	    		     prezime: "Niste uneli prezime!",
+	    		     adresa: "Niste uneli adresu!",
+	    		     grad: "Niste uneli grad!",
+	    		     drzava: "Niste uneli drzavu!",
+	    		     brojTelefona: {
+	    		    	 required: "Niste uneli broj telefona!",
+	    		    	 number: "Broj telefona moze sadrzati samo cifre!"
+	    		     },
+	    		     brojOsiguranika: {
+	    		    	 required: "Niste uneli broj osiguranika!",
+	    		    	 number: "Broj osiguranika moze sadrzati samo cifre!"
+	    		     },
+	    		     password: "Niste uneli lozinku!",
+	    		     username: {
+	    		    	 required: "Niste uneli email!",
+	    		    	 email: "Email mora biti u formi primer@primer.com"
+	    		     },
+	    		     potvrdaLozinke: "Niste uneli potvrdu lozinke!"
 	    		}
 	    	})
 	    });
-		});
-		 $(document).ready(function(){
-		$(".formaFiltr").on('submit',function(e){
+		
+		function empty() {
+	        var x;
+	        x = document.getElementById("ime").value;
+	        y = document.getElementById("prezime").value;
+	        a = document.getElementById("username").value;
+	        s = document.getElementById("adresa").value;
+	        d = document.getElementById("grad").value;
+	        f = document.getElementById("drzava").value;
+	        g = document.getElementById("brojTelefona").value;
+	        h = document.getElementById("brojOsiguranika").value;
+	        j = document.getElementById("lozinka").value;
+	        k = document.getElementById("potvrdaLozinke").value;
+	        if (x == "" || y == "" || a == "" || s == "" || d == "" || f == "" || g == "" || h == "" || j == "" || k == "") {
+	            
+	            return 0;
+	        }else if(j!=k){
+	        	return 2;
+	        }
+	        return 1;
+	    }
+		
+		$(document).ready(function(){
+		$("form[name='registration']").on('submit',function(e){
    			e.preventDefault();
-			var data = getFormData($(".formaFiltr"));
+			var data = getFormData($("form[name='registration']"));
 			console.log(data);
 			var org = JSON.stringify(data);
 			//localStorage.setItem('user',JSON.stringify(data));
-			$.ajax({
-				url: "auth/signup",
-				method: "POST",
-				data: org,
-				contentType: "application/json",
-				dataType: "json",
-				/*headers: {
-			        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-			    },*/
-				complete : function (data) {
-					
-				} 
+			var x = empty();
+			if(x == 1){
+				$.ajax({
+					url: "auth/signup",
+					method: "POST",
+					data: org,
+					contentType: "application/json",
+					dataType: "json",
+					/*headers: {
+				        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+				    },*/
+					complete : function (data) {
+						alert("Zahtev za registraciju uspesno poslat!");
+					} 
 
-			});
+				});
+			}else if(x == 0){
+				alert("Popunite obavezna polja!");
+			}else{
+				alert("Lozinke moraju biti iste!");
+			}
+			
 			
 		})
 		})
@@ -78,7 +127,7 @@
         <div>	
             <h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
         </div>
-        <form class="formaFiltr">
+        <form action="" name="registration">
 	        <table>
 	            <tr>
 	                <td align="right">Ime</td>
@@ -87,10 +136,6 @@
 	            <tr>
 	                <td align="right">Prezime</td>
 	                <td><input type="text" name="prezime" id="prezime"></input></td>
-	            </tr>
-	            <tr>
-	                <td align="right">Username</td>
-	                <td><input type="email" name="username" id="username"></input></td>
 	            </tr>
 	            <tr>
 	                <td align="right">Adresa</td>
@@ -113,19 +158,21 @@
 	                <td><input type="text" name="brojOsiguranika" id="brojOsiguranika"></input></td>
 	            </tr>
 	            <tr>
+	                <td align="right">Email</td>
+	                <td><input type="email" name="username" id="username"></input></td>
+	            </tr>
+	            <tr>
 	                <td align="right">Lozinka</td>
 	                <td><input type="password" name="password" id="lozinka"></input></td>
 	            </tr>
-	            <!--<tr>
+	            <tr>
 	                <td align="right">Potvrda lozinke</td>
-	                <td><input type="text" name="potvrdaLozinke" id="potvrdaLozinke"></input></td>
-	            </tr>-->
+	                <td><input type="password" name="potvrdaLozinke" id="potvrdaLozinke"></input></td>
+	            </tr>
 	            <tr>
 	                <td colspan=2 align="center"><button type="submit" id="submitButton" class="btn btn-secondary">Zahtev za registraciju</button></td>
 	            </tr>
 	        </table>
-            <label id="uspesno" >Uspesno dodat administrator klinike</label>
-            <label id="neuspesno">Niste uspeli  da dodate administrator klinike</label>  
 	</form>
     </body>
 </html>

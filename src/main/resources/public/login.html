@@ -13,9 +13,8 @@
 <script src="bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
     <script>
-    $(function() {
     $(document).ready(function(){
-    	$('.loginForm').validate({
+    	$("form[name='registration']").validate({
     		rules:{
     			username:{
     				required: true,
@@ -24,55 +23,69 @@
     			password:{
     				required:true
     			}
+    		},
+    		 messages: {
+    		      password: "Niste uneli lozinku!",
+    		      username: "Niste uneli email!"
     		}
     	})
     });
-    });
+    
+    function empty() {
+        var x;
+        x = document.getElementById("username").value;
+        y = document.getElementById("password").value;
+        if (x == "" || y == "") {
+            
+            return 0;
+        };
+        return 1;
+    }
     
     var loginLink = "/auth/login";
     $(document).ready(function(){
-      $('.message a').click(function(){
-        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-      });
-    	$(".loginForm").on('submit',function(e){
+    	$("form[name='registration']").on('submit',function(e){
     		e.preventDefault();
     		
     		user = {};
     		user.username = document.getElementById("username").value;
     		user.password = document.getElementById("password").value;
     		
-    		$.ajax({
-    			url: loginLink,
-    			method: "POST",
-    			dataType: "json",
-    			contentType:"application/json",
-    			data: JSON.stringify(user),
-    			success: function(result){
-    				console.log(result);
-    				 localStorage.setItem('user',JSON.stringify(result));
-            location.replace(getAdminUrlSlug(result));
+    		var x = empty();
+    		if(x == 1){
+    			$.ajax({
+        			url: loginLink,
+        			method: "POST",
+        			dataType: "json",
+        			contentType:"application/json",
+        			data: JSON.stringify(user),
+        			success: function(result){
+        				console.log(result);
+        				 localStorage.setItem('user',JSON.stringify(result));
+                location.replace(getAdminUrlSlug(result));
+        			
+        			}
+        		})
+    		}else{
+    			alert("Popunite obavezna polja!");
+    		}
     			
-    			}
-    		})
     	})
     })
     </script>
   </head>
   <body>
-    <div class="alert" id="warning-message" hidden>
-    </div>
-    <span id="message"></span>
-    <div class="login-page">
-      <div class="form">
-        <form class="loginForm">
-          <table>
+  <div class="container">
+  <form action="" name="registration">
+
+    <table>
               <tr>
 	                <td align="right">Email</td>
-	                <td><input id="username" name="username" type="email" placeholder="Username"/></td>
+	                <td><input id="username" name="username" type="email" placeholder="Email"/></td>
 	            </tr>
 	            <tr>
 	                <td align="right">Lozinka</td>
-	                <td><input id="password" name="password" type="password" placeholder="Password"/></td>
+	                <td><input id="password" name="password" type="password" placeholder="Lozinka"/></td>
 	            </tr>
 	            <tr>
 	                <td colspan=2 align="center"><button type="submit" class="btn btn-secondary">Prijavi se</button></td>
@@ -81,11 +94,9 @@
 	            <td colspan=2 align="center"><p>Niste registrovani? <a href="/registracija.html">Kreirajte nalog</a></p></td>
 	            </tr>
           </table>
-          	             
-          
-        </form>
-      </div>
-    </div>
+
+  </form>
+</div>
   </body>
 </html>
 </html>
