@@ -64,6 +64,9 @@
         				 localStorage.setItem('user',JSON.stringify(result));
                 location.replace(getAdminUrlSlug(result));
         			
+        			},
+        			error: function(){
+        				alert("Email ili lozinka nisu ispravni! Pokusajte ponovo.");
         			}
         		})
     		}else{

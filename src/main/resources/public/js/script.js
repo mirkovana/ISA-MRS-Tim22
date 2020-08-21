@@ -1484,7 +1484,7 @@ function zahteviZaPAdmin() {
 	});
 }
 
-function dodavanjeAKC(){
+/*function dodavanjeAKC(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
 	
@@ -1515,6 +1515,16 @@ function dodavanjeAKC(){
 
 	});
 	
+}*/
+
+function emptySL(){
+	var x = document.getElementById("nazivLeka").value;
+    var y = document.getElementById("sifraLeka").value;
+    if (x == "" || y == "") {
+        
+        return 0;
+    };
+    return 1;
 }
 
 function dodavanjeSL(){
@@ -1522,60 +1532,81 @@ function dodavanjeSL(){
 	var data = getFormData($("#formaFiltr"));
 	
 	var org = JSON.stringify(data);
-	$.ajax({
-		url: "api/sifrarnikLekova",
-		type: "POST",
-		data: org,
-		contentType: "application/json",
-		dataType: "json",
-		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },
-		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			if(d.added) {
-				
-				
-			}else{
-				let isBoss = confirm("Uspesno dodavanje!");
-
-				window.location.replace("./homepageadminkc.html");
-				
-			}
-		} 
-
-	});
+	x = emptySL();
+	if(x == 1){
+		$.ajax({
+			url: "api/sifrarnikLekova",
+			type: "POST",
+			data: org,
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete : function (data) {
+				d = JSON.parse(data.responseText);
+				if(d.added) {
+					alert("Sifra leka vec postoji! Pokusajte ponovo.");
+				}else{
+					let isBoss = confirm("Uspesno dodavanje!");
 	
+					window.location.replace("./homepageadminkc.html");
+					
+				}
+			} 
+	
+		});
+	}else{
+		alert("Polja ne smeju ostati prazna!");
+	}
 }
+
+function emptySD(){
+	var x = document.getElementById("nazivDijagnoze").value;
+    var y = document.getElementById("sifraDijagnoze").value;
+    if (x == "" || y == "") {
+        
+        return 0;
+    };
+    return 1;
+}
+
 function dodavanjeSD(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
 	
 	var org = JSON.stringify(data);
-	$.ajax({
-		url: "api/sifrarnikDijagnoza",
-		type: "POST",
-		data: org,
-		contentType: "application/json",
-		dataType: "json",
-		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },
-		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			if(d.added) {
-				
-				
-			}else{
-				let isBoss = confirm("Uspesno dodavanje!");
-
-				window.location.replace("./homepageadminkc.html");
-			
-			}
-		} 
-
-	});
+	x = emptySD();
+	if(x == 1){
+		$.ajax({
+			url: "api/sifrarnikDijagnoza",
+			type: "POST",
+			data: org,
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete : function (data) {
+				d = JSON.parse(data.responseText);
+				if(d.added) {
+					alert("Dijagnoza sa unetom sifrom vec postoji! Pokusajte ponovo.");
+					
+				}else{
+					let isBoss = confirm("Uspesno dodavanje!");
 	
+					window.location.replace("./homepageadminkc.html");
+				
+				}
+			},
+			error: function(){
+				alert("Dijagnoza sa unetom sifrom vec postoji! Pokusajte ponovo.");
+			}
+	
+		});
+	}else{
+		alert("Polja ne smeju ostati prazna!");
+	}
 }
 
 function definisanjeSTP(){
@@ -1610,41 +1641,57 @@ function definisanjeSTP(){
 	});
 }
 
+function emptyDodavanjeKlinike(){
+    var y = document.getElementById("naziv").value;
+    var a = document.getElementById("adresa").value;
+    var s = document.getElementById("grad").value;
+    var f = document.getElementById("opis").value;
+    if (y == "" || a == "" || s == "" || f == "") {
+        
+        return 0;
+    };
+    return 1;
+}
 
 function dodavanjeKlinike(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
 	
 	var org = JSON.stringify(data);
-	$.ajax({
-		url: "api/klinike",
-		type: "POST",
-		data: org,
-		contentType: "application/json",
-		dataType: "json",
-		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },
-		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
-				
-			}else{
-				let isBoss = confirm("Uspesno dodata klinika!");
-
-				window.location.replace("./homepageadminkc.html");
-				$("#neuspesno").show();
-				$("#uspesno").hide();
-			}
-		} 
-
-	});
+	x = emptyDodavanjeKlinike();
+	if(x==1){
+		$.ajax({
+			url: "api/klinike",
+			type: "POST",
+			data: org,
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete : function (data) {
+				d = JSON.parse(data.responseText);
+				if(d.added) {
+					$("#uspesno").show();
+					$("#neuspesno").hide();
+					
+				}else{
+					let isBoss = confirm("Uspesno dodata klinika!");
+	
+					window.location.replace("./homepageadminkc.html");
+					$("#neuspesno").show();
+					$("#uspesno").hide();
+				}
+			} 
+	
+		});
+	}else{
+		alert("Polja ne smeju biti prazna!");
+	}
 	
 }
 
-function dodavanjeAK(){
+/*function dodavanjeAK(){
 	console.log("aaaaa")
 	var data = getFormData($("#formaFiltr"));
 	
@@ -1676,7 +1723,7 @@ function dodavanjeAK(){
 
 	});
 	
-}
+}*/
 
 function dodavanjeSala(){
 	console.log("aaaaa")
@@ -2305,35 +2352,24 @@ function izmenaProfilaAKC(){
 	
 	var org = JSON.stringify(dat);
 	var obj = JSON.parse(localStorage.getItem('user'));
-	$.ajax({
-		url: "api/adminiKC/" + obj.id,
-		type: "PUT",
-		data: org,
-		contentType:"application/json",
-		dataType: "json",
-		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },
-		complete : function (data) {
-			//localStorage.setItem('user',trenutni);
-			//d = JSON.parse(data.responseText);
-			//console.log(org);
-			//console.log("OVO JE DATA " + JSON.stringify(data).responseJSON);
-//			console.log("OVO JE DATA druga varijanta" + JSON.stringify(data.responseJSON));
-//			data.responseJSON.token=tok;
-//			data.responseJSON.role=aut;
-//			localStorage.setItem('user',JSON.stringify(data.responseJSON));
-//			//localStorage.setItem('user.token',tok);
-//			console.log("ovo je user novi???????" + localStorage.getItem('user') );
-			
-		} 
-	 /*   success: function(result){
-			 console.log(result);
-			 localStorage.setItem('user',JSON.stringify(result));
-			 localStorage.setItem(setItem('user')).token.accessToken, tok);
-			 }*/
-	});
-	
+	var x = emptyMSAKC();
+	if(x == 1){
+		$.ajax({
+			url: "api/adminiKC/" + obj.id,
+			type: "PUT",
+			data: org,
+			contentType:"application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete : function (data) {
+				alert("Izmene uspesno sacuvane! Izmene ce biti vidljive nakon sto se ponovo prijavite.");
+			} 
+		});
+	}else{
+		alert("Polja ne smeju ostati prazna!");
+	}
 }
 
 function izmenaProfilaAK(){
@@ -2353,6 +2389,7 @@ function izmenaProfilaAK(){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
+			alert("Izmene uspesno sacuvane! Izmene ce biti vidljive nakon sto se ponovo prijavite.");
 		}
 	});
 	
@@ -2375,6 +2412,7 @@ function izmenaProfilaLekara(){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
+			alert("Izmene uspesno sacuvane! Izmene ce biti vidljive nakon sto se ponovo prijavite.");
 		}
 	});
 	
@@ -2395,8 +2433,7 @@ function izmenaProfilaKlinike(klinika){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			
-			
+			alert("Izmene uspesno sacuvane! Izmene ce biti vidljive nakon sto se ponovo prijavite.");	
 		} 
 	 
 	});
@@ -2570,9 +2607,26 @@ function zakaziPregled(idPregleda) {
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
-		complete: function(data) {}
+		complete: function(data) {
+			alert("Uspesno ste zakazali pregled!");
+		}
 	});
 }
+
+function emptyMSAKC() {
+    var x = document.getElementById("msIme").value;
+    var y = document.getElementById("msPrezime").value;
+    var a = document.getElementById("adresa").value;
+    var s = document.getElementById("grad").value;
+    var d = document.getElementById("drzava").value;
+    var f = document.getElementById("brojTelefona").value;
+    if (x == "" || y == "" || a == "" || s == "" || d == "" || f == "") {
+        
+        return 0;
+    };
+    return 1;
+}
+
 
 function izmenaProfilaMS(){
 	var tok=JSON.parse(localStorage.getItem('user')).token;
@@ -2581,21 +2635,25 @@ function izmenaProfilaMS(){
 	
 	var org = JSON.stringify(dat);
 	var obj = JSON.parse(localStorage.getItem('user'));
-	$.ajax({
-		url: "api/medicinskeSestre/" + obj.id,
-		type: "PUT",
-		data: org,
-		contentType:"application/json",
-		dataType: "json",
-		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-	    },
-		complete : function (data) {
-			
-			
-		} 
-	 
-	});
+	var x = emptyMSAKC();
+	if(x == 1){
+		$.ajax({
+			url: "api/medicinskeSestre/" + obj.id,
+			type: "PUT",
+			data: org,
+			contentType:"application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete : function (data) {
+				alert("Izmene uspesno sacuvane! Izmene ce biti vidljive nakon sto se ponovo prijavite.");
+			} 
+		 
+		});
+	}else{
+		alert("Polja ne smeju ostati prazna!");
+	}
 	
 }
 
@@ -2877,8 +2935,7 @@ function odradiOveru(idRecepta){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			
-			
+			alert("Recept uspesno overen!");
 		} 
 	 
 	});
@@ -3446,11 +3503,27 @@ function filtrirajOcenuKlinike(){
 	}
 }
 
+function emptyPacijent() {
+    var x = document.getElementById("ime").value;
+    var y = document.getElementById("prezime").value;
+    var a = document.getElementById("adresa").value;
+    var s = document.getElementById("grad").value;
+    var d = document.getElementById("drzava").value;
+    var f = document.getElementById("brojTelefona").value;
+    if (x == "" || y == "" || a == "" || s == "" || d == "" || f == "") {
+        
+        return 0;
+    };
+    return 1;
+}
+
 function izmenaProfilaPacijenta(){
 	var dat = getFormData($("#formaIzmena"));
 	var org = JSON.stringify(dat);
 	var obj = JSON.parse(localStorage.getItem('user'));
-	$.ajax({
+	var x = emptyPacijent();
+	if(x == 1){
+        $.ajax({
 		url: "api/pacijenti/izmena/" + obj.id,
 		type: "PUT",
 		data: org,
@@ -3460,11 +3533,13 @@ function izmenaProfilaPacijenta(){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			
-			
+			alert("Izmene uspesno sacuvane! Izmene ce biti vidljive nakon sto se ponovo prijavite.");
 		} 
-	 
-	});
+        });
+    }else{
+    	alert("Polja ne smeju ostati prazna!");
+    }
+	
 }
 
 function prikazCenovnika(){
@@ -3613,15 +3688,7 @@ function sacuvajZahtevZaPregled(idLek){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
-				
-			}else{
-				$("#neuspesno").show();
-				$("#uspesno").hide();
-			}
+			alert("Zahtev za pregled uspesno poslat!");
 		} 
 
 	});
@@ -3766,8 +3833,7 @@ function sacuvajIzmeneZK(idZdravstvenogKartona) {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			
-			
+			alert("Izmene zdravstvenog kartona uspesno sacuvane!");
 		} 
 	 
 	});
@@ -3962,14 +4028,7 @@ function posaljiZahtevZaPregled(idPregleda){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
-			}else{
-				$("#neuspesno").show();
-				$("#uspesno").hide();
-			}
+			alert("Zahtev za pregled uspesno poslat!");
 		} 
 	});	
 }
@@ -3991,16 +4050,7 @@ function sacuvajIzvestajOPregledu(idPregleda){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
-				
-			}else{
-				
-				$("#neuspesno").show();
-				$("#uspesno").hide();
-			}
+			alert("Izvestaj o pregledu uspesno sacuvan!");
 		} 
 
 	});
@@ -4025,16 +4075,7 @@ console.log(data.nazivLeka);
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
-				
-			}else{
-				
-				$("#neuspesno").show();
-				$("#uspesno").hide();
-			}
+			alert("Uspesno kreiran recept!");
 		} 
 
 	});
@@ -4433,6 +4474,9 @@ function odbijZahtev(idZahtevaReg){
 		dataType: "json",
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+	    complete : function(data) {
+	    	alert("Zahtev za registraciju odbijen! Mail je poslat korisniku.");
 	    }
 	});
 	let isBoss = confirm("Mail poslat!");
@@ -4447,8 +4491,11 @@ function prihvatiZahtev(idZahtevaReg){
 		contentType: "application/json",
 		dataType: "json",
 		headers: {
-	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken}
-	//,
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken},
+	    complete : function(data) {
+	    	alert("Zahtev za registraciju prihvacen! Mail je poslat korisniku.");
+	    }
+	
 //	    success: function(){
 //	    	let isBoss = confirm("Uspesno!");
 //	  },
