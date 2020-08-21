@@ -114,7 +114,7 @@ public class KlinikaController {
 		klinika.setAdresa(klinikaDTO.getAdresa());
 		klinika.setGrad(klinikaDTO.getGrad());
 		klinika.setOpis(klinikaDTO.getOpis());
-		klinika.setOcena(klinikaDTO.getOcena());
+		klinika.setOcena(0);
 
 //		//MILAN: u modelu ste rekle da su klinika i cenovnik povezane i ovde se onda mora kreirati cenovnik i uvezati sa tom klinikom.
 //		Cenovnik cenovnik1 = new Cenovnik();

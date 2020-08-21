@@ -8,12 +8,119 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
+		<script>
+		$(document).ready(function(){
+	    	$("form[name='formaFiltr']").validate({
+	    		rules:{
+	    			ime:{
+	    				required: true,
+	    			},
+	    			prezime:{
+	    				required:true
+	    			},
+	    			username:{
+	    				required:true,
+	    				email : true
+	    			},
+	    			adresa:{
+	    				required:true
+	    			},
+	    			grad:{
+	    				required:true
+	    			},
+	    			drzava:{
+	    				required:true
+	    			},
+	    			brojTelefona:{
+	    				required:true,
+	    				number : true
+	    			},
+	    			password:{
+	    				required:true
+	    			}
+	    		},
+	    		 messages: {
+	    			 ime: "Niste uneli ime!",
+	    		     prezime: "Niste uneli prezime!",
+	    		     adresa: "Niste uneli adresu!",
+	    		     grad: "Niste uneli grad!",
+	    		     drzava: "Niste uneli drzavu!",
+	    		     brojTelefona: {
+	    		    	 required: "Niste uneli broj telefona!",
+	    		    	 number: "Broj telefona moze sadrzati samo cifre!"
+	    		     },
+	    		     password: "Niste uneli lozinku!",
+	    		     username: {
+	    		    	 required: "Niste uneli email!",
+	    		    	 email: "Email mora biti u formi primer@primer.com"
+	    		     }
+	    		}
+	    	})
+	    });
+		
+		function empty() {
+	        var x;
+	        x = document.getElementById("ime").value;
+	        y = document.getElementById("prezime").value;
+	        a = document.getElementById("username").value;
+	        s = document.getElementById("adresa").value;
+	        d = document.getElementById("grad").value;
+	        f = document.getElementById("drzava").value;
+	        g = document.getElementById("brojTelefona").value;
+	        j = document.getElementById("lozinka").value;
+	        if (x == "" || y == "" || a == "" || s == "" || d == "" || f == "" || g == "" || j == "") {
+	            
+	            return 0;
+	        }
+	        return 1;
+	    }
+		
+		$(document).ready(function(){
+			$("form[name='formaFiltr']").on('submit',function(e){
+	   			e.preventDefault();
+			var data = getFormData($("#formaFiltr"));
+			
+			var org = JSON.stringify(data);
+			x = empty();
+			if(x == 1){
+				$.ajax({
+					url: "api/adminiKC",
+					type: "POST",
+					data: org,
+					contentType: "application/json",
+					dataType: "json",
+					headers: {
+				        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+				    },
+					complete : function (data) {
+						d = JSON.parse(data.responseText);
+						if(d.added) {
+							$("#uspesno").show();
+							$("#neuspesno").hide();
+							
+						}else{
+							let isBoss = confirm("Uspesno dodat administrator klinickog centra!");
+	
+							window.location.replace("./homepageadminkc.html");
+							$("#neuspesno").show();
+							$("#uspesno").hide();
+						}
+					} 
+	
+				});
+			}else{
+				alert("Obavezna polja ne smeju biti prazna!");
+			}
+	    })
+		})
+		</script>
     </head>
     <body>
         <div>	
             <h1> <img src="./images/who.png" width="450" height="100" align="center"></h1>
         </div>
-        <form action="" id="formaFiltr">
+        <form action="" id="formaFiltr" name="formaFiltr">
         <table>
             <tr>
                 <td align="right">Ime</td>
@@ -49,7 +156,7 @@
             </tr>
             
             <tr>
-                <td colspan=2 align="center"><button type="button" class="btn btn-secondary" onclick="dodavanjeAKC()">Dodaj</button></td>
+                <td colspan=2 align="center"><button type="submit" class="btn btn-secondary">Dodaj</button></td>
             </tr>
         </table>           
 	</form>      

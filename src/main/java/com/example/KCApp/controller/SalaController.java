@@ -63,7 +63,7 @@ public class SalaController {
 
 	@Autowired
 	private AdministratorKlinikeService serviceAK;
-	
+
 	@Autowired
 	private ZahtevZaPregledService zzpService;
 
@@ -278,42 +278,45 @@ public class SalaController {
 			pomocna.add(term);
 		}
 
-		for (Pregled pp : preglediDatum) {
+		if (preglediDatum.isEmpty()) {
 			for (Sala s : saleKlinike) {
-				if (s.equals(pp.getSala())) {
-					System.out.println("USAO NEKAD");
-					if (pomocna.contains((pp.getVreme().toString().split(" ")[1]))) {
-						pomocna.remove(pp.getVreme().toString().split(" ")[1]);
+				for (String term : moguciTermini) {
+					naziviSala.add(s.getNazivSale() + "-" + term);
+				}
+			}
+		} else {
+			for (Pregled pp : preglediDatum) {
+				for (Sala s : saleKlinike) {
+					if (s.equals(pp.getSala())) {
+						System.out.println("USAO NEKAD");
+						if (pomocna.contains((pp.getVreme().toString().split(" ")[1]))) {
+							pomocna.remove(pp.getVreme().toString().split(" ")[1]);
+						}
+
+					} else {
+						for (String term : moguciTermini) {
+
+							naziviSala.add(s.getNazivSale() + "-" + term);
+						}
 					}
 
-				} else {
-					for (String term : moguciTermini) {
-
-						naziviSala.add(s.getNazivSale() + "-" + term);
-					}
 				}
 
 			}
 
-			
+			for (Pregled pp : preglediDatum) {
+				for (Sala s : saleKlinike) {
+					if (s.equals(pp.getSala())) {
 
-		}
-		
-		
-		for (Pregled pp : preglediDatum) {
-		for (Sala s : saleKlinike) {
-			if (s.equals(pp.getSala())) {
-
-				for (String p1 : pomocna) {
-					System.out.println(p1);
-					naziviSala.add(s.getNazivSale() + "-" + p1);
+						for (String p1 : pomocna) {
+							System.out.println(p1);
+							naziviSala.add(s.getNazivSale() + "-" + p1);
+						}
+					}
 				}
 			}
 		}
-		}
-		
-		
-		
+
 		// proveri salu i proveri satnicu
 		Set<String> set1 = new HashSet<String>();
 		set1.addAll(naziviSala);
@@ -323,11 +326,11 @@ public class SalaController {
 		return set1;
 	}
 
-	
 	@PostMapping(value = "/potvrdiSalu/{idZahteva}/{slobodneSale}", consumes = "application/json")
 	@PreAuthorize("hasRole('ADMINK')")
-	public ResponseEntity<?> dodajPregled(@PathVariable Integer idZahteva,@PathVariable String slobodneSale ) throws ParseException {
-		
+	public ResponseEntity<?> dodajPregled(@PathVariable Integer idZahteva, @PathVariable String slobodneSale)
+			throws ParseException {
+
 		String nazivSale = slobodneSale.split("-")[0];
 		String vreme = slobodneSale.split("-")[1];
 		ZahtevZaPregled z = zzpService.get(idZahteva);
@@ -338,17 +341,15 @@ public class SalaController {
 		p.setLekar(z.getLekar());
 		p.setPacijent(z.getPacijent());
 		p.setSala(sala);
-		String datumVreme = z.getVreme() + " " + vreme; 
+		String datumVreme = z.getVreme() + " " + vreme;
 		Date dd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datumVreme);
 		p.setVreme(dd);
 		p.setTipPregleda(z.getTipPregleda());
 		pregledService.save(p);
-		
+		zzpService.delete(idZahteva);
+
 		return null;
 
-		
-		
 	}
-	
-	
+
 }

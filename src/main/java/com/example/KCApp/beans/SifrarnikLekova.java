@@ -28,7 +28,7 @@ public class SifrarnikLekova {
 	@Column(name="nazivLeka", unique=false, nullable=false)
 	private String nazivLeka;
 	
-	@Column(name="sifraLeka", unique=true, nullable=false)
+	@Column(name="sifraLeka", unique=false, nullable=false)
 	private String sifraLeka;
 	
 	public SifrarnikLekova(String nazivLeka, String sifraLeka, Integer idSL, KlinickiCentar klinickiCentar) {
