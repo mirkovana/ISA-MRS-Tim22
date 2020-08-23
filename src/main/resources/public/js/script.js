@@ -537,6 +537,17 @@ function loadZahteviZaP(zahtevi) {
 	}
 }
 
+function loadZahteviZaOp(zahtevi) {
+	console.log("usao u load zahtevi za p");
+	$("#tabela_zahtevi_op tbody tr").remove(); 
+	$("#tabela_zahtevi_op thead ").remove();
+	var table = $("#tabela_zahtevi_p");
+	table.append(makeTableHeaderZahteviOp());
+	for(let z of zahtevi) {
+		table.append(makeTableRowZahteviOp(z));
+	}
+}
+
 //sifrarnik lekova
 function loadSifrarnikLekova(sl) {
 	obrisiTabele();
@@ -942,6 +953,8 @@ function makeTableHeaderZahteviP(){
 		
 		return row;
 }
+
+
 
 function makeTableRowSale(s) {
 	var row = "";
@@ -2797,6 +2810,8 @@ function obrisiTabele(){
 	$("#tabela_zahtevi_p thead ").remove();
 	$("#tabela_zahtevizr thead").remove();
 	$("#tabela_zahtevizr tbody tr").remove();
+	$("#tabela_zahtevi_op tbody tr").remove(); 
+	$("#tabela_zahtevi_op thead ").remove();
 	
 }
 
@@ -3996,7 +4011,14 @@ function zapocniPregled(idPregleda){
                 		<td align="right">Datum i vreme novog pregleda</td>
                 		<td><input type="text" name="datumVreme" id="datumVreme" ></td>
             		</tr>
-            		<tr><td  class='align-middle' ><button type="button" onclick="posaljiZahtevZaPregled(\'${idPregleda}\')">Posalji zahtev za pregled</button></td></tr>				
+ 
+            		<tr><td  class='align-middle' ><button type="button" onclick="posaljiZahtevZaPregled(\'${idPregleda}\')">Posalji zahtev za pregled</button></td></tr>		
+            		<tr>
+                		<td align="right">Datum i vreme nove operacije</td>
+                		<td><input type="text" name="datumVremeO" id="datumVremeO" ></td>
+            		</tr>		
+            		<tr><td  class='align-middle' ><button type="button" onclick="posaljiZahtevZaOperaciju(\'${idPregleda}\')">Posalji zahtev za operaciju</button></td></tr>		
+            		
             </tr>
 						
 			</tbody>
@@ -4029,6 +4051,27 @@ function posaljiZahtevZaPregled(idPregleda){
 	    },
 		complete : function (data) {
 			alert("Zahtev za pregled uspesno poslat!");
+		} 
+	});	
+}
+
+function posaljiZahtevZaOperaciju(idPregleda){
+	var data = getFormData($("#formaIzmena"));
+	console.log("usao u posalji zahtev za operaciju");
+	console.log(data.datumVremeO);
+	console.log(idPregleda);
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/zahteviZaOperaciju/datumVremeO/" + data.datumVremeO + "/" + idPregleda,
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			alert("Zahtev za operaciju uspesno poslat!");
 		} 
 	});	
 }
