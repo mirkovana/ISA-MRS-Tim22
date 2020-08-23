@@ -123,6 +123,10 @@ body {
   .dropdown:hover .dropdown-content {
     display: block;
   }
+  
+  .izgledTabele{
+    background-color: white;  
+  }
 
   
 p{
@@ -220,4 +224,30 @@ p{
             margin: 0 auto;
         
         }
+        
+#tabela_modal td {
+  min-width: 100px;
+}
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+}
+#modalnaF {
+    background-color: #fefefe;
+    margin: 4% auto 15% auto;
+    border: 1px solid #888;
+    width: 40%; 
+	padding-bottom: 30px;
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
         
