@@ -536,7 +536,16 @@ function loadZahteviZaP(zahtevi) {
 		table.append(makeTableRowZahteviP(z));
 	}
 }
-
+function loadZahteviZaO(zahtevi) {
+	console.log("usao u load zahtevi za p");
+	$("#tabela_zahtevi_o tbody tr").remove(); 
+	$("#tabela_zahtevi_o thead ").remove();
+	var table = $("#tabela_zahtevi_o");
+	table.append(makeTableHeaderZahteviOPA());	//ovde sam stala, napravi header i row
+	for(let z of zahtevi) {
+		table.append(makeTableRowZahteviOPA(z));
+	}
+}
 function loadZahteviZaOp(zahtevi) {
 	console.log("usao u load zahtevi za p");
 	$("#tabela_zahtevi_op tbody tr").remove(); 
@@ -953,7 +962,21 @@ function makeTableHeaderZahteviP(){
 		
 		return row;
 }
-
+function makeTableHeaderZahteviOPA(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Lekar</th>
+						<th>Pacijent</th>
+						<th>Vreme</th>
+						<th>Sala</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
 
 
 function makeTableRowSale(s) {
@@ -1259,7 +1282,21 @@ function makeTableRowZahteviP(z) {
 	
 	return row;
 }
-
+function makeTableRowZahteviOPA(z) {
+	
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${z.lekar.ime}'>${z.lekar.ime}</td>
+			<td class="izgledTabele" id='${z.pacijent.ime}'>${z.pacijent.ime}</td>
+			<td class="izgledTabele" id='${z.vreme}'>${z.vreme}</td>
+			<td class="izgledTabele"><input type="button" id="odaberi" value="Odaberi salu" onClick="odaberiSaluModOP(${z.idZahtevaZaOperaciju})"/></td>
+		
+		</tr>`;
+	
+	return row;
+}
 function prihvatiZO(idZahteva){
 	$.ajax({
 		url: "api/zahteviOdsustva/prihvati/" + idZahteva,
@@ -1476,6 +1513,7 @@ function zahteviAdmin() {
 }
 
 function zahteviZaPAdmin() {
+	obrisiTabele();
 	console.log("usao u zahtevi za p admin");
 	var obj = JSON.parse(localStorage.getItem('user'));
 	console.log(obj.id);
@@ -1493,6 +1531,28 @@ function zahteviZaPAdmin() {
 			zahtevi = JSON.parse(data.responseText);
 			console.log(zahtevi);
 			loadZahteviZaP(zahtevi);
+		}
+	});
+}
+function zahteviZaOAdmin() {
+	obrisiTabele();
+	console.log("usao u zahtevi za p admin");
+	var obj = JSON.parse(localStorage.getItem('user'));
+	console.log(obj.id);
+	$.ajax({
+		url: "api/zahteviZaOperaciju/adminK/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			//console.log(data);
+			//console.log(data.responseText);
+			zahtevi = JSON.parse(data.responseText);
+			console.log(zahtevi);
+			loadZahteviZaO(zahtevi);
 		}
 	});
 }
@@ -4596,6 +4656,36 @@ function odaberiSaluMod(z){
 			dobaviSlobodneSale(z);
 		$("#modal-wrapper").show();
 }
+function odaberiSaluModOP(z){
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Odaberite salu</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr><td>
+					<select name="slobodneSale" id="slobodneSale">
+		  				
+		  			</select>
+		  			</td></tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="potvrdiSaluOP(${z})">Potvrdi</button></td></tr>							
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+			dobaviSlobodneSaleOP(z);
+		$("#modal-wrapper").show();
+}
+
+
+
 function dobaviSlobodneSale(zahtev){
 	//var povratna;
 	$.ajax({
@@ -4644,3 +4734,54 @@ function potvrdiSalu(idZahteva){
 	});
 	
 }
+
+//OPERACIJE
+function dobaviSlobodneSaleOP(zahtev){
+	//var povratna;
+	$.ajax({
+		url: "api/slobodneSaleOP/"+zahtev,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function(data) {
+			ss = JSON.parse(data.responseText);
+			napuniSlobodneSaleOP(ss);
+			
+		}
+	});
+	
+}
+function napuniSlobodneSaleOP(ss){
+	console.log(ss);
+	var m = "";	
+	var modal=$("#slobodneSale");	
+	for(let s of ss){
+		
+		m = `<option id="slobodneSale" value=${s}>${s}</option>`;
+		modal.append(m);
+	}
+}
+
+function potvrdiSaluOP(idZahteva){
+	
+	console.log(idZahteva)
+	var data = getFormData($("#formaIzmena"));
+	
+	console.log(data.slobodneSale);
+	
+	$.ajax({
+		url: "api/potvrdiSaluOP/" + idZahteva + "/" + data.slobodneSale,
+		type: "POST",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    }
+
+	});
+	
+}
+

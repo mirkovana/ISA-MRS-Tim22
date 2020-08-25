@@ -94,5 +94,25 @@ public class ZahtevZaOperacijuController {
 		return new ResponseEntity<>(new ZahtevZaOperacijuDTO(zahtev), HttpStatus.CREATED);
 		
 	}
+	/*PRIKAZ SVIH ZAHTEVA KLINIKE ZA ADMINA KLINIKE*/
+	@GetMapping(value="/zahteviZaOperaciju/adminK/{id}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<ZahtevZaOperaciju> getAllZahteviZaOKlinikeAK(Model model, @PathVariable Integer id) {
 
+		
+		AdministratorKlinike ak = serviceAK.get(id);
+		Klinika k = ak.getKlinika();
+		List<ZahtevZaOperaciju> sviZahtevi = service.listAll();
+		List<ZahtevZaOperaciju> zahteviAK = new ArrayList<ZahtevZaOperaciju>();
+		
+		for (ZahtevZaOperaciju z : sviZahtevi) {
+			if (z.getKlinika() == k) {
+				zahteviAK.add(z);
+			}
+		}
+		
+		System.out.println(zahteviAK);
+
+		return zahteviAK;
+	}
 }

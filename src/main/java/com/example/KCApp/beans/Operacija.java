@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "operacija")
-@SequenceGenerator(name = "operacijaIdSeq", sequenceName = "operacijaIdGen", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "operacijaIdSeq", sequenceName = "operacijaIdGen", initialValue = 2, allocationSize = 1)
 public class Operacija {
 	
 	@Id
@@ -32,7 +32,7 @@ public class Operacija {
 	@Column(name="trajanje", unique=false, nullable=false)
 	private int trajanje;
 	
-	@Column(name="dodatneInfoOOperaciji", unique=false, nullable=false)
+	@Column(name="dodatneInfoOOperaciji", unique=false, nullable=true)
 	private String dodatneInfoOOperaciji;
 	
 	@ManyToOne
