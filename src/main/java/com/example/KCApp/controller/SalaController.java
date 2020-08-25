@@ -31,6 +31,7 @@ import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Operacija;
 import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.Sala;
+import com.example.KCApp.beans.ZahtevZaOperaciju;
 import com.example.KCApp.beans.ZahtevZaPregled;
 import com.example.KCApp.repository.SalaRepository;
 import com.example.KCApp.service.AdministratorKlinikeService;
@@ -38,6 +39,7 @@ import com.example.KCApp.service.KlinikaService;
 import com.example.KCApp.service.OperacijaService;
 import com.example.KCApp.service.PregledService;
 import com.example.KCApp.service.SalaService;
+import com.example.KCApp.service.ZahtevZaOperacijuService;
 import com.example.KCApp.service.ZahtevZaPregledService;
 
 import javassist.NotFoundException;
@@ -67,6 +69,10 @@ public class SalaController {
 	@Autowired
 	private ZahtevZaPregledService zzpService;
 
+	@Autowired
+	private ZahtevZaOperacijuService zzoService;
+	
+	
 	/* ISPISIVANJE SALA */
 	@GetMapping(value = "/sale")
 	@PreAuthorize("hasRole('ADMINK')")
@@ -235,7 +241,7 @@ public class SalaController {
 
 	}
 
-	/* DOBAVI SALE ZA OPERACIJU I ZADATI DATUM */
+	/* DOBAVI SALE ZA PREGLED I ZADATI DATUM */
 	@GetMapping(value = "/slobodneSale/{zahtev}")
 	@PreAuthorize("hasRole('ADMINK')")
 	public Set<String> dobaviSaleZaDatum(@PathVariable ZahtevZaPregled zahtev) throws ParseException { // da li treba i
@@ -351,5 +357,122 @@ public class SalaController {
 		return null;
 
 	}
+	
+	
+	
+	/* DOBAVI SALE ZA OPERACIJU I ZADATI DATUM */
+	@GetMapping(value = "/slobodneSaleOP/{zahtev}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public Set<String> dobaviSaleZaDatumOP(@PathVariable ZahtevZaOperaciju zahtev) throws ParseException { // da li treba i
+																										// po nazivu?
+		List<Sala> sveSale = service.listAll(); // sve sale u bazi
+		// Klinika k = klinikaService.get(zahtev.getKlinika().getIdKlinike());
+		List<Sala> saleKlinike = new ArrayList<Sala>();
+		List<String> naziviSala = new ArrayList<String>();
+		for (Sala s : sveSale) {
+			if (s.getKlinika() == zahtev.getKlinika()) {
+				saleKlinike.add(s);
 
+			}
+		}
+		List<String> moguciTermini = new ArrayList<String>();
+		moguciTermini.add("11:00:00.0");
+		moguciTermini.add("12:00:00.0");
+		moguciTermini.add("13:00:00.0");
+		moguciTermini.add("14:00:00.0");
+		moguciTermini.add("15:00:00.0");
+		moguciTermini.add("16:00:00.0");
+		DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+		List<Operacija> sviPregledi = operacijaService.findAllByKlinika(zahtev.getKlinika());
+		Date datumPregleda = new Date();
+		datumPregleda = formatter2.parse(zahtev.getVreme());
+		// System.out.println("OVAJ NE KONV" + zahtev.getVreme());
+
+		List<Operacija> preglediDatum = new ArrayList<Operacija>();
+		for (Operacija p : sviPregledi) {
+			// System.out.println("DATUM PREGLEDA " + datumPregleda);
+
+			if (zahtev.getVreme().equals(p.getVremeOperacije().toString().split(" ")[0])) {
+
+				preglediDatum.add(p);
+			}
+		}
+		List<String> pomocna = new ArrayList<String>();
+		for (String term : moguciTermini) {
+
+			pomocna.add(term);
+		}
+
+		if (preglediDatum.isEmpty()) {
+			for (Sala s : saleKlinike) {
+				for (String term : moguciTermini) {
+					naziviSala.add(s.getNazivSale() + "-" + term);
+				}
+			}
+		} else {
+			for (Operacija pp : preglediDatum) {
+				for (Sala s : saleKlinike) {
+					if (s.equals(pp.getSala())) {
+						System.out.println("USAO NEKAD");
+						if (pomocna.contains((pp.getVremeOperacije().toString().split(" ")[1]))) {
+							pomocna.remove(pp.getVremeOperacije().toString().split(" ")[1]);
+						}
+
+					} else {
+						for (String term : moguciTermini) {
+
+							naziviSala.add(s.getNazivSale() + "-" + term);
+						}
+					}
+
+				}
+
+			}
+
+			for (Operacija pp : preglediDatum) {
+				for (Sala s : saleKlinike) {
+					if (s.equals(pp.getSala())) {
+
+						for (String p1 : pomocna) {
+							System.out.println(p1);
+							naziviSala.add(s.getNazivSale() + "-" + p1);
+						}
+					}
+				}
+			}
+		}
+
+		// proveri salu i proveri satnicu
+		Set<String> set1 = new HashSet<String>();
+		set1.addAll(naziviSala);
+		for (String s : set1) {
+			System.out.println(s);
+		}
+		return set1;
+	}
+	@PostMapping(value = "/potvrdiSaluOP/{idZahteva}/{slobodneSale}", consumes = "application/json")
+	@PreAuthorize("hasRole('ADMINK')")
+	public ResponseEntity<?> dodajPregledOP(@PathVariable Integer idZahteva, @PathVariable String slobodneSale)
+			throws ParseException {
+
+		String nazivSale = slobodneSale.split("-")[0];
+		String vreme = slobodneSale.split("-")[1];
+		ZahtevZaOperaciju z = zzoService.get(idZahteva);
+		Operacija p = new Operacija();
+		Sala sala = service.findByNazivSale(nazivSale);
+		
+		p.setKlinika(z.getKlinika());
+		p.setLekar(z.getLekar());
+		p.setPacijent(z.getPacijent());
+		p.setSala(sala);
+		String datumVreme = z.getVreme() + " " + vreme;
+		Date dd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datumVreme);
+		p.setVremeOperacije(dd);
+		
+		operacijaService.save(p);
+		zzoService.delete(idZahteva);
+
+		return null;
+
+	}
 }
