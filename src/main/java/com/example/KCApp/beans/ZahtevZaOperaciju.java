@@ -42,6 +42,8 @@ public class ZahtevZaOperaciju {
 	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
 	private Klinika klinika;
 
+	@Column(name="dodatneInfoOOperaciji", unique=false, nullable=true)
+	private String dodatneInfoOOperaciji;
 	
 	@Column(name="vreme", unique=false, nullable=false)
 	private String vreme;
@@ -49,13 +51,14 @@ public class ZahtevZaOperaciju {
 	public ZahtevZaOperaciju() {
 	}
 	
-	public ZahtevZaOperaciju(Integer idZahtevaZaOperaciju, Pacijent pacijent, Lekar lekar, Klinika klinika, String vreme) {
+	public ZahtevZaOperaciju(Integer idZahtevaZaOperaciju, Pacijent pacijent, Lekar lekar, Klinika klinika, String vreme, String dodatneInfo) {
 		super();
 		this.idZahtevaZaOperaciju = idZahtevaZaOperaciju;
 		this.pacijent = pacijent;
 		this.lekar = lekar;
 		this.klinika = klinika;
 		this.vreme = vreme;
+		this.dodatneInfoOOperaciji=dodatneInfo;
 	}
 
 	public Integer getIdZahtevaZaOperaciju() {
@@ -105,5 +108,13 @@ public class ZahtevZaOperaciju {
 
 	public void setVreme(String vreme) {
 		this.vreme = vreme;
+	}
+
+	public String getDodatneInfoOOperaciji() {
+		return dodatneInfoOOperaciji;
+	}
+
+	public void setDodatneInfoOOperaciji(String dodatneInfoOOperaciji) {
+		this.dodatneInfoOOperaciji = dodatneInfoOOperaciji;
 	}
 }

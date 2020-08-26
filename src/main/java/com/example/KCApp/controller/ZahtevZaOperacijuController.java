@@ -59,9 +59,10 @@ public class ZahtevZaOperacijuController {
 	@Autowired
 	private LekarService lekarService;	
 	
-	@PostMapping(value= "/zahteviZaOperaciju/datumVremeO/{datumVreme}/{idPregleda}",consumes = "application/json")
+	@PostMapping(value= "/zahteviZaOperaciju/datumVremeO/{datumVreme}/{idPregleda}/{infooop}",consumes = "application/json")
 	@PreAuthorize("hasRole('LEKAR')")
-	public ResponseEntity<ZahtevZaOperacijuDTO> saveZZOL(@RequestBody ZahtevZaOperacijuDTO zahtevZaOperacijuDTO, @PathVariable String datumVreme, @PathVariable Integer idPregleda) {
+	public ResponseEntity<ZahtevZaOperacijuDTO> saveZZOL(@RequestBody ZahtevZaOperacijuDTO zahtevZaOperacijuDTO, @PathVariable String datumVreme,
+			@PathVariable Integer idPregleda, @PathVariable String infooop) {
 		System.out.println("USAO U ZAHTEV ZA OPERACIJU LEKAR");
 		
 		ZahtevZaOperaciju zahtev = new ZahtevZaOperaciju();
@@ -85,8 +86,7 @@ public class ZahtevZaOperacijuController {
 		zahtev.setLekar(l);
 		zahtev.setPacijent(pac);
 		zahtev.setKlinika(k);
-		
-
+		zahtev.setDodatneInfoOOperaciji(infooop);
 		zahtev=service.save(zahtev);
 		
 		System.out.println("ZAHTEV" + zahtev);
