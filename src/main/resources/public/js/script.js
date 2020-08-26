@@ -4076,7 +4076,11 @@ function zapocniPregled(idPregleda){
             		<tr>
                 		<td align="right">Datum i vreme nove operacije</td>
                 		<td><input type="text" name="datumVremeO" id="datumVremeO" ></td>
-            		</tr>		
+            		</tr>	
+            		<tr>
+                		<td align="right">Dodatne informacije o operaciji</td>
+                		<td><textarea name="infooop"  id = "infooop"></textarea></td>
+            		</tr>	
             		<tr><td  class='align-middle' ><button type="button" onclick="posaljiZahtevZaOperaciju(\'${idPregleda}\')">Posalji zahtev za operaciju</button></td></tr>		
             		
             </tr>
@@ -4120,9 +4124,11 @@ function posaljiZahtevZaOperaciju(idPregleda){
 	console.log("usao u posalji zahtev za operaciju");
 	console.log(data.datumVremeO);
 	console.log(idPregleda);
+	var infooop= document.getElementById('infooop').value;
+	console.log(infooop);
 	var org = JSON.stringify(data);
 	$.ajax({
-		url: "api/zahteviZaOperaciju/datumVremeO/" + data.datumVremeO + "/" + idPregleda,
+		url: "api/zahteviZaOperaciju/datumVremeO/" + data.datumVremeO + "/" + idPregleda+"/"+infooop,
 		type: "POST",
 		data: org,
 		contentType: "application/json",

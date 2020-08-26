@@ -467,6 +467,7 @@ public class SalaController {
 		p.setLekar(z.getLekar());
 		p.setPacijent(z.getPacijent());
 		p.setSala(sala);
+		p.setDodatneInfoOOperaciji(z.getDodatneInfoOOperaciji());
 		String datumVreme = z.getVreme() + " " + vreme;
 		Date dd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datumVreme);
 		p.setVremeOperacije(dd);
