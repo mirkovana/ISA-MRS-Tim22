@@ -4779,6 +4779,9 @@ function potvrdiSaluOP(idZahteva){
 		dataType: "json",
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+	    complete : function(data) {
+	    	alert("Operacija uspesno zakazana! Mail obavestenja poslat lekaru i pacijentu.");
 	    }
 
 	});
