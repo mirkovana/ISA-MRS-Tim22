@@ -35,6 +35,7 @@ import com.example.KCApp.beans.ZahtevZaOperaciju;
 import com.example.KCApp.beans.ZahtevZaPregled;
 import com.example.KCApp.repository.SalaRepository;
 import com.example.KCApp.service.AdministratorKlinikeService;
+import com.example.KCApp.service.EmailService;
 import com.example.KCApp.service.KlinikaService;
 import com.example.KCApp.service.OperacijaService;
 import com.example.KCApp.service.PregledService;
@@ -71,7 +72,8 @@ public class SalaController {
 
 	@Autowired
 	private ZahtevZaOperacijuService zzoService;
-	
+	@Autowired
+	private EmailService emailService;
 	
 	/* ISPISIVANJE SALA */
 	@GetMapping(value = "/sale")
@@ -470,6 +472,8 @@ public class SalaController {
 		p.setVremeOperacije(dd);
 		
 		operacijaService.save(p);
+		emailService.slanjePacijentuOdobrenaOperacija(p);
+		emailService.slanjeLekaruOdobrenaOperacija(p);
 		zzoService.delete(idZahteva);
 
 		return null;
