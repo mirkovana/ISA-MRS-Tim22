@@ -1435,6 +1435,7 @@ function dodavanjeZahtevaOdsustva(){
 	console.log(data);
 	console.log(obj);
 	var org = JSON.stringify(data);
+	console.log(org.datumPocetka)
 	$.ajax({
 		url: "api/zahteviOdsustva/" + obj.id,
 		type: "POST",
@@ -4068,14 +4069,14 @@ function zapocniPregled(idPregleda){
 		  			<td><input type="button" id="rec" value="Kreiraj recept" onClick="kreirajRecept(\'${idPregleda}\')"/></td></tr>
 		  			
 		  			<tr>
-                		<td align="right">Datum i vreme novog pregleda</td>
-                		<td><input type="text" name="datumVreme" id="datumVreme" ></td>
+                		<td align="right">Datum novog pregleda</td>
+                		<td><input type="date" name="datumVreme" id="datumVreme" ></td>
             		</tr>
  
             		<tr><td  class='align-middle' ><button type="button" onclick="posaljiZahtevZaPregled(\'${idPregleda}\')">Posalji zahtev za pregled</button></td></tr>		
             		<tr>
-                		<td align="right">Datum i vreme nove operacije</td>
-                		<td><input type="text" name="datumVremeO" id="datumVremeO" ></td>
+                		<td align="right">Datum nove operacije</td>
+                		<td><input type="date" name="datumVremeO" id="datumVremeO" ></td>
             		</tr>	
             		<tr>
                 		<td align="right">Dodatne informacije o operaciji</td>
