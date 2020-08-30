@@ -150,5 +150,26 @@ public class EmailService {
 		}
 	}
 	
-	
+	//SLANJE LEKARU/MED SESTRI DA JE ODBIJENO ODSUSTVO
+
+		public void slanjeOdbijenoOdsustva(ZahtevOdsustva zahtev, String razlog) {
+			System.out.println("Slanje emaila...");
+			
+			try {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				mail.setTo(zahtev.getUser().getEmail());
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Odbijen zahtev za odsustvo");
+				mail.setText("Postovani/Postovana " + zahtev.getUser().getIme() + ",\n\nVas zahtev za odsustvo je odbijen:\n\nDatum i vreme pocetka: "+ zahtev.getDatumPocetka()+
+						"\nDatum i vreme kraja: " + zahtev.getDatumKraja() +
+						"\nRazlog odsustva: " + zahtev.getRazlog() +
+						"\nRazlog odbijanja Vaseg zahteva: " + razlog
+						);
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+			}
+			catch(Exception e) {
+				System.out.println("Doslo je do greske...");
+			}
+		}
 }

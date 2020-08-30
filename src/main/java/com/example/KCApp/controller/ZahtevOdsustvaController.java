@@ -144,9 +144,16 @@ public class ZahtevOdsustvaController {
 	}
 	
 	/*ODBIJ*/
-	@PutMapping(value="/zahteviOdsustva/odbij/{id}", consumes = "application/json")
+	@PutMapping(value="/zahteviOdsustva/odbij/{id}/{razlog}", consumes = "application/json")
 	@PreAuthorize("hasRole('ADMINK')")
-	public ZahtevOdsustva odbijZO(@PathVariable Integer id) throws NotFoundException {
+	public ZahtevOdsustva odbijZO(@PathVariable Integer id, @PathVariable String razlog) throws NotFoundException {
+		List<ZahtevOdsustva> zahtevi = service.listAll();
+		for (ZahtevOdsustva z : zahtevi) {
+			if (z.getIdZahtevaOdsustva() == id) {
+				z.setOdobren(false);
+				emailService.slanjeOdbijenoOdsustva(z, razlog);
+			}
+		}
 		return repository.findById(id)
 				.map(zahtev->{
 					zahtev.setOdobren(false);
