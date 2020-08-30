@@ -1259,7 +1259,7 @@ function makeTableRowZahteviO(z) {
 			<td class="izgledTabele" id='${z.datumKraja}'>${z.datumKraja}</td>
 			<td class="izgledTabele" id='${z.razlog}'>${z.razlog}</td>
 			<td class="izgledTabele"><input type="button" id="prihvatanje" value="Prihvati" onClick="prihvatiZO(${z.idZahtevaOdsustva})"/></td>
-			<td class="izgledTabele"><input type="button" id="odbijanje" value="Odbij" onClick="odbijZO(${z.idZahtevaOdsustva})"/></td>
+			<td class="izgledTabele"><input type="button" id="odbijanje" value="Odbij" onClick="odbijanjeZO(${z.idZahtevaOdsustva})"/></td>
 		</tr>`;
 	
 	return row;
@@ -1315,8 +1315,9 @@ function prihvatiZO(idZahteva){
 }
 
 function odbijZO(idZahteva){
+	var razlog = document.getElementById("razlog").value;
 	$.ajax({
-		url: "api/zahteviOdsustva/odbij/" + idZahteva,
+		url: "api/zahteviOdsustva/odbij/" + idZahteva + "/" + razlog,
 		type: "PUT",
 		contentType:"application/json",
 		dataType: "json",
@@ -1329,6 +1330,32 @@ function odbijZO(idZahteva){
 			zahteviAdmin();
 		}
 	});
+}
+
+function odbijanjeZO(idZO){
+	$("#modalnaForma div").remove(); 
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Razlog odbijanja zahteva za odsustvo</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+						  <td colspan = 2><textarea name="razlog"  id = "razlog"></textarea></td>
+				    </tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="odbijZO(${idZO})">Posalji</button></td></tr>							
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+	
 }
 
 function makeTableRowLekari(l) {
