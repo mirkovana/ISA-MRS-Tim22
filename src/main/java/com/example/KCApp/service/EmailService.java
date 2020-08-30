@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Operacija;
+import com.example.KCApp.beans.ZahtevOdsustva;
 import com.example.KCApp.beans.ZahtevZaRegistraciju;
 
 
@@ -125,4 +126,29 @@ public class EmailService {
 		catch(Exception e) {
 			System.out.println("Doslo je do greske...");
 		}
-}}
+	}
+	
+	//SLANJE LEKARU/MED SESTRI DA JE ODOBRENO ODSUSTVO
+
+	public void slanjeOdobrenoOdsustva(ZahtevOdsustva zahtev) {
+		System.out.println("Slanje emaila...");
+		
+		try {
+			SimpleMailMessage mail = new SimpleMailMessage();
+			mail.setTo(zahtev.getUser().getEmail());
+			mail.setFrom(env.getProperty("spring.mail.username"));
+			mail.setSubject("Odobren zahtev za odsustvo");
+			mail.setText("Postovani/Postovana " + zahtev.getUser().getIme() + ",\n\nVas zahtev za odsustvo je odobren:\n\nDatum i vreme pocetka: "+ zahtev.getDatumPocetka()+
+					"\nDatum i vreme kraja: " + zahtev.getDatumKraja() +
+					"\nRazlog odsustva: " + zahtev.getRazlog()
+					);
+			javaMailSender.send(mail);
+			System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println("Doslo je do greske...");
+		}
+	}
+	
+	
+}
