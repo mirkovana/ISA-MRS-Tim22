@@ -44,9 +44,6 @@ public class ZahtevOdsustva {
 	@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
 	private User user;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "idKlinike", referencedColumnName = "idKlinike", nullable = false)
-//	private Integer klinika;
 
 	public ZahtevOdsustva(String razlog,boolean odobren, Integer idZahtevaOdsustva, Date datumPocetka, Date datumKraja, User user, boolean zavrseno
 			) {
@@ -121,13 +118,13 @@ public class ZahtevOdsustva {
 	
 	
 
-//	public Integer getKlinika() {
-//		return klinika;
-//	}
-//
-//	public void setKlinika(Integer klinika) {
-//		this.klinika = klinika;
-//	}
+	/*public Klinika getKlinika() {
+		return klinika;
+	}
+
+	public void setKlinika(Klinika klinika) {
+		this.klinika = klinika;
+	}*/
 
 	
 

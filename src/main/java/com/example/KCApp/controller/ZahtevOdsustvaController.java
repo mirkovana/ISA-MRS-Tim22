@@ -33,6 +33,7 @@ import com.example.KCApp.beans.ZahtevOdsustva;
 import com.example.KCApp.repository.SalaRepository;
 import com.example.KCApp.repository.ZahtevOdsustvaRepository;
 import com.example.KCApp.service.AdministratorKlinikeService;
+import com.example.KCApp.service.EmailService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.MedicinskaSestraService;
 import com.example.KCApp.service.UserService;
@@ -61,6 +62,9 @@ public class ZahtevOdsustvaController {
 	
 	@Autowired
 	private ZahtevOdsustvaRepository repository;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	
 	@PostMapping(value= "/zahteviOdsustva/{id}",consumes = "application/json")
@@ -123,6 +127,13 @@ public class ZahtevOdsustvaController {
 	@PutMapping(value="/zahteviOdsustva/prihvati/{id}", consumes = "application/json")
 	@PreAuthorize("hasRole('ADMINK')")
 	public ZahtevOdsustva prihvatiZO(@PathVariable Integer id) throws NotFoundException {
+		List<ZahtevOdsustva> zahtevi = service.listAll();
+		for (ZahtevOdsustva z : zahtevi) {
+			if (z.getIdZahtevaOdsustva() == id) {
+				z.setOdobren(true);
+				emailService.slanjeOdobrenoOdsustva(z);
+			}
+		}
 		return repository.findById(id)
 				.map(zahtev->{
 					zahtev.setOdobren(true);

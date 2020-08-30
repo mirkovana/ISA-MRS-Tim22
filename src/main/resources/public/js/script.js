@@ -1308,6 +1308,7 @@ function prihvatiZO(idZahteva){
 	    },
 		complete : function (data) {
 			console.log("zavrsio");
+			alert("Odsustvo je uspesno odobreno! Mail obavestenja je poslat zaposlenom.");
 			zahteviAdmin();
 		}
 	});
@@ -1324,6 +1325,7 @@ function odbijZO(idZahteva){
 	    },
 		complete : function (data) {
 			console.log("zavrsio");
+			alert("Odsustvo je uspesno odbijeno! Mail obavestenja je poslat zaposlenom.");
 			zahteviAdmin();
 		}
 	});
