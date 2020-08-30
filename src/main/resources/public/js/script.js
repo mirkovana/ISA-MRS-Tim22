@@ -4144,7 +4144,7 @@ function posaljiZahtevZaPregled(idPregleda){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			alert("Zahtev za pregled uspesno poslat!");
+			alert("Zahtev za pregled uspesno kreiran i poslat mail administratoru klinike!");
 		} 
 	});	
 }
@@ -4167,7 +4167,7 @@ function posaljiZahtevZaOperaciju(idPregleda){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			alert("Zahtev za operaciju uspesno poslat!");
+			alert("Zahtev za operaciju uspesno kreiran i poslat mail administratoru klinike!");
 		} 
 	});	
 }

@@ -1,6 +1,8 @@
 package com.example.KCApp.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -10,9 +12,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.example.KCApp.beans.AdministratorKlinike;
+import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Operacija;
 import com.example.KCApp.beans.ZahtevOdsustva;
+import com.example.KCApp.beans.ZahtevZaOperaciju;
+import com.example.KCApp.beans.ZahtevZaPregled;
 import com.example.KCApp.beans.ZahtevZaRegistraciju;
 
 
@@ -32,6 +38,9 @@ public class EmailService {
 	
 	@Autowired
 	private LekarService lekarService;
+	
+	@Autowired
+	private KlinikaService klinikaService;
 	
 	@Async
 	public void sendNotificaitionDeniedAsync(ZahtevZaRegistraciju user, String opis) throws MailException, InterruptedException {
@@ -164,6 +173,75 @@ public class EmailService {
 						"\nDatum i vreme kraja: " + zahtev.getDatumKraja() +
 						"\nRazlog odsustva: " + zahtev.getRazlog() +
 						"\nRazlog odbijanja Vaseg zahteva: " + razlog
+						);
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+			}
+			catch(Exception e) {
+				System.out.println("Doslo je do greske...");
+			}
+		}
+		
+		//SLANJE ADMINU KLINIKE DA JE DODAT NOVI ZAHTEV ZA PREGLED
+
+		public void slanjeZahtevaZPAdminu(ZahtevZaPregled zahtev) {
+			System.out.println("Slanje emaila...");
+			
+			try {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				List<Klinika> klinike = klinikaService.listAll();
+				for (Klinika k : klinike) {
+					if (k.getIdKlinike() == zahtev.getKlinika().getIdKlinike()) {
+						Set<AdministratorKlinike> admini = k.getAdministratoriKlinike();
+						for (AdministratorKlinike admin : admini) {
+							if (admin.getKlinika().getIdKlinike() == k.getIdKlinike()) {
+								System.out.println("MEJL ADMINA" + admin.getEmail());
+								mail.setTo(admin.getEmail());
+							}
+						}
+					}
+				}
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Novi zahtev za pregled");
+				mail.setText("Postovani/Postovana,\n\nPristigao je nov zahtev za pregled:\n\nDatum i vreme pocetka: "+ zahtev.getVreme()+
+						"\nPacijent: " + zahtev.getPacijent().getIme() + " " + zahtev.getPacijent().getPrezime() +
+						"\nLekar: " + zahtev.getLekar().getIme() + " " + zahtev.getLekar().getPrezime() +
+						"\nTip pregleda: " + zahtev.getTipPregleda() +
+						"\nCena: " + zahtev.getCena()
+						);
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+			}
+			catch(Exception e) {
+				System.out.println("Doslo je do greske...");
+			}
+		}
+		
+		//SLANJE ADMINU KLINIKE DA JE DODAT NOVI ZAHTEV ZA OPERACIJU
+
+		public void slanjeZahtevaZOpAdminu(ZahtevZaOperaciju zahtev) {
+			System.out.println("Slanje emaila...");
+			
+			try {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				List<Klinika> klinike = klinikaService.listAll();
+				for (Klinika k : klinike) {
+					if (k.getIdKlinike() == zahtev.getKlinika().getIdKlinike()) {
+						Set<AdministratorKlinike> admini = k.getAdministratoriKlinike();
+						for (AdministratorKlinike admin : admini) {
+							if (admin.getKlinika().getIdKlinike() == k.getIdKlinike()) {
+								System.out.println("MEJL ADMINA" + admin.getEmail());
+								mail.setTo(admin.getEmail());
+							}
+						}
+					}
+				}
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Novi zahtev za operaciju");
+				mail.setText("Postovani/Postovana,\n\nPristigao je nov zahtev za operaciju:\n\nDatum i vreme pocetka: "+ zahtev.getVreme()+
+						"\nPacijent: " + zahtev.getPacijent().getIme() + " " + zahtev.getPacijent().getPrezime() +
+						"\nLekar: " + zahtev.getLekar().getIme() + " " + zahtev.getLekar().getPrezime() +
+						"\nDodatne informacije o operaciji: " + zahtev.getDodatneInfoOOperaciji()
 						);
 				javaMailSender.send(mail);
 				System.out.println("Email poslat!");

@@ -33,6 +33,7 @@ import com.example.KCApp.beans.ZahtevZaPregled;
 import com.example.KCApp.beans.ZahtevZaOperaciju;
 import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.CenovnikService;
+import com.example.KCApp.service.EmailService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.OperacijaService;
 import com.example.KCApp.service.PacijentService;
@@ -58,6 +59,9 @@ public class ZahtevZaOperacijuController {
 	
 	@Autowired
 	private LekarService lekarService;	
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@PostMapping(value= "/zahteviZaOperaciju/datumVremeO/{datumVreme}/{idPregleda}/{infooop}",consumes = "application/json")
 	@PreAuthorize("hasRole('LEKAR')")
@@ -91,6 +95,7 @@ public class ZahtevZaOperacijuController {
 		
 		System.out.println("ZAHTEV" + zahtev);
 		System.out.println("id " + zahtev.getIdZahtevaZaOperaciju() + ", lekar " + zahtev.getLekar() + ", pac " + zahtev.getPacijent() + ", dv " + zahtev.getVreme() + ", klinika " + zahtev.getKlinika() + ", tp ");
+		emailService.slanjeZahtevaZOpAdminu(zahtev);
 		return new ResponseEntity<>(new ZahtevZaOperacijuDTO(zahtev), HttpStatus.CREATED);
 		
 	}
