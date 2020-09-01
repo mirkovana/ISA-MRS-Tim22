@@ -2902,6 +2902,8 @@ function obrisiTabele(){
 	$("#tabela_zahtevizr tbody tr").remove();
 	$("#tabela_zahtevi_op tbody tr").remove(); 
 	$("#tabela_zahtevi_op thead ").remove();
+	$("#tabela_prihoda tbody tr").remove(); 
+	$("#tabela_prihoda thead ").remove();
 	
 }
 
@@ -3281,6 +3283,35 @@ function pretragaLekara(){
 				loadLekariKlinike(lekari);	
 			}
 		});		
+	}
+}
+
+function izvestajPrihod(){
+	$("#datumOd").show();
+	$("#datumDo").show();
+	$("#prikaziPrihod").show();
+}
+
+function prikaziPrihodK(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	var datumOd = document.getElementById("datumOd").value;
+	var datumDo = document.getElementById("datumDo").value;
+	if (datumOd != null && datumDo != null){
+		$.ajax({
+			url: "api/klinike/adminK/" + obj.id + "/datumOd/" + datumOd + "/datumDo/" + datumDo,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				console.log("USLO OVDE");
+				prihod = JSON.parse(data.responseText);
+				console.log(prihod);
+				loadPrihodKlinike(prihod);	
+			}
+		});	
 	}
 }
 
@@ -3694,6 +3725,39 @@ function loadCenovnici(cenovnici){
 	for(let c of cenovnici) {
 		table.append(makeTableRowCenovnici(c));
 	}
+}
+
+function loadPrihodKlinike(prihod){
+	console.log("uslo u loadprihodklinike");
+	$("#tabela_prihoda tbody tr").remove(); 
+	$("#tabela_prihoda thead ").remove();
+	var table = $("#tabela_prihoda");
+	table.append(makeTableHeaderPrihodKlinike());	
+	for(let p of prihod) {
+		table.append(makeTableRowPrihodKlinike(p));
+	}
+}
+
+function makeTableHeaderPrihodKlinike(){
+	console.log("uslo u header");
+	var row="";
+	row =
+		`<thead class="thead-light" bgcolor="white">
+				<tr>
+					<th>Prihod</th>
+				</tr>
+		</thead>`;
+	return row;
+}
+
+function makeTableRowPrihodKlinike(p) {
+	console.log("uslo u row");
+	var row = "";
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${p}'>${p}</td>
+		</tr>`;
+	return row;
 }
 
 function loadCenovniciAdmin(cenovnici){
