@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.beans.Operacija;
-import com.example.KCApp.beans.Pregled;
+import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.service.OperacijaService;
+import com.example.KCApp.service.PacijentService;
 
 @RestController
 @RequestMapping(value="/api")
@@ -22,23 +23,17 @@ public class OperacijaController {
 	@Autowired
 	private OperacijaService service;
 	
+	@Autowired
+	private PacijentService serviceP;
+	
 	/*ISPISIVANJE OPERACIJA*/
 	@GetMapping(value="/operacije/{id}")
 	@PreAuthorize("hasRole('PACIJENT')")
 	public List<Operacija> getAllOperacije(Model model, @PathVariable Integer id) {
-		List<Operacija> listaOperacija = service.listAll();
-		for(Operacija o : listaOperacija)
-		{
-			System.out.println("USAO SAM U FOR");
-			System.out.println("OVO JE ID PACIJENTA " + o.getPacijent().getId());
-			if(id.equals(o.getPacijent().getId()))
-			{
-				System.out.println("USAO SAM U IF");
-				model.addAttribute("listaOperacija", listaOperacija);
-				return listaOperacija;
-			}
-		}
-		List<Operacija> prazna = new ArrayList<Operacija>();
-		return prazna;
+		
+		Pacijent p = serviceP.get(id);
+		List<Operacija> listaOperacija = service.findAllByPacijent(p);
+		
+		return listaOperacija;
 	}
 }

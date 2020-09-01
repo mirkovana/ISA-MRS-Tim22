@@ -63,15 +63,11 @@ public class PregledController {
 	@PreAuthorize("hasRole('PACIJENT')")
 	public List<Pregled> getAllPregledi(Model model, @PathVariable Integer id) {
 		List<Pregled> listaPregled = service.listAll();
-		for (Pregled p : listaPregled) {
-			if (id.equals(p.getPacijent().getId())) {
-				System.out.println("USAO SAM U IF");
-				model.addAttribute("listaPregled", listaPregled);
-				return listaPregled;
-			}
-		}
-		List<Pregled> prazna = new ArrayList<Pregled>();
-		return prazna;
+		Pacijent p = serviceP.get(id);
+		List<Pregled> povratna = service.findAllByPacijent(p);
+		
+		
+		return povratna;
 	}
 
 	/* ISPISIVANJE PREGLEDA NA OSNOVU ID-A KLINIKE */
@@ -197,5 +193,21 @@ public class PregledController {
 		}
 
 		return pregledi;
+	}
+	
+	/* ISPISIVANJE PREGLEDA LEKAR */
+	@GetMapping(value = "/lekar/pregledi/rk/{id}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Pregled> getAllPreglediLekar(Model model, @PathVariable Integer id) {
+		List<Pregled> listaPregled = service.listAll();
+		List<Pregled> listaPovratna = new ArrayList<Pregled>();
+		for (Pregled p : listaPregled) {
+			if (id.equals(p.getLekar().getId())) {
+				listaPovratna.add(p);
+			
+			}
+		}
+		//List<Pregled> prazna = new ArrayList<Pregled>();
+		return listaPovratna;
 	}
 }
