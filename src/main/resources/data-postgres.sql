@@ -9,7 +9,7 @@ INSERT INTO AUTHORITY (id, name) VALUES (4, 'ROLE_MS');
 INSERT INTO AUTHORITY (id, name) VALUES (5, 'ROLE_PACIJENT');
 
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (1, 'kor1@nesto.com', '$2a$10$muToaJQ.dwEA6N0m5pWK.Olvh5Hv3ISc7Ey09z7did.8MJJAT.lJW', 'Jovan', 'Markovic', 'kor1@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
-INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (2, 'kor2@nesto.com', '$2a$04$V1cQC0KkbsXN9lMFZODesett3rfcV./sCmo3Tw67ovOq4mOyVGdUa', 'Marina', 'Jankovic', 'kor2@nesto.com', 'Perina 10', 'Beograd', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
+INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (2, 'mana81098@gmail.com', '$2a$04$V1cQC0KkbsXN9lMFZODesett3rfcV./sCmo3Tw67ovOq4mOyVGdUa', 'Marina', 'Jankovic', 'mana81098@gmail.com', 'Perina 10', 'Beograd', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (3, 'kor3@nesto.com', '$2a$04$52k6A0/UyGxOynirBrA0Rujaf3P7.CjK6EvQYm4.IdOVHtxTegqRW', 'Dragan', 'Peric', 'kor3@nesto.com', 'Perina 10', 'Subotica', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (4, 'kor4@nesto.com', '$2a$04$KqyVa3roUm.huHtwyuMqAeYoeKYSLG02chedIZwwRijp5UpWuNv4K', 'Jelena', 'Milosevic', 'kor4@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (5, 'kor5@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Stefan', 'Petrovic', 'kor5@nesto.com', 'Perina 10', 'Zrenjanin', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
@@ -17,7 +17,7 @@ INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, dr
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (7, 'kor7@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Marija', 'Jovanovic', 'kor7@nesto.com', 'Perina 10', 'Beograd', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (8, 'kor8@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Darko', 'Djokovic', 'kor8@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (9, 'kor9@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Milos', 'Tipsarevic', 'kor9@nesto.com', 'Perina 10', 'Nis', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
-INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (10,'kor10@nesto.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Zarko', 'Raznatovic', 'kor10@nesto.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
+INSERT INTO USERS (id, username, password, ime, prezime, email, adresa, grad, drzava, broj_telefona, last_password_reset_date) VALUES (10,'makyns98@gmail.com', '$2a$04$fuRxrbBYQ8vvxfufN3NRTuBEkZGiNMZZBBsLUV6rUDFFXvVT3naRK', 'Zarko', 'Raznatovic', 'makyns98@gmail.com', 'Perina 10', 'Novi Sad', 'Srbija', '062555888', '2019-10-01 21:58:58.508-07');
 
 
 insert into pacijenti(id, enabled, broj_osiguranika) values (5,true ,123);
@@ -70,7 +70,7 @@ insert into tippregledan(idtpn, nazivtpn, id_klinike) values (1, 'PEDIJATRIJA', 
 insert into tippregledan(idtpn, nazivtpn, id_klinike) values (2, 'DERMATOLOGIJA', 2);
 
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(1, 1000, 'KARDIOLOGIJA', 1, '2020-5-1 12:00:00', 1, 5, 1, 3);
-insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(3, 1000, 'KARDIOLOGIJA', 1, '2020-5-1 16:00:00', 1, 10, 1, 3);
+insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(3, 1000, 'KARDIOLOGIJA', 1, '2020-11-1 16:00:00', 1, 10, 1, 3);
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(2, 1000, 'DERMATOLOGIJA', 1, '2020-5-1 15:00:00', 1, null, 1, 3);
 insert into operacija(id_operacije, dodatne_infoooperaciji, trajanje, vreme_operacije, id_klinike, id_sale, id, id_lekara)values(1, 'operacija tetive', 1, '2020-6-1 12:00:00', 1, 1, 5, 3);
 insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id) values (1, 1.05, 'A+', 55.5, 170.00,5);

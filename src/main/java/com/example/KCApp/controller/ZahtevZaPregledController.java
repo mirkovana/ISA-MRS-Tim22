@@ -82,6 +82,7 @@ public class ZahtevZaPregledController {
 		}
 		zahtev.setCena(cen.getCena());
 		zahtev=service.save(zahtev);
+		emailService.slanjeZahtevaZPAdminu(zahtev);
 		return new ResponseEntity<>(new ZahtevZaPregledDTO(zahtev), HttpStatus.CREATED);
 	}
 	

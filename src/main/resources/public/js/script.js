@@ -5090,3 +5090,87 @@ function potvrdiSaluOP(idZahteva){
 	
 }
 
+function setUpUserPageZakP() {
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pregledi/zakazani/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			pregledi = JSON.parse(data.responseText);
+			console.log(pregledi)
+			loadZakazaniPregledi(pregledi);
+			
+		}
+	});
+}
+
+function loadZakazaniPregledi(pregledi) {
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
+	$("#tabela_pregledi tbody tr").remove(); 
+	$("#tabela_pregledi thead ").remove();
+	var table = $("#tabela_pregledi");
+	table.append(makeTableHeaderPPZakazani());
+	for(let p of pregledi) {
+		table.append(makeTableRowPPZakazani(p));
+	}
+}
+
+function makeTableHeaderPPZakazani(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Datum</th>
+						<th>Vreme</th>
+						<th>Trajanje</th>
+						<th>Sala</th>
+						<th>Tip</th>
+						<th>Otkazi pregled</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowPPZakazani(p){
+	var row = "";
+	var deli = p.vreme.split("T");
+	var datum = deli[0];
+	var deli1 = deli[1].split(".");
+	var vreme = deli1[0];
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${p.vreme}'>${datum}</td>
+			<td class="izgledTabele" id='${p.vreme}'>${vreme}</td>
+			<td class="izgledTabele" id='${p.trajanje}'>${p.trajanje}</td>
+			<td class="izgledTabele" id='${p.sala}'>${p.sala.nazivSale}</td>
+			<td class="izgledTabele" id='${p.tipPregleda}'>${p.tipPregleda}</td>
+			<td class="izgledTabele"><input type="button" id="profilPacijenta" value="Otkazi" onClick="otkaziPregled(${p.idPregleda})"/></td>
+		</tr>`;
+	
+	return row;
+}
+
+function otkaziPregled(idPregleda) {
+	$.ajax({
+		url: "api/pregledi/obrisi/" + idPregleda,
+		type: "PUT",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			alert("Uspesno otkazan pregled!");
+		}
+	});
+}

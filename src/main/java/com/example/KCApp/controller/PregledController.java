@@ -3,6 +3,7 @@ package com.example.KCApp.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import com.example.KCApp.DTO.PregledDTO;
 import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
+import com.example.KCApp.beans.Operacija;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.Sala;
@@ -58,16 +61,44 @@ public class PregledController {
 
 	SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 
-	/* ISPISIVANJE PREGLEDA */
+	/* ISPISIVANJE PREGLEDA - ISTORIJA PREGLEDA */
 	@GetMapping(value = "/pregledi/{id}")
 	@PreAuthorize("hasRole('PACIJENT')")
 	public List<Pregled> getAllPregledi(Model model, @PathVariable Integer id) {
 		List<Pregled> listaPregled = service.listAll();
+		List<Pregled> listaPregleda = new ArrayList<Pregled>();
 		Pacijent p = serviceP.get(id);
 		List<Pregled> povratna = service.findAllByPacijent(p);
+		Date date = new Date(); 
+		for(Pregled pr : povratna) {
+			//System.out.println(date.compareTo(pr.getVreme()));
+			if(date.compareTo(pr.getVreme())>0) {
+				listaPregleda.add(pr);
+			}
+		}
 		
 		
-		return povratna;
+		return listaPregleda;
+	}
+	
+	/* ISPISIVANJE PREGLEDA - TRENUTNI PREGLEDI */
+	@GetMapping(value = "/pregledi/zakazani/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public List<Pregled> getAllPreglediZakazani(Model model, @PathVariable Integer id) {
+		List<Pregled> listaPregled = service.listAll();
+		List<Pregled> listaPregleda = new ArrayList<Pregled>();
+		Pacijent p = serviceP.get(id);
+		List<Pregled> povratna = service.findAllByPacijent(p);
+		Date date = new Date(); 
+		for(Pregled pr : povratna) {
+			//System.out.println(date.compareTo(pr.getVreme()));
+			if(date.compareTo(pr.getVreme())<0) {
+				listaPregleda.add(pr);
+			}
+		}
+		
+		
+		return listaPregleda;
 	}
 
 	/* ISPISIVANJE PREGLEDA NA OSNOVU ID-A KLINIKE */
@@ -209,5 +240,11 @@ public class PregledController {
 		}
 		//List<Pregled> prazna = new ArrayList<Pregled>();
 		return listaPovratna;
+	}
+	
+	@PutMapping(value= "/pregledi/obrisi/{idPregleda}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public void deletePregled(@PathVariable Integer idPregleda) {
+		service.delete(idPregleda);
 	}
 }
