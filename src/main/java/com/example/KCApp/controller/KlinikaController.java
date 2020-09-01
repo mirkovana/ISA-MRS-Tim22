@@ -1,8 +1,14 @@
 package com.example.KCApp.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;  
+
+
 import javax.validation.Valid;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -277,4 +283,75 @@ public class KlinikaController {
 		}
 		return filtriraneKlinike;
 	}
+	
+	/* PRIHOD KLINIKE PO OBA DATUMA*/
+	@GetMapping(value = "/klinike/adminK/{idAdmina}/datumOd/{datumOd}/datumDo/{datumDo}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Integer> findPrihodKlinikeOba(@PathVariable Integer idAdmina, @PathVariable String datumOd, @PathVariable String datumDo) throws ParseException {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika klinikaAK = ak.getKlinika();
+		Set<Pregled> pregledi = klinikaAK.getPregledi();
+		List<Integer> prihodi = new ArrayList<Integer>();
+		Integer prihod = 0;
+		Date datumOd2=new SimpleDateFormat("yyyy-MM-dd").parse(datumOd);  
+		Date datumDo2=new SimpleDateFormat("yyyy-MM-dd").parse(datumDo);  
+		for (Pregled p : pregledi) {
+			System.out.println("svi " + p);
+			if (p.getVreme().after(datumOd2) && p.getVreme().before(datumDo2)) {
+				System.out.println("u datumu " + p);
+				prihod += p.getCena();
+				System.out.println("prihod" + prihod);
+			}
+		}
+		System.out.println("konacni prihod" + prihod);
+		prihodi.add(prihod);
+		return prihodi;
+	}
+	
+	
+	/* PRIHOD KLINIKE PO OD
+	@GetMapping(value = "/klinike/adminK/{idAdmina}/datumOd/{datumOd}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Integer> findPrihodKlinikeOd(@PathVariable Integer idAdmina, @PathVariable String datumOd) throws ParseException {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika klinikaAK = ak.getKlinika();
+		Set<Pregled> pregledi = klinikaAK.getPregledi();
+		List<Integer> prihodi = new ArrayList<Integer>();
+		Integer prihod = 0;
+		Date datumOd2=new SimpleDateFormat("yyyy-MM-dd").parse(datumOd);  
+		for (Pregled p : pregledi) {
+			System.out.println("svi " + p);
+			if (p.getVreme().after(datumOd2)) {
+				System.out.println("u datumu " + p);
+				prihod += p.getCena();
+				System.out.println("prihod" + prihod);
+			}
+		}
+		System.out.println("konacni prihod" + prihod);
+		prihodi.add(prihod);
+		return prihodi;
+	}*/
+	
+	/* PRIHOD KLINIKE PO DO
+	@GetMapping(value = "/klinike/adminK/{idAdmina}/datumDo/{datumDo}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Integer> findPrihodKlinikeOba(@PathVariable Integer idAdmina, @PathVariable String datumDo) throws ParseException {
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika klinikaAK = ak.getKlinika();
+		Set<Pregled> pregledi = klinikaAK.getPregledi();
+		List<Integer> prihodi = new ArrayList<Integer>();
+		Integer prihod = 0;
+		Date datumDo2=new SimpleDateFormat("yyyy-MM-dd").parse(datumDo);  
+		for (Pregled p : pregledi) {
+			System.out.println("svi " + p);
+			if (p.getVreme().before(datumDo2)) {
+				System.out.println("u datumu " + p);
+				prihod += p.getCena();
+				System.out.println("prihod" + prihod);
+			}
+		}
+		System.out.println("konacni prihod" + prihod);
+		prihodi.add(prihod);
+		return prihodi;
+	}*/
 }
