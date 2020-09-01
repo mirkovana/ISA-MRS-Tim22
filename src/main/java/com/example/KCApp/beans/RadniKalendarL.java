@@ -32,10 +32,10 @@ public class RadniKalendarL {
 	@JsonBackReference
 	private Lekar lekar;
 	
-	@Column(name="datum_od", unique=false, nullable=false)
+	@Column(name="datum_od", unique=false, nullable=true)
 	private LocalDate datumOd;
 	
-	@Column(name="datum_do", unique=false, nullable=false)
+	@Column(name="datum_do", unique=false, nullable=true)
 	private LocalDate datumDo;
 
 	public Integer getIdRadnogKalendara() {
