@@ -260,7 +260,7 @@ public class EmailService {
 				System.out.println("MAIL PACIJENTA JE  " + pregled.getPacijent().getEmail());
 				mail.setFrom(env.getProperty("spring.mail.username"));
 				mail.setSubject("Odobren zahtev za pregled");
-				mail.setText("Postovani,\n\nZahtev za pregled je odobren:\n\nDatum i vreme: "+ pregled.getVreme()+
+				mail.setText("Postovani,\n\nZahtev za pregled je odobren i pregled je zakazan:\n\nDatum i vreme: "+ pregled.getVreme()+
 						
 						"\nLekar: " + (pregled.getLekar().getIme()) + " " + 
 						(pregled.getLekar().getPrezime())+
@@ -276,29 +276,55 @@ public class EmailService {
 			}
 		}
 		
+		//SLANJE MEJLA LEKARU DA JE ODOBREN PREGLED
+		public void slanjeLekaruOdobrenPregled(Pregled pregled) {
+			System.out.println("Slanje emaila...");
+		
+			try {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				mail.setTo(pregled.getLekar().getEmail());
+				System.out.println("MAIL LEKARA JE  " + pregled.getLekar().getEmail());
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Odobren zahtev za pregled");
+				mail.setText("Postovani,\n\nZahtev za pregled je odobren i pregled je zakazan:\n\nDatum i vreme: "+ pregled.getVreme()+
+						
+						"\nLekar: " + (pregled.getLekar().getIme()) + " " + 
+						(pregled.getLekar().getPrezime())+
+						"\nPacijent: " + pregled.getPacijent().getIme() + " " + pregled.getPacijent().getPrezime() + 
+						"\nSala: " + pregled.getSala().getNazivSale() + " " + pregled.getSala().getBrojSale()						);
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+			}
+			catch(Exception e) {
+				System.out.println("Doslo je do greske...");
+			}
+		}
+		
 		//SLANJE MEJLA PACIJENTU DA JE ZAKAZAN UNAPRED DEFINISAN PREGLED
-				public void zakazanPredefinisan(Pregled pregled) {
-					System.out.println("Slanje emaila...");
+		public void zakazanPredefinisan(Pregled pregled) {
+			System.out.println("Slanje emaila...");
+		
+			try {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				mail.setTo(pregled.getPacijent().getEmail());
+				System.out.println("MAIL PACIJENTA JE  " + pregled.getPacijent().getEmail());
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Obavestenje o zakazanom pregledu");
+				mail.setText("Postovani,\n\nUspesno ste zakazali pregled:\n\nDatum i vreme: "+ pregled.getVreme()+
+						
+						"\nLekar: " + (pregled.getLekar().getIme()) + " " + 
+						(pregled.getLekar().getPrezime())+
+						"\nPacijent: " + pregled.getPacijent().getIme() + " " + pregled.getPacijent().getPrezime() + 
+						"\nSala: " + pregled.getSala().getNazivSale() + " " + pregled.getSala().getBrojSale() +
+						"\nUkoliko Vam termin ne odgovara pregled mozete otkazati na svom profilu, u odeljku Zakazani pregledi."
+						);
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+			}
+			catch(Exception e) {
+				System.out.println("Doslo je do greske...");
+			}
+		}
 				
-					try {
-						SimpleMailMessage mail = new SimpleMailMessage();
-						mail.setTo(pregled.getPacijent().getEmail());
-						System.out.println("MAIL PACIJENTA JE  " + pregled.getPacijent().getEmail());
-						mail.setFrom(env.getProperty("spring.mail.username"));
-						mail.setSubject("Obavestenje o zakazanom pregledu");
-						mail.setText("Postovani,\n\nUspesno ste zakazali pregled:\n\nDatum i vreme: "+ pregled.getVreme()+
-								
-								"\nLekar: " + (pregled.getLekar().getIme()) + " " + 
-								(pregled.getLekar().getPrezime())+
-								"\nPacijent: " + pregled.getPacijent().getIme() + " " + pregled.getPacijent().getPrezime() + 
-								"\nSala: " + pregled.getSala().getNazivSale() + " " + pregled.getSala().getBrojSale() +
-								"\nUkoliko Vam termin ne odgovara pregled mozete otkazati na svom profilu, u odeljku Zakazani pregledi."
-								);
-						javaMailSender.send(mail);
-						System.out.println("Email poslat!");
-					}
-					catch(Exception e) {
-						System.out.println("Doslo je do greske...");
-					}
-				}
+		
 }

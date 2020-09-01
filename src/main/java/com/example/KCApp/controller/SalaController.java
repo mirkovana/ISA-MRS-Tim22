@@ -356,6 +356,7 @@ public class SalaController {
 		pregledService.save(p);
 		zzpService.delete(idZahteva);
         emailService.slanjePacijentuOdobrenPregled(p);
+        emailService.slanjeLekaruOdobrenPregled(p);
 		
 		return null;
 
