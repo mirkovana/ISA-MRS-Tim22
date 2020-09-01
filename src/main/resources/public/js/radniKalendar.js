@@ -28,7 +28,15 @@ function prikaziPreglede(){
 		 							type: "birthday"
 		 					};
 		 					events.push(podaci);
-	 				}
+	 				    }else{
+	 				    	podaci = {
+		 							id: 'r' + pregl.idPregleda +  'p', 
+		 							name: "P: " + " " +pregl.vreme.toString(), 
+		 							date: new Date(pregl.vreme),  
+		 							type: "birthday"
+		 					};
+		 					events.push(podaci);
+	 				    }
 	 					}
 	 			 
 	    	
