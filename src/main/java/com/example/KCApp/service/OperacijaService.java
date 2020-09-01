@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Operacija;
-import com.example.KCApp.beans.Pregled;
+import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.repository.OperacijaRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,5 +36,8 @@ public class OperacijaService {
 	}
 	public List<Operacija> findAllByKlinika(Klinika k){
 		return repo.findAllByKlinika(k);
+	}
+	public List<Operacija> findAllByPacijent(Pacijent p){
+		return repo.findAllByPacijent(p);
 	}
 }
