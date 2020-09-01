@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,12 +23,12 @@ import com.example.KCApp.DTO.PregledDTO;
 import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
 import com.example.KCApp.beans.Lekar;
-import com.example.KCApp.beans.Operacija;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.Sala;
 import com.example.KCApp.repository.PregledRepository;
 import com.example.KCApp.service.AdministratorKlinikeService;
+import com.example.KCApp.service.EmailService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.PacijentService;
 import com.example.KCApp.service.PregledService;
@@ -58,6 +57,9 @@ public class PregledController {
 
 	@Autowired
 	private PregledRepository repository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 
@@ -200,6 +202,7 @@ public class PregledController {
 		return repository.findById(idPregleda).map(pregled -> {
 
 			pregled.setPacijent(p);
+			emailService.zakazanPredefinisan(pregled);;
 			return repository.save(pregled);
 		}).orElseThrow(() -> new NotFoundException("Pregled nije pronadjen sa id : " + idPregleda));
 

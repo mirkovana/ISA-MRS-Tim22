@@ -281,6 +281,7 @@ function lekariZaIzvestaj() {
 //klinike
 function setUpUserPageAKC() {
 	$("#pretraga").show();
+	$("#datumBiranje").show();
 	$("#dan").show();
 	$("#mesec").show();
 	$("#godina").show();
@@ -3089,6 +3090,7 @@ function obrisiTabele(){
 
 function obrisiPretragu(){
 	$("#pretraga").hide();
+	$("#datumBiranje").hide();
 	$("#dan").hide();
 	$("#mesec").hide();
 	$("#godina").hide();
