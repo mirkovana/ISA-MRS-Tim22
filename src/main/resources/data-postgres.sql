@@ -66,6 +66,9 @@ insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (2, 11, 'Sal
 insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (3, 12, 'Sala12', 2);
 insert into sala(id_sale, broj_sale, naziv_sale, id_klinike) values (4, 13, 'Sala13', 2);
 
+insert into tippregledan(idtpn, nazivtpn, id_klinike) values (1, 'PEDIJATRIJA', 1);
+insert into tippregledan(idtpn, nazivtpn, id_klinike) values (2, 'DERMATOLOGIJA', 2);
+
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(1, 1000, 'KARDIOLOGIJA', 1, '2020-5-1 12:00:00', 1, 5, 1, 3);
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(3, 1000, 'KARDIOLOGIJA', 1, '2020-5-1 16:00:00', 1, 10, 1, 3);
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(2, 1000, 'DERMATOLOGIJA', 1, '2020-5-1 15:00:00', 1, null, 1, 3);

@@ -21,6 +21,8 @@
 				$("#datumOd").hide();
 				$("#datumDo").hide();
 				$("#prikaziPrihod").hide();
+				$("#pretragaNazivTPN").hide();
+				$("#pretraziTPN").hide();
 			});
 		</script>
 	</head>
@@ -42,6 +44,8 @@
 				<a href="#listalekara" onClick="prikazLekara()">Lekari</a>
 				<a href="./dodavanjeSala.html" >Dodavanje sala</a>
 				<a href="#izmenasala" onClick="izmenaSala()">Sale</a>
+				<a href="./dodavanjeTP.html" >Dodavanje tipova pregleda</a>
+				<a href="#izmenatp" onClick="izmenaTPs()">Tipovi pregleda</a>
 				<a href="#odmor" onClick="zahteviAdmin()">Prihvatanje/odbijanje zahteva za odmor/odsustvo</a>
 				<a href="#zakazivanjepio" onClick="zahteviZaPAdmin()">Zakazivanje pregleda</a>
 				<a href="#zakazivanjepio" onClick="zahteviZaOAdmin()">Zakazivanje operacija</a>
@@ -54,11 +58,15 @@
 			  <input type = "text" placeholder="Naziv" id = "pretragaNaziv"/>
 			  <input type = "text" placeholder="Broj" id = "pretragaBroj"/>
 			  <button type="submit" class="btn btn-secondary" id="pretraziSale" onClick="pretragaSalaAdmin()">Pretrazi</button>
+			  <input type = "text" placeholder="Naziv tipa pregleda" id = "pretragaNazivTPN"/>
+			  <button type="submit" class="btn btn-secondary" id="pretraziTPN" onClick="pretragaTPN()">Pretrazi</button>
 			  <input type = "date" placeholder="Od" id = "datumOd"/>
 			  <input type = "date" placeholder="Do" id = "datumDo"/>
 			  <button type="submit" class="btn btn-secondary" id="prikaziPrihod" onClick="prikaziPrihodK()">Prikazi</button>
 			  <p id="zauzeto">Rezervisana sala ne moze da se obrise</p>
 			  <table class="table" id="tabela_sale" >
+			  </table>
+			  <table class="table" id="tabela_tp" >
 			  </table>
 			  <table class="table" id="tabela_lekari" >
 			  </table>

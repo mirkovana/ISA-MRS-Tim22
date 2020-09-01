@@ -1859,6 +1859,186 @@ function dodavanjeSala(){
 	});
 }
 
+function dodavanjeTP(){
+	console.log("aaaaa")
+	var data = getFormData($("#formaFiltr"));
+	var obj = JSON.parse(localStorage.getItem('user'));
+	
+	var org = JSON.stringify(data);
+	$.ajax({
+		url: "api/tipoviPregledaN/dodavanje/" + obj.id,
+		type: "POST",
+		data: org,
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+	    complete : function (data) {
+			d = JSON.parse(data.responseText);
+			if(d.added) {
+				$("#uspesno").show();
+				$("#neuspesno").hide();
+				
+			}else{
+				let isBoss = confirm("Uspesno dodat tip pregleda!");
+				window.location.replace("./homepageadministratorklinike.html");
+				$("#neuspesno").show();
+				$("#uspesno").hide();
+			}
+		} 
+	});
+}
+
+function izmenaTPs() {
+	$("#pretragaNazivTPN").show();
+	$("#pretraziTPN").show();
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/tipoviPregledaN/admink/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			tipovi = JSON.parse(data.responseText);
+			loadTPIzmena(tipovi);
+		}
+	});
+}
+
+function loadTPIzmena(tipovi) {
+	obrisiTabele();
+	$("#tabela_tp tbody tr").remove(); 
+	$("#tabela_tp thead ").remove();
+	var table = $("#tabela_tp");
+	table.append(makeTableHeaderTPIzmena());	
+	for(let tp of tipovi) {
+		table.append(makeTableRowTPIzmena(tp));
+	}
+}
+
+function makeTableHeaderTPIzmena(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Naziv</th>
+						<th>Izmena</th>
+						<th>Brisanje</th>
+					</tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowTPIzmena(tp) {
+	var row = "";
+	
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${tp.nazivTPN}'>${tp.nazivTPN}</td>
+			<td class="izgledTabele"><input type="button" id="prikazTPN" value="Izmeni" onClick="prebaciNaIzmenuTP(${tp.idTPN})"/></td>
+			<td class="izgledTabele"><input type="button" id="brisanjeTPN" value="Obrisi" onClick="brisanjeTPN(${tp.idTPN})"/></td>
+		</tr>`;
+	
+	return row;
+}
+
+function prebaciNaIzmenuTP(idtpn){
+	window.location.replace("#izmenajednogtpn");
+	localStorage.setItem('idTPN', idtpn);
+	prebacivanjeNaIzmenuTP(idtpn);
+}
+
+function prebacivanjeNaIzmenuTP(idtpn) {
+	$.ajax({
+		url: "api/tipoviPregledaN/idtpn/" + idtpn,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			tpn = JSON.parse(data.responseText);
+			console.log(tpn)
+			modIzmenaTP(tpn);
+		}
+	});
+}
+
+function modIzmenaTP(tpn){
+	console.log("USAOOOOOO");
+	$("#modalnaForma div").remove();
+	var modal=$("#modalnaForma");
+	var m = "";
+	m = `<div class="imgcontainer">
+	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+	      <h1 style="text-align:center">Izmena tipa pregleda</h1></div>
+			<div class="container">
+			<br>
+			<form action="" id="formaIzmena">
+			<table class="table " id="tabela_modal">
+				<tbody>
+					<tr>
+					<td  class='align-middle'><label for="nazivTPN">Naziv</label></td>
+					<td  class='align-middle'><span style = "color:black"><input type="text" placeholder="Enter" value="${tpn.nazivTPN}" name="nazivTPN" id="nazivTPN" ></td>
+					</tr>
+					<tr><td  class='align-middle' ><button type="button" onclick="izmenaTP()">Sacuvaj izmene</button></td></tr>				
+				</tbody>
+			</table>
+			</form>
+			<fieldset id="log_war"></fieldset>
+		    </div>`;
+			modal.append(m);
+		$("#modal-wrapper").show();
+}
+
+function izmenaTP(){
+	console.log("usao u izmenatp");
+	var dat = getFormData($("#formaIzmena"));
+	var org = JSON.stringify(dat);
+	var obj = JSON.parse(localStorage.getItem('idTPN'));
+	console.log(obj)
+	$.ajax({
+		url: "api/tipoviPregledaN/izmena/" + obj,
+		type: "PUT",
+		data: org,
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			
+			
+		} 
+	 
+	});
+}
+
+function brisanjeTPN(idtpn){
+	$.ajax({
+		url: "api/tipoviPregledaN/brisanje/" + idtpn,
+		type: "DELETE",
+		contentType:"application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function (data) {
+			console.log("zavrsio");
+			//sale = JSON.parse(data.responseText);
+			//console.log(sale);
+			//loadSaleIzmena(sale);
+			izmenaTPs();
+		}
+	});
+}
 
 function dodavanjeLekara(){
 	console.log("aaaaa")
@@ -3489,6 +3669,28 @@ function pretragaPacijenata(){
 			}
 		});	
 	}	
+}
+
+function pretragaTPN(){
+	var obj = JSON.parse(localStorage.getItem('user'));
+	var nazivTPN = document.getElementById("pretragaNazivTPN").value;
+	var naziv = nazivTPN.toUpperCase();
+	console.log(naziv);
+	if (naziv != ""){
+		$.ajax({
+			url: "api/tipoviPregledaN/adminK/" + obj.id + "/" +"naziv/"+ naziv,
+			type: "GET",
+			contentType: "application/json",
+			dataType: "json",
+			headers: {
+		        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+		    },
+			complete: function(data) {
+				tipovi = JSON.parse(data.responseText);
+				loadTPIzmena(tipovi);	
+			}
+		});	
+	}
 }
 
 function pretragaSalaAdmin(){

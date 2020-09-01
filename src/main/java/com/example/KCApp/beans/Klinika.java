@@ -78,6 +78,17 @@ public class Klinika {
 	    getSale().add(item);
 	  }
 	
+	@OneToMany(cascade = {ALL}, fetch = LAZY, mappedBy = "klinika")
+	private Set<TipPregledaN> tipovi = new HashSet<TipPregledaN>();
+	
+	public void add(TipPregledaN item) {
+	    if (item.getKlinika() != null)
+	      item.getKlinika().getTipovi().remove(item);
+	    item.setKlinika(this);
+	    getTipovi().add(item);
+	  }
+
+	
 	@Column(name="Ocena") 
 	private double ocena;
 	
@@ -305,6 +316,14 @@ public class Klinika {
 
 	public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
 		this.klinickiCentar = klinickiCentar;
+	}
+
+	public Set<TipPregledaN> getTipovi() {
+		return tipovi;
+	}
+
+	public void setTipovi(Set<TipPregledaN> tipovi) {
+		this.tipovi = tipovi;
 	}
 	
 	
