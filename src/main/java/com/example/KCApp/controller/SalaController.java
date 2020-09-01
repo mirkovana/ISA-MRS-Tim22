@@ -355,7 +355,8 @@ public class SalaController {
 		p.setTipPregleda(z.getTipPregleda());
 		pregledService.save(p);
 		zzpService.delete(idZahteva);
-
+        emailService.slanjePacijentuOdobrenPregled(p);
+		
 		return null;
 
 	}

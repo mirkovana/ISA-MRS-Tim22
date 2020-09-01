@@ -1,6 +1,5 @@
 package com.example.KCApp.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
-import com.example.KCApp.beans.Lekar;
 import com.example.KCApp.beans.Operacija;
+import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.ZahtevOdsustva;
 import com.example.KCApp.beans.ZahtevZaOperaciju;
 import com.example.KCApp.beans.ZahtevZaPregled;
@@ -242,6 +241,32 @@ public class EmailService {
 						"\nPacijent: " + zahtev.getPacijent().getIme() + " " + zahtev.getPacijent().getPrezime() +
 						"\nLekar: " + zahtev.getLekar().getIme() + " " + zahtev.getLekar().getPrezime() +
 						"\nDodatne informacije o operaciji: " + zahtev.getDodatneInfoOOperaciji()
+						);
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+			}
+			catch(Exception e) {
+				System.out.println("Doslo je do greske...");
+			}
+		}
+		
+		//SLANJE MEJLA PACIJENTU DA JE ODOBREN PREGLED
+		public void slanjePacijentuOdobrenPregled(Pregled pregled) {
+			System.out.println("Slanje emaila...");
+		
+			try {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				mail.setTo(pregled.getPacijent().getEmail());
+				System.out.println("MAIL PACIJENTA JE  " + pregled.getPacijent().getEmail());
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Odobren zahtev za pregled");
+				mail.setText("Postovani,\n\nZahtev za pregled je odobren:\n\nDatum i vreme: "+ pregled.getVreme()+
+						
+						"\nLekar: " + (pregled.getLekar().getIme()) + " " + 
+						(pregled.getLekar().getPrezime())+
+						"\nPacijent: " + pregled.getPacijent().getIme() + " " + pregled.getPacijent().getPrezime() + 
+						"\nSala: " + pregled.getSala().getNazivSale() + " " + pregled.getSala().getBrojSale() +
+						"\nUkoliko Vam termin ne odgovara pregled mozete otkazati na svom profilu, u odeljku Zakazani pregledi."
 						);
 				javaMailSender.send(mail);
 				System.out.println("Email poslat!");
