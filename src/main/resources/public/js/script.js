@@ -5033,6 +5033,9 @@ function potvrdiSalu(idZahteva){
 		dataType: "json",
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+	    complete : function(data) {
+	    	alert("Pregled uspesno zakazan! Mail obavestenja poslat lekaru i pacijentu.");
 	    }
 
 	});
