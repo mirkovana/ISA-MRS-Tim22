@@ -1292,7 +1292,7 @@ function makeTableRowZahteviOPA(z) {
 			<td class="izgledTabele" id='${z.lekar.ime}'>${z.lekar.ime}</td>
 			<td class="izgledTabele" id='${z.pacijent.ime}'>${z.pacijent.ime}</td>
 			<td class="izgledTabele" id='${z.vreme}'>${z.vreme}</td>
-			<td class="izgledTabele"><input type="button" id="odaberi" value="Odaberi salu" onClick="odaberiSaluModOP(${z.idZahtevaZaOperaciju})"/></td>
+			<td class="izgledTabele"><input type="button" id="odaberi" value="Odaberi salu" onClick="odaberiSaluModOP(${z.idZahtevaZaOperaciju}, '${z.vreme}')"/></td>
 		
 		</tr>`;
 	
@@ -4961,10 +4961,11 @@ function odaberiSaluMod(z){
 			dobaviSlobodneSale(z);
 		$("#modal-wrapper").show();
 }
-function odaberiSaluModOP(z){
+function odaberiSaluModOP(z, vreme){
 	$("#modalnaForma div").remove(); 
 	var modal=$("#modalnaForma");
 	var m = "";
+	console.log(vreme)
 	m = `<div class="imgcontainer">
 	      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
 	      <h1 style="text-align:center">Odaberite salu</h1></div>
@@ -4973,12 +4974,17 @@ function odaberiSaluModOP(z){
 			<form action="" id="formaIzmena">
 			<table class="table " id="tabela_modal">
 				<tbody>
-					<tr><td>
-					<select name="slobodneSale" id="slobodneSale">
+					<tr>
+					
+					<td><label>Slobodne sale:</label><select name="slobodneSale" id="slobodneSale">
 		  				
 		  			</select>
+		  			
+		  			<td><label>Odabrani datum:</label><input type="date" name="datumOperacije" id="datumOperacije" value = ${vreme} ></td>
 		  			</td></tr>
-					<tr><td  class='align-middle' ><button type="button" onclick="potvrdiSaluOP(${z})">Potvrdi</button></td></tr>							
+					<tr><td  class='align-middle' ><button type="button" onclick="potvrdiSaluOP(${z}, '${vreme}')">Potvrdi</button></td>
+					<td><label>Prikazi slobodne sale za odabrani datum </label><button type="button" onclick="napuniSaleOpet(${z}, '${vreme}' )">Prikazi</button></td>
+					</tr>							
 				</tbody>
 			</table>
 			</form>
@@ -4989,8 +4995,30 @@ function odaberiSaluModOP(z){
 		$("#modal-wrapper").show();
 }
 
+//punjenje nakon promene datuma
+function napuniSaleOpet(zahtev, vreme){
+	//var povratna;
+	console.log(vreme)
+	$.ajax({
+		url: "api/slobodneSale/"+zahtev+ "/" + document.getElementById('datumOperacije').value,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete : function(data) {
+			ss = JSON.parse(data.responseText);
+			napuniSlobodneSale(ss);
+			
+		}
+	});
+	
+}
 
 
+
+//ono inicijalno punjenje
 function dobaviSlobodneSale(zahtev){
 	//var povratna;
 	$.ajax({
@@ -5012,6 +5040,7 @@ function dobaviSlobodneSale(zahtev){
 function napuniSlobodneSale(ss){
 	console.log(ss);
 	var m = "";	
+	$('#slobodneSale').empty();
 	var modal=$("#slobodneSale");	
 	for(let s of ss){
 		
@@ -5073,7 +5102,7 @@ function napuniSlobodneSaleOP(ss){
 	}
 }
 
-function potvrdiSaluOP(idZahteva){
+function potvrdiSaluOP(idZahteva, vreme){
 	
 	console.log(idZahteva)
 	var data = getFormData($("#formaIzmena"));
@@ -5081,7 +5110,7 @@ function potvrdiSaluOP(idZahteva){
 	console.log(data.slobodneSale);
 	
 	$.ajax({
-		url: "api/potvrdiSaluOP/" + idZahteva + "/" + data.slobodneSale,
+		url: "api/potvrdiSaluOP/" + idZahteva + "/" + data.slobodneSale + "/"+document.getElementById('datumOperacije').value,
 		type: "POST",
 		contentType: "application/json",
 		dataType: "json",

@@ -454,13 +454,13 @@ public class SalaController {
 		}
 		return set1;
 	}
-	@PostMapping(value = "/potvrdiSaluOP/{idZahteva}/{slobodneSale}", consumes = "application/json")
+	@PostMapping(value = "/potvrdiSaluOP/{idZahteva}/{slobodneSale}/{vreme}", consumes = "application/json")
 	@PreAuthorize("hasRole('ADMINK')")
-	public ResponseEntity<?> dodajPregledOP(@PathVariable Integer idZahteva, @PathVariable String slobodneSale)
+	public ResponseEntity<?> dodajPregledOP(@PathVariable Integer idZahteva, @PathVariable String slobodneSale, @PathVariable String vreme)
 			throws ParseException {
 
 		String nazivSale = slobodneSale.split("-")[0];
-		String vreme = slobodneSale.split("-")[1];
+		String vreme1 = slobodneSale.split("-")[1];
 		ZahtevZaOperaciju z = zzoService.get(idZahteva);
 		Operacija p = new Operacija();
 		Sala sala = service.findByNazivSale(nazivSale);
@@ -470,7 +470,7 @@ public class SalaController {
 		p.setPacijent(z.getPacijent());
 		p.setSala(sala);
 		p.setDodatneInfoOOperaciji(z.getDodatneInfoOOperaciji());
-		String datumVreme = z.getVreme() + " " + vreme;
+		String datumVreme = vreme + " " + vreme1;
 		Date dd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datumVreme);
 		p.setVremeOperacije(dd);
 		
@@ -481,5 +481,100 @@ public class SalaController {
 
 		return null;
 
+	}
+	
+	
+	
+	
+	/* DOBAVI SALE ZA PREGLED I ZADATI DATUM */
+	@GetMapping(value = "/slobodneSale/{zahtevv}/{vreme}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public Set<String> dobaviSaleZaDatumPromena(@PathVariable Integer zahtevv, @PathVariable String vreme) throws ParseException { // da li treba i
+			System.out.println("VREMEEEEE" + vreme);																							// po nazivu?
+		ZahtevZaOperaciju zahtev =zzoService.get(zahtevv);
+			List<Sala> sveSale = service.listAll(); // sve sale u bazi
+		// Klinika k = klinikaService.get(zahtev.getKlinika().getIdKlinike());
+		List<Sala> saleKlinike = new ArrayList<Sala>();
+		List<String> naziviSala = new ArrayList<String>();
+		for (Sala s : sveSale) {
+			if (s.getKlinika() == zahtev.getKlinika()) {
+				saleKlinike.add(s);
+
+			}
+		}
+		List<String> moguciTermini = new ArrayList<String>();
+		moguciTermini.add("11:00:00.0");
+		moguciTermini.add("12:00:00.0");
+		moguciTermini.add("13:00:00.0");
+		moguciTermini.add("14:00:00.0");
+		moguciTermini.add("15:00:00.0");
+		moguciTermini.add("16:00:00.0");
+		DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+		List<Pregled> sviPregledi = pregledService.findAllByKlinika(zahtev.getKlinika());
+		Date datumPregleda = new Date();
+		datumPregleda = formatter2.parse(zahtev.getVreme());
+		// System.out.println("OVAJ NE KONV" + zahtev.getVreme());
+
+		List<Pregled> preglediDatum = new ArrayList<Pregled>();
+		for (Pregled p : sviPregledi) {
+			// System.out.println("DATUM PREGLEDA " + datumPregleda);
+
+			if (vreme.equals(p.getVreme().toString().split(" ")[0])) {
+
+				preglediDatum.add(p);
+			}
+		}
+		List<String> pomocna = new ArrayList<String>();
+		for (String term : moguciTermini) {
+
+			pomocna.add(term);
+		}
+
+		if (preglediDatum.isEmpty()) {
+			for (Sala s : saleKlinike) {
+				for (String term : moguciTermini) {
+					naziviSala.add(s.getNazivSale() + "-" + term);
+				}
+			}
+		} else {
+			for (Pregled pp : preglediDatum) {
+				for (Sala s : saleKlinike) {
+					if (s.equals(pp.getSala())) {
+						System.out.println("USAO NEKAD");
+						if (pomocna.contains((pp.getVreme().toString().split(" ")[1]))) {
+							pomocna.remove(pp.getVreme().toString().split(" ")[1]);
+						}
+
+					} else {
+						for (String term : moguciTermini) {
+
+							naziviSala.add(s.getNazivSale() + "-" + term);
+						}
+					}
+
+				}
+
+			}
+
+			for (Pregled pp : preglediDatum) {
+				for (Sala s : saleKlinike) {
+					if (s.equals(pp.getSala())) {
+
+						for (String p1 : pomocna) {
+							System.out.println(p1);
+							naziviSala.add(s.getNazivSale() + "-" + p1);
+						}
+					}
+				}
+			}
+		}
+
+		// proveri salu i proveri satnicu
+		Set<String> set1 = new HashSet<String>();
+		set1.addAll(naziviSala);
+		for (String s : set1) {
+			System.out.println(s);
+		}
+		return set1;
 	}
 }
