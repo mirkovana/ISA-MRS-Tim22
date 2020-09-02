@@ -1,7 +1,11 @@
 package com.example.KCApp.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.KCApp.DTO.AdministratorKlinikeDTO;
 import com.example.KCApp.DTO.LekarDTO;
 import com.example.KCApp.beans.AdministratorKlinike;
 import com.example.KCApp.beans.Klinika;
@@ -32,6 +35,7 @@ import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.beans.RadniKalendarL;
 import com.example.KCApp.beans.TipPregleda;
 import com.example.KCApp.beans.User;
+import com.example.KCApp.beans.ZahtevOdsustva;
 import com.example.KCApp.repository.LekarRepository;
 import com.example.KCApp.service.AdministratorKlinikeService;
 import com.example.KCApp.service.AuthorityService;
@@ -39,6 +43,7 @@ import com.example.KCApp.service.KlinikaService;
 import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.OperacijaService;
 import com.example.KCApp.service.PregledService;
+import com.example.KCApp.service.ZahtevOdsustvaService;
 
 import javassist.NotFoundException;
 
@@ -63,6 +68,9 @@ public class LekarController {
 	
 	@Autowired
 	private AuthorityService authorityService;
+	
+	@Autowired
+	private ZahtevOdsustvaService zzoService;
 	
 	@Autowired
 	private LekarRepository repository;
@@ -216,20 +224,34 @@ public class LekarController {
 	}
 	
 	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - ID KLINIKE*/
-	@GetMapping(value = "/lekari/klinika/{idKlinike}")
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/datum/{datum}")
 	@PreAuthorize("hasRole('PACIJENT')")
-	public List<Lekar> findAllLekarByIdKlinikeSvi(@PathVariable Integer idKlinike) {
+	public List<Lekar> findAllLekarByIdKlinikeSvi(@PathVariable Integer idKlinike, @PathVariable String datum) throws ParseException {
 		Klinika k = klinikaService.get(idKlinike);
 		List<Lekar> lekari = service.listAll();
 		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
-		for(Lekar l:lekari)
-		{
-			if(l.getKlinika() == k) {
-				lekariKlinike.add(l);
+		DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+		Date datumPregleda = new Date();
+		datumPregleda = formatter2.parse(datum);
+		List<ZahtevOdsustva> zzo = zzoService.listAll();
+		for(ZahtevOdsustva zo : zzo) {
+			for(Lekar l:lekari)
+			{
+				if(zo.getUser().getId().equals(l.getId())) {
+					if(l.getKlinika() == k && !(datumPregleda.compareTo(zo.getDatumPocetka())>0 && datumPregleda.compareTo(zo.getDatumKraja())<0)) {
+						lekariKlinike.add(l);
+					}
+				}else {
+					if(l.getKlinika() == k) {
+						lekariKlinike.add(l);
+					}
+				}
 			}
 		}
+		
 		return lekariKlinike;
 	}
+	// && !(datumPregleda.compareTo(zo.getDatumPocetka())>0 && datumPregleda.compareTo(zo.getDatumKraja())<0)
 	
 	/*PRIKAZ SVIH LEKARA PO KRITERIJUMU - IME,PREZIME,OCENA*/
 	@GetMapping(value = "/lekari/klinika/{idKlinike}/{ime}/{prezime}/{ocena}")
