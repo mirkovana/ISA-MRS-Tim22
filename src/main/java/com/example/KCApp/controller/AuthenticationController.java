@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ import com.example.KCApp.beans.MedicinskaSestra;
 import com.example.KCApp.beans.Pacijent;
 import com.example.KCApp.beans.User;
 import com.example.KCApp.beans.UserTokenState;
+import com.example.KCApp.beans.VerificationToken;
 import com.example.KCApp.beans.ZahtevZaRegistraciju;
 import com.example.KCApp.security.TokenUtils;
 import com.example.KCApp.security.auth.JwtAuthenticationRequest;
@@ -49,6 +51,7 @@ import com.example.KCApp.service.LekarService;
 import com.example.KCApp.service.MedicinskaSestraService;
 import com.example.KCApp.service.PacijentService;
 import com.example.KCApp.service.UserService;
+import com.example.KCApp.service.VerificationTokenService;
 import com.example.KCApp.service.ZahtevZaRegistracijuService;
 import com.example.KCApp.service.impl.CustomUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,6 +61,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
 
+	@Autowired
+	private VerificationTokenService verificationService;
+	
 	@Autowired
 	private TokenUtils tokenUtils;
 
@@ -141,8 +147,10 @@ public class AuthenticationController {
 				return ResponseEntity.ok(new MedicinskaSestraDTO((MedicinskaSestra)user, new UserTokenState(jwt, expiresIn)));
 			}else if(auth.getName().equals("ROLE_PACIJENT")) {
 				user = pacijentService.get(userId);
-				
-				return ResponseEntity.ok(new PacijentDTO((Pacijent)user, new UserTokenState(jwt, expiresIn)));
+				Pacijent pacijent = pacijentService.get(userId);
+				if(pacijent.isAktivan()) {
+				    return ResponseEntity.ok(new PacijentDTO((Pacijent)user, new UserTokenState(jwt, expiresIn)));
+				}
 			}else {
 				return ResponseEntity.ok(new UserDTO(user, new UserTokenState(jwt, expiresIn)));
 			}
@@ -212,5 +220,18 @@ public class AuthenticationController {
 	static class PasswordChanger {
 		public String oldPassword;
 		public String newPassword;
+	}
+	
+	@PostMapping(value="/omogucenaRegistracija/{token}", consumes = "application/json")
+	@PreAuthorize("permitAll()")
+	public String confirmRegistration(@PathVariable String token){
+        System.out.println("UZAO SAM UUUUUUUUUUUUUUU POTVRDUUU");
+		VerificationToken verificationToken = verificationService.findByToken(token);
+		Pacijent pacijent = verificationToken.getPacijent();
+		pacijent.setAktivan(true);
+		System.out.println("SAD JE AKTIVAN? " + pacijent.getBrojOsiguranika());
+		pacijentService.save(pacijent);
+		
+		return token;
 	}
 }

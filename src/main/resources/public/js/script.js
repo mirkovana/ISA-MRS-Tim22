@@ -4918,19 +4918,20 @@ function aktivirajNalog(){
 	var x = document.URL.split("/")
 	console.log(x[5]);
 	$.ajax({
-		url: "api/potvrdiRegistraciju/"+ x[5],
-		type: "GET",
+		url: "auth/omogucenaRegistracija/" + x[5],
+		method: "POST",
 		contentType: "application/json",
 		dataType: "json",
-		headers: {
+		/*headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
-		}
-	   
+	    },*/
+		complete : function () {
+			alert("Nalog uspesno aktiviran!");
+			window.location.replace("./login.html");
+		} 
 
-	    
 	});
-	 let isBoss = confirm("Nalog uspesno aktiviran!");
-	 window.location.replace("./login.html");
+	
 }
 	
 function odaberiSaluMod(z){

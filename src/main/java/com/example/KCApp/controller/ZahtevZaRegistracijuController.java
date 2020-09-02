@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -18,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +37,8 @@ import com.example.KCApp.service.UserService;
 import com.example.KCApp.service.VerificationTokenService;
 import com.example.KCApp.service.ZahtevZaRegistracijuService;
 import com.example.KCApp.verifikacijaEmaila.OnRegistrationCompleteEvent;
+
+import javassist.NotFoundException;
 
 
 
@@ -149,9 +154,9 @@ public class ZahtevZaRegistracijuController {
 	
 	
 	
-	@GetMapping("/potvrdiRegistraciju/{token}")
+	/*@PutMapping(value = "/omogucenaRegistracija/{token}")
 	public String confirmRegistration(@PathVariable String token,HttpServletRequest request) {
-      
+        System.out.println("UZAO SAM UUUUUUUUUUUUUUU POTVRDUUU");
 		VerificationToken verificationToken = verificationService.findByToken(token);
 		if(verificationToken == null)
 		{
@@ -164,8 +169,23 @@ public class ZahtevZaRegistracijuController {
 		}
 	
 		pacijent.setAktivan(true);
+		System.out.println("SAD JE AKTIVAN? " + pacijent.getBrojOsiguranika());
 		pacijentService.save(pacijent);
 		
 		return null;
-	}
+	}*/
+	
+	/*@PostMapping(value="/omogucenaRegistracija/{token}", consumes = "application/json")
+	@PreAuthorize("permitAll()")
+	public String confirmRegistration(@PathVariable String token){
+        System.out.println("UZAO SAM UUUUUUUUUUUUUUU POTVRDUUU");
+		VerificationToken verificationToken = verificationService.findByToken(token);
+		Pacijent pacijent = verificationToken.getPacijent();
+		pacijent.setAktivan(true);
+		System.out.println("SAD JE AKTIVAN? " + pacijent.getBrojOsiguranika());
+		pacijentService.save(pacijent);
+		
+		return token;
+	}*/
+
 }
