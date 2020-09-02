@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.KCApp.beans.Operacija;
 import com.example.KCApp.beans.Pacijent;
+import com.example.KCApp.beans.Pregled;
 import com.example.KCApp.service.OperacijaService;
 import com.example.KCApp.service.PacijentService;
 
@@ -35,5 +36,22 @@ public class OperacijaController {
 		List<Operacija> listaOperacija = service.findAllByPacijent(p);
 		
 		return listaOperacija;
+	}
+	
+	
+	/* ISPISIVANJE PREGLEDA LEKAR */
+	@GetMapping(value = "/lekar/operacije/rk/{id}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<Operacija> getAllOperacijaLekar(Model model, @PathVariable Integer id) {
+		List<Operacija> listaOperacija = service.listAll();
+		List<Operacija> listaPovratna = new ArrayList<Operacija>();
+		for (Operacija o : listaOperacija) {
+			if (id.equals(o.getLekar().getId())) {
+				listaPovratna.add(o);
+			
+			}
+		}
+		//List<Pregled> prazna = new ArrayList<Pregled>();
+		return listaPovratna;
 	}
 }
