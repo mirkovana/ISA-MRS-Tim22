@@ -3239,9 +3239,10 @@ function prikazSvihLekaraKlinike(){
 	$("#pretraziLekareTipPregleda").hide();
 	obrisiTabele();
 	obrisiFilter();
+	var datum = localStorage.getItem('datum');
 	var obj = JSON.parse(localStorage.getItem('idKlinike'));
 	$.ajax({
-		url: "api/lekari/klinika/" + obj,
+		url: "api/lekari/klinika/" + obj + "/datum/" + datum,
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
