@@ -162,4 +162,43 @@ public class ZahtevOdsustvaController {
 				}).orElseThrow(() -> new NotFoundException("Zahtev not found with id " + id));
 		
 	}
+	
+	
+	
+	/*PRIKAZ SVIH ODOBRENIH ODSUSTVA ZA LEKARA*/
+	@GetMapping(value="/lekar/odsustva/rk/{id}")
+	@PreAuthorize("hasRole('LEKAR')")
+	public List<ZahtevOdsustva> getOdsustvaLekar(Model model, @PathVariable Integer id) {
+	
+		Lekar lek = serviceL.get(id);
+		
+		List<ZahtevOdsustva> sviZahtevi = service.listAll();
+		List<ZahtevOdsustva> odsustvaLekar = new ArrayList<ZahtevOdsustva>();
+		
+		for (ZahtevOdsustva z : sviZahtevi) {
+			if(z.getUser().equals(lek) && z.isOdobren() && z.isZavrseno()) {
+				odsustvaLekar.add(z);
+			}
+		}
+		return odsustvaLekar;
+	}
+	
+	/*PRIKAZ SVIH ODOBRENIH ODSUSTVA ZA LEKARA*/
+	@GetMapping(value="/ms/odsustva/rk/{id}")
+	@PreAuthorize("hasRole('MS')")
+	public List<ZahtevOdsustva> getOdsustvaMS(Model model, @PathVariable Integer id) {
+	
+		MedicinskaSestra ms = serviceMS.get(id);
+		
+		List<ZahtevOdsustva> sviZahtevi = service.listAll();
+		List<ZahtevOdsustva> odsustvaLekar = new ArrayList<ZahtevOdsustva>();
+		
+		for (ZahtevOdsustva z : sviZahtevi) {
+			if(z.getUser().equals(ms) && z.isOdobren() && z.isZavrseno()) {
+				odsustvaLekar.add(z);
+			}
+		}
+		return odsustvaLekar;
+	}
+	
 }
