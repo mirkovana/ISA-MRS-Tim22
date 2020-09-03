@@ -1,6 +1,7 @@
 package com.example.KCApp.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,16 @@ public class OperacijaController {
 		
 		Pacijent p = serviceP.get(id);
 		List<Operacija> listaOperacija = service.findAllByPacijent(p);
-		
-		return listaOperacija;
+		List<Operacija> listaPovratna = new ArrayList<Operacija>();
+
+		Date date = new Date();
+		for(Operacija o : listaOperacija) {
+			//System.out.println(date.compareTo(pr.getVreme()));
+			if(date.compareTo(o.getVremeOperacije())>0) {
+				listaPovratna.add(o);
+			}
+		}
+		return listaPovratna;
 	}
 	
 	

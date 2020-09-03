@@ -191,19 +191,47 @@ public class LekarController {
 	}
 	
 	/*PRIKAZ LEKARA PO KRITERIJUMU - ID KLINIKE KOJOJ LEKAR PRIPADA*/
-	@GetMapping(value = "/lekari/klinika/{idKlinike}/{tipPregleda}")
+	@GetMapping(value = "/lekari/klinika/{idKlinike}/{tipPregleda}/datumTP/{datum}")
 	@PreAuthorize("hasRole('PACIJENT')")
-	public List<Lekar> findAllLekarByIdKlinike(@PathVariable Integer idKlinike, @PathVariable TipPregleda tipPregleda) {
+	public List<Lekar> findAllLekarByIdKlinike(@PathVariable Integer idKlinike, @PathVariable TipPregleda tipPregleda, @PathVariable String datum) throws ParseException {
 		Klinika k = klinikaService.get(idKlinike);
 		List<Lekar> lekari = service.listAll();
 		List<Lekar> lekariKlinike = new ArrayList<Lekar>();
+		List<Lekar> povratna = new ArrayList<Lekar>();
+		DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+		Date datumPregleda = new Date();
+		datumPregleda = formatter2.parse(datum);
+		List<ZahtevOdsustva> zzo = zzoService.listAll();
 		for(Lekar l:lekari)
 		{
 			if(l.getKlinika() == k && l.getTipPregleda() == tipPregleda) {
 				lekariKlinike.add(l);
 			}
 		}
-		return lekariKlinike;
+		
+		for(Lekar l:lekariKlinike)
+		{
+			if(zzo.size()>0) {
+				for(ZahtevOdsustva zo : zzo) {
+					if(zo.getUser().getId().equals(l.getId())) {
+						if(l.getKlinika() == k && !(datumPregleda.compareTo(zo.getDatumPocetka())>0 && datumPregleda.compareTo(zo.getDatumKraja())<0)) {
+							povratna.add(l);
+						}
+					}else {
+						if(l.getKlinika() == k) {
+							povratna.add(l);
+						}
+					}
+				}
+			}
+			else {
+				if(l.getKlinika() == k) {
+					povratna.add(l);
+				}
+			}
+		}
+		
+		return povratna;
 	}
 	
 	/*PRIKAZ LEKARA KLINIKE ADMINA*/
@@ -234,20 +262,29 @@ public class LekarController {
 		Date datumPregleda = new Date();
 		datumPregleda = formatter2.parse(datum);
 		List<ZahtevOdsustva> zzo = zzoService.listAll();
-		for(ZahtevOdsustva zo : zzo) {
+		//for(ZahtevOdsustva zo : zzo) {
 			for(Lekar l:lekari)
 			{
-				if(zo.getUser().getId().equals(l.getId())) {
-					if(l.getKlinika() == k && !(datumPregleda.compareTo(zo.getDatumPocetka())>0 && datumPregleda.compareTo(zo.getDatumKraja())<0)) {
-						lekariKlinike.add(l);
+				if(zzo.size()>0) {
+					for(ZahtevOdsustva zo : zzo) {
+						if(zo.getUser().getId().equals(l.getId())) {
+							if(l.getKlinika() == k && !(datumPregleda.compareTo(zo.getDatumPocetka())>0 && datumPregleda.compareTo(zo.getDatumKraja())<0)) {
+								lekariKlinike.add(l);
+							}
+						}else {
+							if(l.getKlinika() == k) {
+								lekariKlinike.add(l);
+							}
+						}
 					}
-				}else {
+				}
+				else {
 					if(l.getKlinika() == k) {
 						lekariKlinike.add(l);
 					}
 				}
 			}
-		}
+		//}
 		
 		return lekariKlinike;
 	}
