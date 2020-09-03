@@ -1735,16 +1735,8 @@ function definisanjeSTP(){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			d = JSON.parse(data.responseText);
-			if(d.added) {
-				$("#uspesno").show();
-				$("#neuspesno").hide();
-				
-			}else{
-				window.location.replace("./homepageadministratorklinike.html");
-				$("#neuspesno").show();
-				$("#uspesno").hide();
-			}
+			alert("Uspesno ste definisali novi slobodan termin pregleda!");
+			window.location.replace("./homepageadministratorklinike.html");
 		} 
 	});
 }
