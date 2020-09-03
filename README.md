@@ -32,5 +32,4 @@ Podaci o korisnicima neophodni za prijavu na sistem:
 5. Pacijent - email: kor5@nesto.com, lozinka: 4
 
 Napomena: Izmene na profilima za svaki tip korisnika su vidljive tek nakon sto se korisnik odjavi i ponovo prijavi. 
-Prilikom kreiranja zahteva za odmor/odsustvo datum treba da bude u formatu "yyyy-MM-dd".
 Prilikom kreiranja unapred definisanih pregleda datum treba da bude u formatu "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ili  "yyyy-MM-dd".
