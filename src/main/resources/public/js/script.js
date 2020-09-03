@@ -655,7 +655,9 @@ function oceniLekara(prikaz, idL) {
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
-		complete: function(data) {}
+		complete: function(data) {
+			alert("Uspesno ste ocenili lekara!");
+		}
 	});
 }
 
@@ -668,7 +670,9 @@ function oceniKliniku(prikaz, idK) {
 		headers: {
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
-		complete: function(data) {}
+		complete: function(data) {
+			alert("Uspesno ste ocenili kliniku!");
+		}
 	});
 }
 
@@ -2820,6 +2824,8 @@ function makeTableHeaderDefinisaniPregledi(){
 						<th>Trajanje</th>
 						<th>Sala</th>
 						<th>Tip</th>
+						<th>Lekar</th>
+						<th>Cena</th>
 						<th></th>
 					</tr>
 				</thead>`;
@@ -2850,7 +2856,6 @@ function makeTableRowDefinisaniPregledi(p) {
 	var datum = deli[0];
 	var deli1 = deli[1].split(".");
 	var vreme = deli1[0];
-	
 	  row =
 		`<tr>
 			<td class="izgledTabele" id='${p.vreme}'>${datum}</td>
@@ -2858,6 +2863,8 @@ function makeTableRowDefinisaniPregledi(p) {
 			<td class="izgledTabele" id='${p.trajanje}'>${p.trajanje}</td>
 			<td class="izgledTabele" id='${p.sala}'>${p.sala.nazivSale}</td>
 			<td class="izgledTabele" id='${p.tipPregleda}'>${p.tipPregleda}</td>
+			<td class="izgledTabele" id='${p.lekar.ime}'>${p.lekar.ime} ${p.lekar.prezime}</td>
+			<td class="izgledTabele" id='${p.cena}'>${p.cena}</td>
 			<td class="izgledTabele" id='dugmeZakazi'><input type="button" id="showTxt1" value="Zakazi" onClick="zakaziPregled(${p.idPregleda})"/></td>
 		</tr>`;
 	return row;
@@ -2987,6 +2994,7 @@ function loadKlinikePretrazene(klinike) {
 	obrisiTabele();
 	//obrisiPretragu();
 	$("#pretraga").hide();
+	$("#datumBiranje").hide();
 	$("#dan").hide();
 	$("#mesec").hide();
 	$("#godina").hide();
@@ -3270,8 +3278,9 @@ function prikazLekaraKlinike(){
 	obrisiFilter();
 	var obj = JSON.parse(localStorage.getItem('idKlinike'));
 	var tipPregleda = localStorage.getItem('tipPregleda');
+	var datum = localStorage.getItem('datum');
 	$.ajax({
-		url: "api/lekari/klinika/" + obj + "/" + tipPregleda,
+		url: "api/lekari/klinika/" + obj + "/" + tipPregleda + "/datumTP/" + datum,
 		type: "GET",
 		contentType: "application/json",
 		dataType: "json",
@@ -4275,7 +4284,7 @@ function makeTableRowPreglediL(p) {
 			<td class="izgledTabele" id='${p.vreme}'>${vreme}</td>
 			<td class="izgledTabele" id='${p.trajanje}'>${p.trajanje}</td>
 			<td class="izgledTabele" id='${p.sala}'>${p.sala.nazivSale}</td>
-			<td><input type="button" id="zp" value="Zapocni pregled" onClick="zapocniPregled(\'${p.idPregleda}\')"/></td>
+			<td class="izgledTabele"><input type="button" id="zp" value="Zapocni pregled" onClick="zapocniPregled(\'${p.idPregleda}\')"/></td>
 		</tr>`;
 	
 	return row;
@@ -5207,6 +5216,91 @@ function otkaziPregled(idPregleda) {
 	    },
 		complete: function(data) {
 			alert("Uspesno otkazan pregled!");
+		}
+	});
+}
+
+function vratiNazad(){
+	window.history.back();
+}
+
+function izvestajiOPregledima(){
+	$("#tabela_pregledi tbody tr").remove(); 
+	$("#tabela_pregledi thead ").remove();
+	$("#tabela_pregledi").show();
+	
+	var pac = JSON.parse(localStorage.getItem('idPacijenta'));
+	var lek = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pregledi/lekar/izvestaj/" + pac + "/" + lek.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			pregledi = JSON.parse(data.responseText);
+			console.log(pregledi)
+			loadPreglediLekIzvestaj(pregledi);
+		}
+	});	
+}
+
+function loadPreglediLekIzvestaj(pregledi){
+
+	var table = $("#tabela_pregledi");
+	table.append(makeTableHeaderPreglediLIzvestaj());	
+	for(let p of pregledi) {
+		table.append(makeTableRowPreglediLIzvestaj(p));
+}
+}
+
+function makeTableHeaderPreglediLIzvestaj(){
+	
+	var row="";
+	 row =
+			`<thead class="thead-light" bgcolor="white">
+					<tr>
+						<th>Datum</th>
+						<th>Dijagnoza</th>
+						<th>Lek</th>
+						<th>Info</th>
+						<th>Sacuvaj izmene</th>
+				     </tr>
+				</thead>`;
+		
+		return row;
+}
+
+function makeTableRowPreglediLIzvestaj(p) {
+	var row = "";
+	var deli = p.pregled.vreme.split("T");
+	var datum = deli[0];
+	  row =
+		`<tr>
+			<td class="izgledTabele" id='${p.pregled.vreme}'>${datum}</td>
+			<td class="izgledTabele" id='${p.sifrarnikDijagnoza.nazivDijagnoze}'>${p.sifrarnikDijagnoza.nazivDijagnoze}</td>
+			<td class="izgledTabele" id='${p.sifrarnikLekova.nazivLeka}'>${p.sifrarnikLekova.nazivLeka}</td>
+			<td class="izgledTabele" id='${p.info}'><input type="text" id="info" value="${p.info}"/></td>
+			<td class="izgledTabele"><input type="button" id="zp" value="Sacuvaj" onClick="sacuvajIzmeneInfo(${p.idIOP})"/></td>
+		</tr>`;
+	
+	return row;
+}
+
+function sacuvajIzmeneInfo(idIzvestaja){
+	var info = document.getElementById('info').value;
+	$.ajax({
+		url: "api/izvestaj/izmena/" + info + "/" + idIzvestaja,
+		type: "PUT",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			alert("Uspesno ste izvrsili izmenu!");
 		}
 	});
 }
