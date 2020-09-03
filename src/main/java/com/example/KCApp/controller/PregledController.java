@@ -162,6 +162,8 @@ public class PregledController {
 		// String sDate1="31/07/2020";
 		// Date vreme=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
 		// pregled.setVreme(vreme);
+		
+		//Date datum = new SimpleDateFormat("yyyy-MM-dd").parse(pregledDTO.getVreme());
 		pregled.setVreme(pregledDTO.getVreme()); // kako formatirati
 		System.out.println("PREGLED VREME " + pregled.getVreme());
 
