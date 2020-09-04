@@ -5395,3 +5395,52 @@ function podaciNedelja(lista){
 	});
 }
 
+function izvestajGraficiMesec(){
+	console.log("usao u izvestajgrafici")
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pregledi/izvestajMesec/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			lista = JSON.parse(data.responseText);
+			console.log(lista)
+			podaciMesec(lista);
+		}
+	});
+}
+
+function podaciMesec(lista){
+	console.log("usao u podaci")
+	console.log(lista)
+	const CHART = document.getElementById("lineChart");
+	let lineChart = new Chart(CHART, {
+    		type: 'line',
+    		data: {
+            labels: ["Jan", "Feb", "Mart", "Apr", "Maj", "Jun", "Jul", "Avg", "Sept", "Okt", "Nov", "Dec"],
+            datasets: [
+                {
+                    label: "Broj pregleda u mesecu",
+                    fill: true,
+                    lineTension: 0.1,
+                    backgroundColor: "#ffffff",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHitRadius: 10,
+                    data: lista,
+                }
+    		]}
+	});
+}
+
