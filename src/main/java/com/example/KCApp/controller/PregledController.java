@@ -252,4 +252,326 @@ public class PregledController {
 	public void deletePregled(@PathVariable Integer idPregleda) {
 		service.delete(idPregleda);
 	}
+	
+	/* BROJ PREGLEDA U DANU PO MESECU IZVESTAJ GRAFIK PREGLEDA */
+	@GetMapping(value = "/pregledi/izvestaj/{idAdmina}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Integer> getSviPreglediZaKlinikuAdmina(Model model, @PathVariable Integer idAdmina) throws ParseException {
+		
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika k = ak.getKlinika();
+		
+		List<Pregled> svi = service.listAll();
+		List<Pregled> preglediKlinike = new ArrayList<Pregled>();
+		
+		for (Pregled p : svi) {
+			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike())) {
+				preglediKlinike.add(p);
+				
+			}
+		}
+		
+		System.out.println("PREGLEDI KLINIKE" + preglediKlinike);
+		
+		List<Integer> lista = new ArrayList<Integer>();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		
+		int prvi = 0, drugi = 0, treci = 0, cetvrti = 0, peti = 0, sesti = 0, sedmi = 0, osmi = 0, deveti = 0, deseti = 0, jedanaesti = 0, 
+				dvanaesti = 0, trinaesti = 0, cetrnaesti = 0, petnaesti = 0, sesnaesti = 0, sedamnaesti = 0, osamnaesti = 0, devetnaesti = 0, 
+				dvadeseti = 0, dvadesetprvi = 0, dvadesetdrugi = 0, dvadesettreci = 0, dvadesetcetvrti = 0, 
+				dvadesetpeti = 0, dvadesetsesti = 0, dvadesetsedmi = 0, dvadesetosmi = 0, dvadesetdeveti = 0, trideseti = 0;
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("01/09/2020")) {
+				System.out.println("USAO U PRVI");
+				prvi += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("02/09/2020")) {
+				drugi += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("03/09/2020")) {
+				treci += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("04/09/2020")) {
+				cetvrti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("05/09/2020")) {
+				System.out.println("USAO U PETI");
+				peti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("06/09/2020")) {
+				sesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("07/09/2020")) {
+				sedmi += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("08/09/2020")) {
+				osmi += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("09/09/2020")) {
+				deveti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("10/09/2020")) {
+				deseti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("11/09/2020")) {
+				jedanaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("12/09/2020")) {
+				dvanaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("13/09/2020")) {
+				trinaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("14/09/2020")) {
+				cetrnaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("15/09/2020")) {
+				petnaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("16/09/2020")) {
+				sesnaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("17/09/2020")) {
+				sedamnaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("18/09/2020")) {
+				osamnaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("19/09/2020")) {
+				devetnaesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("20/09/2020")) {
+				dvadeseti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("21/09/2020")) {
+				dvadesetprvi += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("22/09/2020")) {
+				dvadesetdrugi += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("23/09/2020")) {
+				dvadesettreci += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("24/09/2020")) {
+				dvadesetcetvrti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("25/09/2020")) {
+				dvadesetpeti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("26/09/2020")) {
+				dvadesetsesti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("27/09/2020")) {
+				dvadesetsedmi += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("28/09/2020")) {
+				dvadesetosmi += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("29/09/2020")) {
+				dvadesetdeveti += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			if ((formatter.format(p.getVreme())).equals("30/09/2020")) {
+				trideseti += 1;
+			}
+		}
+		
+		lista.add(prvi);
+		lista.add(drugi);
+		lista.add(treci);
+		lista.add(cetvrti);
+		lista.add(peti);
+		lista.add(sesti);
+		lista.add(sedmi);
+		lista.add(osmi);
+		lista.add(deveti);
+		lista.add(deseti);
+		lista.add(jedanaesti);
+		lista.add(dvanaesti);
+		lista.add(trinaesti);
+		lista.add(cetrnaesti);
+		lista.add(petnaesti);
+		lista.add(sesnaesti);
+		lista.add(sedamnaesti);
+		lista.add(osamnaesti);
+		lista.add(devetnaesti);
+		lista.add(dvadeseti);
+		lista.add(dvadesetprvi);
+		lista.add(dvadesetdrugi);
+		lista.add(dvadesettreci);
+		lista.add(dvadesetcetvrti);
+		lista.add(dvadesetpeti);
+		lista.add(dvadesetsesti);
+		lista.add(dvadesetsedmi);
+		lista.add(dvadesetosmi);
+		lista.add(dvadesetdeveti);
+		lista.add(trideseti);
+		
+		return lista;
+	}
+	
+	/* BROJ PREGLEDA U NEDELJI PO MESECU IZVESTAJ GRAFIK PREGLEDA */
+	@GetMapping(value = "/pregledi/izvestajNedelja/{idAdmina}")
+	@PreAuthorize("hasRole('ADMINK')")
+	public List<Integer> getSviPreglediZaKlinikuAdminaNedelja(Model model, @PathVariable Integer idAdmina) throws ParseException {
+		
+		AdministratorKlinike ak = serviceAK.get(idAdmina);
+		Klinika k = ak.getKlinika();
+		
+		List<Pregled> svi = service.listAll();
+		List<Pregled> preglediKlinike = new ArrayList<Pregled>();
+		
+		for (Pregled p : svi) {
+			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike())) {
+				preglediKlinike.add(p);
+				
+			}
+		}
+		
+		System.out.println("PREGLEDI KLINIKE" + preglediKlinike);
+		
+		List<Integer> lista = new ArrayList<Integer>();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		
+		int prva = 0, druga = 0, treca = 0, cetvrta = 0, peta = 0;
+		
+		for (Pregled p : preglediKlinike) {
+			System.out.println(p.getVreme());
+			if (p.getVreme().after(formatter.parse("30/08/2020")) && p.getVreme().before(formatter.parse("07/09/2020"))) {
+				System.out.println("1");
+				prva += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			System.out.println(p.getVreme());
+			if (p.getVreme().after(formatter.parse("06/09/2020")) && p.getVreme().before(formatter.parse("14/09/2020"))) {
+				System.out.println("2");
+				druga += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			System.out.println(p.getVreme());
+			if (p.getVreme().after(formatter.parse("13/09/2020")) && p.getVreme().before(formatter.parse("21/09/2020"))) {
+				System.out.println("3");
+				treca += 1;
+
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			System.out.println(p.getVreme());
+			if (p.getVreme().after(formatter.parse("21/09/2020")) && p.getVreme().before(formatter.parse("28/09/2020"))) {
+				System.out.println("4");
+				cetvrta += 1;
+			}
+		}
+		
+		for (Pregled p : preglediKlinike) {
+			System.out.println(p.getVreme());
+			if (p.getVreme().after(formatter.parse("27/09/2020")) && p.getVreme().before(formatter.parse("5/10/2020"))) {
+				System.out.println("5");
+				peta += 1;
+			}
+		}
+		
+		
+		lista.add(prva);
+		lista.add(druga);
+		lista.add(treca);
+		lista.add(cetvrta);
+		lista.add(peta);
+		
+		return lista;
+	}
 }

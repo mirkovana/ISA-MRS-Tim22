@@ -5296,3 +5296,102 @@ function sacuvajIzmeneInfo(idIzvestaja){
 		}
 	});
 }
+
+function izvestajGrafici(){
+	console.log("usao u izvestajgrafici")
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pregledi/izvestaj/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			lista = JSON.parse(data.responseText);
+			console.log(lista)
+			podaci(lista);
+		}
+	});
+}
+
+function podaci(lista){
+	console.log("usao u podaci")
+	console.log(lista)
+	const CHART = document.getElementById("lineChart");
+	let lineChart = new Chart(CHART, {
+    		type: 'line',
+    		data: {
+            labels: ["1.9.", "2.9.", "3.9.", "4.9.", "5.9.", "6.9.", "7.9.", "8.9.", "9.9.", "10.9.", "11.9.", "12.9.", "13.9.", "14.9.", "15.9.", "16.9.", "17.9.", "18.9.", "19.9.", "20.9.", "21.9.", "22.9.", "23.9.", "24.9.", "25.9.", "26.9.", "27.9.", "28.9.", "29.9.", "30.9."],
+            datasets: [
+                {
+                    label: "Broj pregleda u danu",
+                    fill: true,
+                    lineTension: 0.1,
+                    backgroundColor: "#ffffff",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHitRadius: 10,
+                    data: lista,
+                }
+    		]}
+	});
+}
+
+function izvestajGraficiNedelja(){
+	console.log("usao u izvestajgrafici")
+	var obj = JSON.parse(localStorage.getItem('user'));
+	$.ajax({
+		url: "api/pregledi/izvestajNedelja/" + obj.id,
+		type: "GET",
+		contentType: "application/json",
+		dataType: "json",
+		headers: {
+	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
+	    },
+		complete: function(data) {
+			lista = JSON.parse(data.responseText);
+			console.log(lista)
+			podaciNedelja(lista);
+		}
+	});
+}
+
+function podaciNedelja(lista){
+	console.log("usao u podaci")
+	console.log(lista)
+	const CHART = document.getElementById("lineChart");
+	let lineChart = new Chart(CHART, {
+    		type: 'line',
+    		data: {
+            labels: ["31.8. - 6.9.", "7.9. - 13.9.", "14.9. - 20.9.", "21.9. - 27.9", "28.9. - 4.10"],
+            datasets: [
+                {
+                    label: "Broj pregleda u nedelji",
+                    fill: true,
+                    lineTension: 0.1,
+                    backgroundColor: "#ffffff",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHitRadius: 10,
+                    data: lista,
+                }
+    		]}
+	});
+}
+
