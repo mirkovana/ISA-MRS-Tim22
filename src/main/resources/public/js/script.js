@@ -3125,6 +3125,9 @@ function obrisiTabele(){
 	$("#tabela_prihoda thead ").remove();
 	$("#tabela_tp tbody tr").remove(); 
 	$("#tabela_tp thead ").remove();
+	$("#tabela_sale tbody tr").remove(); 
+	$("#tabela_sale thead ").remove();
+	
 }
 
 function obrisiPretragu(){
