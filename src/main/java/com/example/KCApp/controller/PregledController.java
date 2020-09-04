@@ -265,7 +265,7 @@ public class PregledController {
 		List<Pregled> preglediKlinike = new ArrayList<Pregled>();
 		
 		for (Pregled p : svi) {
-			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike())) {
+			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike()) && p.getPacijent() != null) {
 				preglediKlinike.add(p);
 				
 			}
@@ -510,7 +510,7 @@ public class PregledController {
 		List<Pregled> preglediKlinike = new ArrayList<Pregled>();
 		
 		for (Pregled p : svi) {
-			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike())) {
+			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike()) && p.getPacijent() != null) {
 				preglediKlinike.add(p);
 				
 			}
@@ -587,7 +587,7 @@ public class PregledController {
 		List<Pregled> preglediKlinike = new ArrayList<Pregled>();
 		
 		for (Pregled p : svi) {
-			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike())) {
+			if (k.getIdKlinike().equals(p.getKlinika().getIdKlinike()) && p.getPacijent() != null) {
 				preglediKlinike.add(p);
 				
 			}
