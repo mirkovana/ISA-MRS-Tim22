@@ -201,6 +201,7 @@ function prikazSala() {
 }
 
 function izmenaSala() {
+	$("#lineChart").hide();
 	$("#pretragaNaziv").show();
 	$("#pretragaBroj").show();
 	$("#pretraziSale").show();
@@ -239,6 +240,7 @@ function setUpUserPageAKL() {
 }
 
 function prikazLekara() {
+	$("#lineChart").hide();
 	$("#pretragaIme").show();
 	$("#pretragaPrezime").show();
 	$("#pretraziLekare").show();
@@ -261,6 +263,7 @@ function prikazLekara() {
 }
 
 function lekariZaIzvestaj() {
+	$("#lineChart").hide();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/lekari/admink/" + obj.id,
@@ -390,6 +393,7 @@ function setUpZK() {
 
 //menjanje profila klinike kod AK
 function setUpKlinikeAK() {
+	$("#lineChart").hide();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/klinike/admink/" + obj.id,
@@ -408,6 +412,7 @@ function setUpKlinikeAK() {
 }
 
 function setUpIzvestaji() {
+	$("#lineChart").hide();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/klinike/admink/" + obj.id,
@@ -1526,6 +1531,7 @@ function dodavanjeZahtevaOdsustvaL(){
 }
 
 function zahteviAdmin() {
+	$("#lineChart").hide();
 	console.log("usao u zahtevi admin");
 	var obj = JSON.parse(localStorage.getItem('user'));
 	console.log(obj);
@@ -1548,6 +1554,7 @@ function zahteviAdmin() {
 }
 
 function zahteviZaPAdmin() {
+	$("#lineChart").hide();
 	obrisiTabele();
 	console.log("usao u zahtevi za p admin");
 	var obj = JSON.parse(localStorage.getItem('user'));
@@ -1570,6 +1577,7 @@ function zahteviZaPAdmin() {
 	});
 }
 function zahteviZaOAdmin() {
+	$("#lineChart").hide();
 	obrisiTabele();
 	console.log("usao u zahtevi za p admin");
 	var obj = JSON.parse(localStorage.getItem('user'));
@@ -1888,6 +1896,7 @@ function dodavanjeTP(){
 }
 
 function izmenaTPs() {
+	$("#lineChart").hide();
 	$("#pretragaNazivTPN").show();
 	$("#pretraziTPN").show();
 	var obj = JSON.parse(localStorage.getItem('user'));
@@ -2746,6 +2755,7 @@ function izmenaSale(){
 function prikazSlobodnihTerminaPregleda() {
 	obrisiPretragu();
 	obrisiFilter();
+	$("#lineChart").hide();
 	var obj = JSON.parse(localStorage.getItem('idKlinike'));
 	$.ajax({
 		url: "api/pregledi/klinika/" + obj,
@@ -3471,6 +3481,7 @@ function pretragaLekara(){
 }
 
 function izvestajPrihod(){
+	$("#lineChart").hide();
 	$("#datumOd").show();
 	$("#datumDo").show();
 	$("#prikaziPrihod").show();
@@ -3903,6 +3914,7 @@ function prikazCenovnika(){
 }
 
 function prikazCenovnikaAdmin(){
+	$("#lineChart").hide();
 	var obj = JSON.parse(localStorage.getItem('user')); 
 	$.ajax({
 		url: "api/cenovnik/adminK/" + obj.id,
