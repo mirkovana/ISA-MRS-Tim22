@@ -1,7 +1,9 @@
 package com.example.KCApp.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -105,21 +107,22 @@ public class PacijentController {
 	/*PRIKAZ SVIH PACIJENATA KLINIKE ZA MED SESTRU*/
 	@GetMapping(value="/pacijenti/ms/{id}")
 	@PreAuthorize("hasRole('MS')")
-	public List<Pacijent> getAllPacijentiKlinikeMS(Model model, @PathVariable Integer id) {
+	public Set<Pacijent> getAllPacijentiKlinikeMS(Model model, @PathVariable Integer id) {
 		MedicinskaSestra ms = serviceMS.get(id);
 		Klinika klinikaMS = ms.getKlinika();
 		List<Pacijent> listaPacijenata = new ArrayList<Pacijent>();
 		//ovde ide sada provera 
 		List<Pregled> preglediKlinike = servicePregled.listAll();
+		Set<Pacijent> set1 = new HashSet<Pacijent>();
 		for(Pregled pre:preglediKlinike) {
-			if(pre.getKlinika()==klinikaMS) {
-			listaPacijenata.add(pre.getPacijent());
-			model.addAttribute("listaPacijenata", listaPacijenata);
+			if(pre.getKlinika()==klinikaMS && pre.getPacijent() !=null) {
+				set1.add(pre.getPacijent());
+			
 			
 			}
 		}
 		//model.addAttribute("listaPacijenata", listaPacijenata);
-		return listaPacijenata;
+		return set1;
 	}
 	
 	/*PRIKAZ SVIH PACIJENATA KLINIKE ZA ADMINA KLINIKE*/
@@ -143,19 +146,24 @@ public class PacijentController {
 	/*PRIKAZ SVIH PACIJENATA KLINIKE ZA LEKARA*/
 	@GetMapping(value="/pacijenti/lekar/{id}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public List<Pacijent> getAllPacijentiKlinikeLekara(Model model, @PathVariable Integer id) {
+	public Set<Pacijent> getAllPacijentiKlinikeLekara(Model model, @PathVariable Integer id) {
 		Lekar l = serviceL.get(id);
 		Klinika klinikaL = l.getKlinika();
 		List<Pacijent> listaPacijenata = new ArrayList<Pacijent>();
+		Set<Pacijent> set1 = new HashSet<Pacijent>();
 		//ovde ide sada provera 
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre:preglediKlinike) {
-			listaPacijenata.add(pre.getPacijent());
-			model.addAttribute("listaPacijenata", listaPacijenata);
+			if(pre.getPacijent() !=null) {
+				set1.add(pre.getPacijent());
+
+			}
 			
 		}
 		//model.addAttribute("listaPacijenata", listaPacijenata);
-		return listaPacijenata;
+		
+		//set1.addAll(listaPacijenata);
+		return set1;
 	}
 	
 	/*DODAVANJE PACIJENTA*/ //prilikom dodavanja ispise lepo sve informacije, a prilikom izlistavanja nakon dodavanja za zdravstveni karton stavi da je null
@@ -227,11 +235,11 @@ public class PacijentController {
 	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - IME,PREZIME*/
 	@GetMapping(value = "/pacijenti/lekar/{idLekara}/{ime}/{prezime}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public List<Pacijent> findAllPacijentByIP(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable String prezime) {
+	public Set<Pacijent> findAllPacijentByIP(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable String prezime) {
 		//dobavim pacijente klinike kojoj lekar pripada
 		Lekar l = serviceL.get(idLekara);
 		Klinika klinikaL = l.getKlinika();
-		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijentiKlinike = new HashSet<Pacijent>();
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre : preglediKlinike) {
 			if (pre.getPacijent() != null) {
@@ -239,7 +247,7 @@ public class PacijentController {
 			}
 		}
 		//pretrazujem po imenu i prezimenu iz nje
-		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijenti = new HashSet<Pacijent>();
 		for(Pacijent p : pacijentiKlinike)
 		{
 			if(p.getIme().equals(ime) && p.getPrezime().equals(prezime)) {
@@ -249,17 +257,17 @@ public class PacijentController {
 		if(pacijenti.isEmpty()) {
 			return pacijenti;
 		}
-		return pacijenti;
+		return  pacijenti;
 	}
 	
 	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - PREZIME*/
 	@GetMapping(value = "/pacijenti/lekar/{idLekara}/prezime/{prezime}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public List<Pacijent> findAllPacijentByP(@PathVariable Integer idLekara, @PathVariable String prezime) {
+	public Set<Pacijent> findAllPacijentByP(@PathVariable Integer idLekara, @PathVariable String prezime) {
 		//dobavim pacijente klinike kojoj lekar pripada
 		Lekar l = serviceL.get(idLekara);
 		Klinika klinikaL = l.getKlinika();
-		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijentiKlinike = new HashSet<Pacijent>();
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre : preglediKlinike) {
 			if (pre.getPacijent() != null) {
@@ -267,7 +275,7 @@ public class PacijentController {
 			}
 		}
 		//pretrazujem po imenu i prezimenu iz nje
-		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijenti = new HashSet<Pacijent>();
 		for(Pacijent p : pacijentiKlinike)
 		{
 			if(p.getPrezime().equals(prezime)) {
@@ -283,12 +291,12 @@ public class PacijentController {
 	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - IME*/
 	@GetMapping(value = "/pacijenti/lekar/{idLekara}/ime/{ime}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public List<Pacijent> findAllPacijentByI(@PathVariable Integer idLekara, @PathVariable String ime) {
+	public Set<Pacijent> findAllPacijentByI(@PathVariable Integer idLekara, @PathVariable String ime) {
 		System.out.println("USAO U PRETRAGU PO IMENU");
 		//dobavim pacijente klinike kojoj lekar pripada
 		Lekar l = serviceL.get(idLekara);
 		Klinika klinikaL = l.getKlinika();
-		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijentiKlinike = new HashSet<Pacijent>();
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre : preglediKlinike) {
 			if (pre.getPacijent() != null) {
@@ -298,7 +306,7 @@ public class PacijentController {
 		System.out.println("PACIJENTI KLINIKE" + pacijentiKlinike);
 		
 		//pretrazujem po imenu i prezimenu iz nje
-		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijenti = new HashSet<Pacijent>();
 		for(Pacijent p : pacijentiKlinike)
 		{
 			if(p.getIme().equals(ime)) {
@@ -315,11 +323,11 @@ public class PacijentController {
 	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - BR OS*/
 	@GetMapping(value = "/pacijenti/lekar/{idLekara}/brO/{brO}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public List<Pacijent> findAllPacijentByBrO(@PathVariable Integer idLekara, @PathVariable int brO) {
+	public Set<Pacijent> findAllPacijentByBrO(@PathVariable Integer idLekara, @PathVariable int brO) {
 		//dobavim pacijente klinike kojoj lekar pripada
 		Lekar l = serviceL.get(idLekara);
 		Klinika klinikaL = l.getKlinika();
-		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijentiKlinike = new HashSet<Pacijent>();
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre : preglediKlinike) {
 			if (pre.getPacijent() != null) {
@@ -327,7 +335,7 @@ public class PacijentController {
 			}
 		}
 		//pretrazujem po imenu i prezimenu iz nje
-		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijenti = new HashSet<Pacijent>();
 		for(Pacijent p : pacijentiKlinike)
 		{
 			if(p.getBrojOsiguranika() == brO) {
@@ -343,11 +351,11 @@ public class PacijentController {
 	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - IME, BR OS*/
 	@GetMapping(value = "/pacijenti/lekar/{idLekara}/ime/{ime}/brO/{brO}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public List<Pacijent> findAllPacijentByIbrO(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable int brO) {
+	public Set<Pacijent> findAllPacijentByIbrO(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable int brO) {
 		//dobavim pacijente klinike kojoj lekar pripada
 		Lekar l = serviceL.get(idLekara);
 		Klinika klinikaL = l.getKlinika();
-		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijentiKlinike = new HashSet<Pacijent>();
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre : preglediKlinike) {
 			if (pre.getPacijent() != null) {
@@ -355,7 +363,7 @@ public class PacijentController {
 			}
 		}
 		//pretrazujem po imenu i prezimenu iz nje
-		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijenti = new HashSet<Pacijent>();
 		for(Pacijent p : pacijentiKlinike)
 		{
 			if(p.getIme().equals(ime) && p.getBrojOsiguranika() == brO) {
@@ -371,11 +379,11 @@ public class PacijentController {
 	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - PREZIME, BR OS*/
 	@GetMapping(value = "/pacijenti/lekar/{idLekara}/prezime/{prezime}/brO/{brO}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public List<Pacijent> findAllPacijentByPbrO(@PathVariable Integer idLekara, @PathVariable String prezime, @PathVariable int brO) {
+	public Set<Pacijent> findAllPacijentByPbrO(@PathVariable Integer idLekara, @PathVariable String prezime, @PathVariable int brO) {
 		//dobavim pacijente klinike kojoj lekar pripada
 		Lekar l = serviceL.get(idLekara);
 		Klinika klinikaL = l.getKlinika();
-		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijentiKlinike = new HashSet<Pacijent>();
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre : preglediKlinike) {
 			if (pre.getPacijent() != null) {
@@ -383,7 +391,7 @@ public class PacijentController {
 			}
 		}
 		//pretrazujem po imenu i prezimenu iz nje
-		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijenti = new HashSet<Pacijent>();
 		for(Pacijent p : pacijentiKlinike)
 		{
 			if(p.getPrezime().equals(prezime) && p.getBrojOsiguranika() == brO) {
@@ -399,11 +407,11 @@ public class PacijentController {
 	/*PRIKAZ SVIH PACIJENATA PO KRITERIJUMU - IME, PREZIME, BR OS*/
 	@GetMapping(value = "/pacijenti/lekar/{idLekara}/ime/{ime}/prezime/{prezime}/brO/{brO}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public List<Pacijent> findAllPacijentByIbrO(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable String prezime, @PathVariable int brO) {
+	public Set<Pacijent> findAllPacijentByIbrO(@PathVariable Integer idLekara, @PathVariable String ime, @PathVariable String prezime, @PathVariable int brO) {
 		//dobavim pacijente klinike kojoj lekar pripada
 		Lekar l = serviceL.get(idLekara);
 		Klinika klinikaL = l.getKlinika();
-		List<Pacijent> pacijentiKlinike = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijentiKlinike = new HashSet<Pacijent>();
 		List<Pregled> preglediKlinike = servicePregled.findAllByKlinika(klinikaL);
 		for(Pregled pre : preglediKlinike) {
 			if (pre.getPacijent() != null) {
@@ -411,7 +419,7 @@ public class PacijentController {
 			}
 		}
 		//pretrazujem po imenu i prezimenu iz nje
-		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		Set<Pacijent> pacijenti = new HashSet<Pacijent>();
 		for(Pacijent p : pacijentiKlinike)
 		{
 			if(p.getIme().equals(ime) && p.getBrojOsiguranika() == brO && p.getPrezime().equals(prezime)) {

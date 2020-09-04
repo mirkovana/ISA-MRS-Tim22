@@ -71,10 +71,10 @@ insert into tippregledan(idtpn, nazivtpn, id_klinike) values (2, 'DERMATOLOGIJA'
 
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(1, 1000, 'KARDIOLOGIJA', 1, '2020-5-1 12:00:00', 1, 5, 1, 3);
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(30, 1000, 'PEDIJATRIJA', 1, '2020-9-1 12:00:00', 1, 5, 1, 3);
-insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(31, 1000, 'GINEKOLOGIJA', 1, '2020-9-5 12:00:00', 1, 5, 1, 3);
+insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(31, 1000, 'GINEKOLOGIJA', 1, '2020-9-10 12:00:00', 1, 5, 1, 3);
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(32, 1000, 'ULTRAZVUK', 1, '2020-9-20 12:00:00', 1, 5, 1, 3);
 insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(33, 1000, 'KARDIOLOGIJA', 1, '2020-9-20 16:00:00', 1, 10, 1, 3);
-insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(2, 1000, 'DERMATOLOGIJA', 1, '2020-5-1 15:00:00', 1, null, 1, 3);
+insert into pregled(id_pregleda, cena, tip_pregleda, trajanje, vreme, id_klinike, id, id_sale, id_lekara)values(2, 1000, 'DERMATOLOGIJA', 1, '2020-10-1 15:00:00', 1, null, 1, 3);
 insert into operacija(id_operacije, dodatne_infoooperaciji, trajanje, vreme_operacije, id_klinike, id_sale, id, id_lekara)values(1, 'operacija tetive', 1, '2020-6-1 12:00:00', 1, 1, 5, 3);
 insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id) values (1, 1.05, 'A+', 55.5, 170.00,5);
 insert into zdravstveni_karton(id_zdravstvenog_kartona, dioptrija, krvna_grupa,tezina,visina, id) values (2, 1.05, 'B+', 55.5, 170.00,10);

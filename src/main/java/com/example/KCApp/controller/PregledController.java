@@ -250,7 +250,9 @@ public class PregledController {
 	@PutMapping(value= "/pregledi/obrisi/{idPregleda}")
 	@PreAuthorize("hasRole('PACIJENT')")
 	public void deletePregled(@PathVariable Integer idPregleda) {
-		service.delete(idPregleda);
+		Pregled pregl = service.get(idPregleda);
+		pregl.setPacijent(null);
+		service.save(pregl);
 	}
 	
 	/* BROJ PREGLEDA U DANU PO MESECU IZVESTAJ GRAFIK PREGLEDA */
