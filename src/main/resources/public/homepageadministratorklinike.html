@@ -9,6 +9,8 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/script.js"></script>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 		<script>
 			$(document).ready( function() {
 				$("#pretragaIme").hide();
@@ -39,6 +41,8 @@
 				<a href="#slobodniTerminiPregledaKlinike" onClick="prikazSlobodnihTerminaPregledaAdmina()">Slobodni termini pregleda</a>
 				<a href="#izvestajocenaklinike" onclick="setUpIzvestaji()">Izvestaj: prosecna ocena klinike</a>
 				<a href="#izvestajocenalekara" onClick="lekariZaIzvestaj()">Izvestaj: prosecna ocena lekara</a>
+				<a href="#izvestajgrafici" onClick="izvestajGrafici()">Izvestaj: grafik pregleda po danima</a>
+				<a href="#izvestajgraficinedelja" onClick="izvestajGraficiNedelja()">Izvestaj: grafik pregleda po nedeljama</a>
 				<a href="#izvestajprihod" onClick="izvestajPrihod()">Izvestaj: prihod klinike</a>
 				<a href="./dodavanjeLekara.html" >Dodavanje lekara</a>
 				<a href="#listalekara" onClick="prikazLekara()">Lekari</a>
@@ -52,6 +56,9 @@
 				
 				<a href="#" onclick="return logout(event)">Odjavite se</a>
 			  </div>
+			  
+			  <canvas id="lineChart"></canvas>
+			  
 			  <input type = "text" placeholder="Ime" id = "pretragaIme"/>
 			  <input type = "text" placeholder="Prezime" id = "pretragaPrezime"/>
 			  <button type="submit" class="btn btn-secondary" id="pretraziLekare" onClick="pretragaLekaraAdmin()">Pretrazi</button>
