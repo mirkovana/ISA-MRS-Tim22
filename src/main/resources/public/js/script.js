@@ -5298,6 +5298,7 @@ function sacuvajIzmeneInfo(idIzvestaja){
 }
 
 function izvestajGrafici(){
+	$("#lineChart").show();
 	console.log("usao u izvestajgrafici")
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
@@ -5347,6 +5348,7 @@ function podaci(lista){
 }
 
 function izvestajGraficiNedelja(){
+	$("#lineChart").show();
 	console.log("usao u izvestajgrafici")
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
@@ -5396,6 +5398,7 @@ function podaciNedelja(lista){
 }
 
 function izvestajGraficiMesec(){
+	$("#lineChart").show();
 	console.log("usao u izvestajgrafici")
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
