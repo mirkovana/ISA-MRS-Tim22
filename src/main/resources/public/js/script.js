@@ -202,6 +202,9 @@ function prikazSala() {
 
 function izmenaSala() {
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	$("#pretragaNaziv").show();
 	$("#pretragaBroj").show();
 	$("#pretraziSale").show();
@@ -241,10 +244,12 @@ function setUpUserPageAKL() {
 
 function prikazLekara() {
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	$("#pretragaIme").show();
 	$("#pretragaPrezime").show();
 	$("#pretraziLekare").show();
-	obrisiTabele();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/lekari/admink/" + obj.id,
@@ -264,6 +269,9 @@ function prikazLekara() {
 
 function lekariZaIzvestaj() {
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/lekari/admink/" + obj.id,
@@ -394,6 +402,9 @@ function setUpZK() {
 //menjanje profila klinike kod AK
 function setUpKlinikeAK() {
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/klinike/admink/" + obj.id,
@@ -413,6 +424,9 @@ function setUpKlinikeAK() {
 
 function setUpIzvestaji() {
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	var obj = JSON.parse(localStorage.getItem('user'));
 	$.ajax({
 		url: "api/klinike/admink/" + obj.id,
@@ -1030,6 +1044,7 @@ function brisanjeSale(idSale){
 			//sale = JSON.parse(data.responseText);
 			//console.log(sale);
 			//loadSaleIzmena(sale);
+			alert("Uspesno ste izbrisali salu!");
 			izmenaSala();
 		}
 	});
@@ -1419,6 +1434,7 @@ function brisanjeLekara(idLekara){
 			//sale = JSON.parse(data.responseText);
 			//console.log(sale);
 			//loadSaleIzmena(sale);
+			alert("Uspesno ste izbrisali lekara!");
 			prikazLekara();
 		}
 	});
@@ -1532,6 +1548,9 @@ function dodavanjeZahtevaOdsustvaL(){
 
 function zahteviAdmin() {
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	console.log("usao u zahtevi admin");
 	var obj = JSON.parse(localStorage.getItem('user'));
 	console.log(obj);
@@ -1556,6 +1575,8 @@ function zahteviAdmin() {
 function zahteviZaPAdmin() {
 	$("#lineChart").hide();
 	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	console.log("usao u zahtevi za p admin");
 	var obj = JSON.parse(localStorage.getItem('user'));
 	console.log(obj.id);
@@ -1579,6 +1600,8 @@ function zahteviZaPAdmin() {
 function zahteviZaOAdmin() {
 	$("#lineChart").hide();
 	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	console.log("usao u zahtevi za p admin");
 	var obj = JSON.parse(localStorage.getItem('user'));
 	console.log(obj.id);
@@ -1897,6 +1920,9 @@ function dodavanjeTP(){
 
 function izmenaTPs() {
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	$("#pretragaNazivTPN").show();
 	$("#pretraziTPN").show();
 	var obj = JSON.parse(localStorage.getItem('user'));
@@ -2020,7 +2046,7 @@ function izmenaTP(){
 	        'Authorization': 'Bearer '+JSON.parse(localStorage.getItem('user')).token.accessToken
 	    },
 		complete : function (data) {
-			
+		alert("Uspesno ste izmenili tip pregleda!");	
 			
 		} 
 	 
@@ -2041,6 +2067,7 @@ function brisanjeTPN(idtpn){
 			//sale = JSON.parse(data.responseText);
 			//console.log(sale);
 			//loadSaleIzmena(sale);
+			alert("Uspesno ste izbrisali tip pregleda!");
 			izmenaTPs();
 		}
 	});
@@ -2745,7 +2772,7 @@ function izmenaSale(){
 	    },
 		complete : function (data) {
 			
-			
+			alert("Uspesno ste izmenili salu!");
 		} 
 	 
 	});
@@ -2755,6 +2782,7 @@ function izmenaSale(){
 function prikazSlobodnihTerminaPregleda() {
 	obrisiPretragu();
 	obrisiFilter();
+	obrisiTabele();
 	$("#lineChart").hide();
 	var obj = JSON.parse(localStorage.getItem('idKlinike'));
 	$.ajax({
@@ -3095,7 +3123,8 @@ function obrisiTabele(){
 	$("#tabela_zahtevi_op thead ").remove();
 	$("#tabela_prihoda tbody tr").remove(); 
 	$("#tabela_prihoda thead ").remove();
-	
+	$("#tabela_tp tbody tr").remove(); 
+	$("#tabela_tp thead ").remove();
 }
 
 function obrisiPretragu(){
@@ -3127,6 +3156,16 @@ function obrisiPretragu(){
 	$("#sortTPP").hide();
 	$("#sortKAKC").hide();
 	$("#sortP").hide();
+	$("#pretraziLekare").hide();
+	$("#pretragaNaziv").hide();
+	$("#pretragaBroj").hide();
+	$("#pretraziSale").hide();
+	$("zauzeto").hide();
+	$("#datumOd").hide();
+	$("#datumDo").hide();
+	$("#prikaziPrihod").hide();
+	$("#pretragaNazivTPN").hide();
+	$("#pretraziTPN").hide();
 }
 
 function cenaPregleda(idK, tipP){
@@ -3482,6 +3521,9 @@ function pretragaLekara(){
 
 function izvestajPrihod(){
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	$("#datumOd").show();
 	$("#datumDo").show();
 	$("#prikaziPrihod").show();
@@ -3915,6 +3957,9 @@ function prikazCenovnika(){
 
 function prikazCenovnikaAdmin(){
 	$("#lineChart").hide();
+	obrisiTabele();
+	obrisiPretragu();
+	obrisiFilter();
 	var obj = JSON.parse(localStorage.getItem('user')); 
 	$.ajax({
 		url: "api/cenovnik/adminK/" + obj.id,
@@ -5310,6 +5355,9 @@ function sacuvajIzmeneInfo(idIzvestaja){
 }
 
 function izvestajGrafici(){
+	obrisiPretragu();
+	obrisiFilter();
+	obrisiTabele();
 	$("#lineChart").show();
 	console.log("usao u izvestajgrafici")
 	var obj = JSON.parse(localStorage.getItem('user'));
@@ -5360,6 +5408,9 @@ function podaci(lista){
 }
 
 function izvestajGraficiNedelja(){
+	obrisiPretragu();
+	obrisiFilter();
+	obrisiTabele();
 	$("#lineChart").show();
 	console.log("usao u izvestajgrafici")
 	var obj = JSON.parse(localStorage.getItem('user'));
@@ -5410,6 +5461,9 @@ function podaciNedelja(lista){
 }
 
 function izvestajGraficiMesec(){
+	obrisiPretragu();
+	obrisiFilter();
+	obrisiTabele();
 	$("#lineChart").show();
 	console.log("usao u izvestajgrafici")
 	var obj = JSON.parse(localStorage.getItem('user'));
